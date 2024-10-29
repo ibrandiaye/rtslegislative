@@ -13,6 +13,7 @@ use App\Repositories\RegionRepository;
 use App\Repositories\RtscentreRepository;
 use App\Repositories\RtslieuRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RtslieuController extends Controller
 {
@@ -91,7 +92,7 @@ protected $rtsCentrevoteRepository;
       {
 
         $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
-       
+
         for ($i= 0; $i < count($rts); $i++) {
           $rtslieu = new Rtslieu();
           $rtslieu->candidat_id = $candidats[$i];
@@ -106,7 +107,7 @@ protected $rtsCentrevoteRepository;
         $this->lieuvoteRepository->updateEtat($request["lieuvote_id"]);
         if($centreVote->niveau==false){
           $rtsCentres = $this->rtsCentrevoteRepository->getByCentre($centreVote->id);
-         
+
           if(count($rtsCentres) ==0){
             for ($i= 0; $i < count($rts); $i++) {
               $rtscentre = new Rtscentre();
@@ -125,7 +126,7 @@ protected $rtsCentrevoteRepository;
             }
           }
         }
-      
+
 
       //  $rtslieus = $this->rtslieuRepository->store($request->all());
       //  return redirect('rtslieu');
@@ -225,10 +226,32 @@ protected $rtsCentrevoteRepository;
         $this->rtslieuRepository->destroy($id);
         return redirect('rtslieu');
     }
-    public function rtsDepartement()
+    public function rtsDepartement(Request $request)
     {
-      $rtsDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
-      $departements= $this->departementRepository->getAll();
-      dd($rtsDepartements);
+      $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartement($request->departement_id);
+      //$departements= $this->departementRepository->getAll();
+      $departement = DB::table("departements")->where("id",$request->departement_id)->first();
+      $departement_id = $request->departement_id;
+      $region_id = $request->region_id;
+      $regions  = $this->regionRepository->getAll();
+      $departements = $this->departementRepository->getByRegion($request->region_id);
+      $candidat = DB::table("candidats")->first();
+
+      $bullnull  = $this->rtslieuRepository->nbBulletinNullByDepartement($candidat->id,$departement_id);
+      $hs  = $this->rtslieuRepository->nbHsByDepartement($candidat->id,$departement_id);
+      $inscrit = $this->lieuvoteRepository->countByDepartement($departement_id);
+      return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+    "bullnull","hs"));
+     // dd($rts,$departement);
+    }
+
+    public function resultatParDepartement()
+    {
+        $region_id = "";
+        $departement_id = "";
+        $departements = [];
+        $rts = [];
+        $regions  = $this->regionRepository->getAll();
+        return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts"));
     }
 }

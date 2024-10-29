@@ -165,5 +165,6 @@ Route::get('/chercher/bureau',[BureauController::class,'chercherBureau'])->name(
 
 Route::post('/search/tel',action: [BureauController::class,'searchTel'])->name("search.tel")->middleware("auth");
 
-Route::get('/rts/departement',[RtslieuController::class,'rtsDepartement'])->name('rts.by.departement')->middleware("auth");
+Route::get('/rts/departement/{id}',[RtslieuController::class,'rtsDepartement'])->name('rts.by.departement')->middleware("auth");
 
+Route::get('/resultat/par/departement',[RtslieuController::class,'resultatParDepartement'])->name('voir.par.departement')->middleware("auth");

@@ -155,7 +155,7 @@ public function getByCentreVote($id)
 }
 
 public function countByArrondissementt($id){
-   
+
     return DB::table("lieuvotes")
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
     ->join("communes","centrevotes.commune_id","=","communes.id")
@@ -163,7 +163,7 @@ public function countByArrondissementt($id){
     ->count();
 }
 public function countByCommune($id){
-   
+
     return DB::table("lieuvotes")
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
     ->join("communes","centrevotes.commune_id","=","communes.id")
@@ -172,7 +172,7 @@ public function countByCommune($id){
 }
 
 public function countByDepartement($id){
-   
+
     return DB::table("lieuvotes")
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
     ->join("communes","centrevotes.commune_id","=","communes.id")
@@ -181,7 +181,7 @@ public function countByDepartement($id){
 }
 
 public function countByRegion($id){
-   
+
     return DB::table("lieuvotes")
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
     ->join("communes","centrevotes.commune_id","=","communes.id")
@@ -192,6 +192,15 @@ public function countByRegion($id){
 public function getAllWithBureau(){
     return Lieuvote::with(["bureaus"])
     ->get();
+}
+
+public function nbElecteursByDepartement($departement){
+    return  DB::table("lieuvotes")
+->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+->join("communes","centrevotes.commune_id","=","communes.id")
+->where("communes.departement_id",$departement)
+->sum('nb');
+
 }
 
 }

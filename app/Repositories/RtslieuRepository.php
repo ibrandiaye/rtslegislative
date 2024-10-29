@@ -37,6 +37,27 @@ public function  rtsByOneCandidat($id){
   ->sum('nbvote');
 
 }
+
+public function  nbVoixByDepartement($id){
+    return   DB::table('rtslieus')
+  ->where("departement_id",$id)
+  ->sum('nbvote');
+
+}
+
+public function  nbBulletinNullByDepartement($candidat_id,$departement){
+    return   DB::table('rtslieus')
+  ->where([["departement_id",$departement],["candidat_id",$candidat_id]])
+  ->sum('bulnull');
+
+}
+
+public function  nbHsByDepartement($candidat_id,$departement){
+    return   DB::table('rtslieus')
+  ->where([["departement_id",$departement],["candidat_id",$candidat_id]])
+  ->sum('hs');
+
+}
 public function  rtsGroupByLieuvVoteByCandidat($id){
 
     return   DB::table('rtslieus')
@@ -75,6 +96,18 @@ public function  rtsGroupByDepartementandCandidat(){
 ->get();
 
 }
+
+public function  rtsGroupByCandidatByDepartement($departement){
+
+    return   DB::table('rtslieus')
+  ->join('candidats','rtslieus.candidat_id','=','candidats.id')
+  ->select("candidats.nom as candidat"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->groupBy('candidats.nom')
+  ->orderBy("nb","desc")
+  ->where("rtslieus.departement_id",$departement)
+  ->get();
+
+  }
 public function  rtsGroupByRegionByCandidat($id){
 
     return   DB::table('rtslieus')
