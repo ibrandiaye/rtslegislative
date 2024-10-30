@@ -79,8 +79,7 @@ public function sumByDepartements($departements){
     return DB::table("lieuvotes")
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
     ->join("communes","centrevotes.commune_id","=","communes.id")
-    ->join("departements","communes.departement_id","=","departements.id")
-    ->where("departements.id",$departements)
+    ->where("communes.departement_id",$departements)
     ->sum("lieuvotes.nb");;
 }
 

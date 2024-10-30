@@ -28,6 +28,7 @@ class RtslieuRepository extends RessourceRepository{
       ->join('candidats','rtslieus.candidat_id','=','candidats.id')
       ->select('candidats.id','candidats.nom','candidats.photo','candidats.coalition' ,DB::raw('sum(rtslieus.nbvote) as nb'))
       ->groupBy('candidats.id','candidats.nom','candidats.photo','candidats.coalition')
+      ->orderBy("nb","desc")
   ->get();
 
 }

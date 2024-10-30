@@ -14,7 +14,7 @@
                                 <li class="breadcrumb-item active"><a href="{{ route('rtslieu.create') }}" >Liste des rtslieus</a></li>
                                 </ol>
                             </div>
-                            <h4 class="page-title">Starter</h4>
+                            <h4 class="page-title">DGE</h4>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -32,9 +32,9 @@
 
 <div class="col-12">
     <div class="card ">
-        <div class="card-header  text-center">LISTE D'ENREGISTREMENT DES rtslieus</div>
+        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif</div>
             <div class="card-body">
-                <form method="POST" action="{{ route('searhAdmin') }}">
+                <form method="POST" action="{{ route('rts.by.departement') }}">
                     @csrf
                     <div class="row">
                         <div class="col-lg-2">
@@ -63,31 +63,45 @@
                     </div>
 
                 </form>
+                
+                <div class="row">
+                    <div class="col-8">
+                        <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
+                            <thead>
+                                <tr>
+        
+                                    <th> Ont OBTENU</th>
+                                    <th>Voix</th>
+                                    <th>% des voix</th>
+        
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($rts as $rt)
+                                <tr>
+                                    <td>{{ $rt->candidat }}</td>
+                                    <td>{{ $rt->nb }}</td>
+                                    <td>@if($votant>0){{ round(($rt->nb *100)/$votant,2)}} @endif</td>
+        
+                                </tr>
+                                @endforeach
+        
+                            </tbody>
+                        </table>
+        
+        
+                    </div>
+                    <div class="col-4">
+                        <h6>Inscrits : {{$inscrit}}</h6>
+                        <h6>Votant : {{$votant}}</h6>
+                        <h6>Nuls : {{$bullnull}}</h6>
+                        <h6>Exprimés : {{$votant - $bullnull}}</h6>
+                        <h6>Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6>
+                        <h6>Siège  : @if(!empty($departement)){{$departement->nbcandidat}} @endif</h6>
+                    </div>
+                </div>
 
-                <table id="datatable-buttons" class="table table-bordered table-responsive-md table-striped text-center">
-                    <thead>
-                        <tr>
-
-                            <th> Ont OBTENU</th>
-                            <th>Voix</th>
-                            <th>% des voix</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($rts as $rt)
-                        <tr>
-                            <td>{{ $rtslieu->candidat }}</td>
-                            <td>{{ $rtslieu->voix }}</td>
-                            <td>{{ $rtslieu->taux }}</td>
-
-                        </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-
-
+             
 
             </div>
 
