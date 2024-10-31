@@ -63,7 +63,7 @@
                     </div>
 
                 </form>
-                
+                <br>
                 <div class="row">
                     <div class="col-8">
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">

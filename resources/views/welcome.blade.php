@@ -251,6 +251,11 @@
                                 <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Lieu de Vote </span></a>
 
                             </li>
+                            <li>
+                                <a href="{{ route('voir.par.departement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Par département </span></a>
+
+                            </li>
+                           
 
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Utilisateur </span></a>

@@ -42,26 +42,14 @@
                                   
                                     <div class="col-4">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <label>Région</label>
-                                                <select class="form-control" id="region_id" name="region_id" required="">
-                                                    <option value="">Selectionner</option>
-                                                    @foreach ($regions as $region)
-                                                    <option value="{{$region->id}}">{{$region->nom}}</option>
-                                                        @endforeach
-            
-                                                </select>
-                                            </div>
-                                            <div class="col-12">
-                                                <label>Département</label>
-                                                <select class="form-control" id="departement_id" name="departement_id" required>
-            
-                                                </select>
-                                            </div>
+                                           <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}">
                                             <div class="col-12">
                                                 <label>Arrondissement</label>
                                                 <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
-            
+                                                    <option value="">Selectionner</option>
+                                                    @foreach ($arrondissements as $arrondissement)
+                                                        <option value="{{$arrondissements->id}}">{{$arrondissements->nom}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                               <div class="col-12">
@@ -131,122 +119,7 @@
                                         </table>
                                     </div>
                                 </div>
-                               {{--  <div class="row">
-                                    <div class="col">
-                                        <label>Région</label>
-                                        <select class="form-control" id="region_id" name="region_id" required="">
-                                            <option value="">Selectionner</option>
-                                            @foreach ($regions as $region)
-                                            <option value="{{$region->id}}">{{$region->nom}}</option>
-                                                @endforeach
-    
-                                        </select>
-                                    </div>
-                                    <div class="col">
-                                        <label>Département</label>
-                                        <select class="form-control" id="departement_id" name="departement_id" required>
-    
-                                        </select>
-                                    </div>
-    
-                                      <div class="col">
-                                        <label>Commune</label>
-                                        <select class="form-control" id="commune_id" name="commune_id" required>
-    
-                                        </select>
-                                    </div>
-                                        <div class="col">
-                                            <label>centrevote</label>
-                                            <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
-                                          
-                                            </select>
-                                        </div>
-                                        <div class="col">
-                                            <label>Lieu de Vote</label>
-                                            <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
-                                            
-                                            </select>
-                                        </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>Votant </label>
-                                            <input type="number" name="votant"  value="{{ old('votant') }}" class="form-control"  required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>Nuls </label>
-                                            <input type="number" name="bulnull"  value="{{ old('bulnull') }}" class="form-control"  required>
-                                        </div>
-                                    </div>  <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label>Hors Bureau </label>
-                                            <input type="number" name="hs"  value="{{ old('hs') }}" class="form-control"  required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <table class="table table-bordered table-responsive-md table-striped text-center">
-                                        <thead>
-                                            <th>Liste</th>
-                                            <th>Resultat</th>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($candidats as $candidat )
-                                            <tr>
-                                                <td>
-                                                    <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
-                                                </td>
-                                                <td><input type="number" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="0" class="form-control"  required>
-                                                    <input type="hidden" name="candidat_id[]" value="{{ $candidat->id }}">
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table> --}}
-                               
-                                {{--
-                                
-                                  @foreach ($candidats as $candidat )
-                                            <tr>
-                                                <td></td>
-                                            </tr>
-
-                                            <input type="hidden" name="candidat_id[]" value="{{ $candidat->id }}">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
-                                                    <input type="number" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="0" class="form-control"  required>
-                                                </div>
-                                            </div>
-                                            @endforeach<div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> Nombre de votes</label>
-                                        <input type="number" name="nbvote"  value="{{ old('nbvote') }}" class="form-control"  required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> Nombre de vote valide</label>
-                                        <input type="number" name="nbvv"  value="{{ old('nbvv') }}" class="form-control"  required>
-                                    </div>
-                                </div>  --}}
-                                
-                                   {{--   <div class="col-lg-6">
-                                        <label>Candidat</label>
-                                        <select class="form-control" name="candidat_id" required="">
-                                            @foreach ($candidats as $candidat)
-                                            <option {{old('candidat_id') == $candidat->id ? 'selected' : ''}}
-                                                value="{{$candidat->id}}">{{$candidat->nom}}</option>
-                                                @endforeach
-
-                                        </select>
-                                    </div>  
-
-                                </div>--}}
+                              
                                 <div>
                                     <input type="hidden" id="nb_electeur" name="nb_electeur">
 
@@ -267,62 +140,7 @@
 
 @section('script')
 <script>
-    $("#region_id").change(function () {
-    var region_id =  $("#region_id").children("option:selected").val();
-    $(".region").val(region_id);
-    $(".departement").val("");
-    $(".commune").val("");
-    $("#departement_id").empty();
-    $("#commune_id").empty();
-    $("#arrondissement_id").empty();
-    $("#centrevote_id").empty();
-    $("#lieuvote_id").empty();
-        var departement = "<option value=''>Veuillez selectionner</option>";
-        $.ajax({
-            type:'GET',
-            url:'/departement/by/region/'+region_id,
-        //   url:'http://vmi435145.contaboserver.net:9000/departement/by/region/'+region_id,
-          // url:'http://127.0.0.1/gestionmateriel/public/departement/by/region/'+region_id,
-          //    url:'http://127.0.0.1:8000/departement/by/region/'+region_id,
-            data:'_token = <?php echo csrf_token() ?>',
-            success:function(data) {
-
-                $.each(data,function(index,row){
-                    //alert(row.nomd);
-                    departement +="<option value="+row.id+">"+row.nom+"</option>";
-
-                });
-              
-                $("#departement_id").append(departement);
-            }
-        });
-    });
-   
-    $("#departement_id").change(function () {
-        var departement_id =  $("#departement_id").children("option:selected").val();
-        $(".departement").val(departement_id);
-        $(".commune").val("");
-        $("#commune_id").empty();
-        $("#arrondissement_id").empty();
-        $("#centrevote_id").empty();
-        $("#lieuvote_id").empty();
-            var arrondissement = "<option value=''>Veuillez selectionner</option>";
-            $.ajax({
-                type:'GET',
-                url:' /arrondissement/by/departement/'+departement_id,
-                data:'_token = <?php echo csrf_token() ?>',
-                success:function(data) {
-
-                    $.each(data,function(index,row){
-                        //alert(row.nomd);
-                        arrondissement +="<option value="+row.id+">"+row.nom+"</option>";
-
-                    });
-                    $("#arrondissement_id").empty();
-                    $("#arrondissement_id").append(arrondissement);
-                }
-            });
-        });
+  
     $("#arrondissement_id").change(function () {
         var arrondissement_id =  $("#arrondissement_id").children("option:selected").val();
         $(".commune").val("");
