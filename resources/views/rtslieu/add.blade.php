@@ -39,7 +39,7 @@
                                     </div>
                                 @endif
                                 <div class="row">
-                                  
+
                                     <div class="col-4">
                                         <div class="row">
                                             <div class="col-12">
@@ -47,39 +47,49 @@
                                                 <select class="form-control" id="region_id" name="region_id" required="">
                                                     <option value="">Selectionner</option>
                                                     @foreach ($regions as $region)
-                                                    <option value="{{$region->id}}">{{$region->nom}}</option>
+                                                    <option value="{{$region->id}}" {{ $region_id==$region->id ? 'selected' : '' }}>{{$region->nom}}</option>
                                                         @endforeach
-            
+
                                                 </select>
                                             </div>
                                             <div class="col-12">
                                                 <label>Département</label>
                                                 <select class="form-control" id="departement_id" name="departement_id" required>
-            
+                                                    @foreach ($departements as $departement)
+                                                    <option value="{{$departement->id}}" {{ $departement_id==$departement->id ? 'selected' : '' }}>{{$departement->nom}}</option>
+                                                        @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-12">
                                                 <label>Arrondissement</label>
                                                 <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
-            
+                                                    @foreach ($arrondissements as $arrondissement)
+                                                    <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
+                                                        @endforeach
                                                 </select>
                                             </div>
                                               <div class="col-12">
                                                 <label>Commune</label>
                                                 <select class="form-control" id="commune_id" name="commune_id" required>
-            
+                                                    @foreach ($communes as $commune)
+                                                    <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
+                                                        @endforeach
                                                 </select>
                                             </div>
                                                 <div class="col-12">
                                                     <label>centrevote</label>
                                                     <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
-                                                  
+                                                        @foreach ($centreVotes as $centreVote)
+                                                        <option value="{{$centreVote->id}}" {{ $centrevote_id==$centreVote->id ? 'selected' : '' }}>{{$centreVote->nom}}</option>
+                                                            @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-12">
                                                     <label>Lieu de Vote</label>
                                                     <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
-                                                    
+                                                        @foreach ($lieuVotes as $lieuVote)
+                                                        <option value="{{$lieuVote->id}}" {{ $lieuvote_id==$lieuVote->id ? 'selected' : '' }}>{{$lieuVote->nom}}</option>
+                                                            @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-12">
@@ -93,7 +103,7 @@
                                                         <label>Nuls </label>
                                                         <input type="number" name="bulnull" id="bulnull"  value="{{ old('bulnull') }}" class="form-control"  required>
                                                     </div>
-                                                </div>  
+                                                </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Hors Bureau </label>
@@ -108,7 +118,7 @@
                                                 </div>
 
                                         </div>
-                                        
+
                                     </div>
                                     <div class="col-8">
                                         <table class="table table-bordered table-responsive-md table-striped text-center">
@@ -139,32 +149,32 @@
                                             @foreach ($regions as $region)
                                             <option value="{{$region->id}}">{{$region->nom}}</option>
                                                 @endforeach
-    
+
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label>Département</label>
                                         <select class="form-control" id="departement_id" name="departement_id" required>
-    
+
                                         </select>
                                     </div>
-    
+
                                       <div class="col">
                                         <label>Commune</label>
                                         <select class="form-control" id="commune_id" name="commune_id" required>
-    
+
                                         </select>
                                     </div>
                                         <div class="col">
                                             <label>centrevote</label>
                                             <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
-                                          
+
                                             </select>
                                         </div>
                                         <div class="col">
                                             <label>Lieu de Vote</label>
                                             <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
-                                            
+
                                             </select>
                                         </div>
                                 </div>
@@ -207,9 +217,9 @@
                                             @endforeach
                                         </tbody>
                                     </table> --}}
-                               
+
                                 {{--
-                                
+
                                   @foreach ($candidats as $candidat )
                                             <tr>
                                                 <td></td>
@@ -234,7 +244,7 @@
                                         <input type="number" name="nbvv"  value="{{ old('nbvv') }}" class="form-control"  required>
                                     </div>
                                 </div>  --}}
-                                
+
                                    {{--   <div class="col-lg-6">
                                         <label>Candidat</label>
                                         <select class="form-control" name="candidat_id" required="">
@@ -244,7 +254,7 @@
                                                 @endforeach
 
                                         </select>
-                                    </div>  
+                                    </div>
 
                                 </div>--}}
                                 <div>
@@ -292,12 +302,12 @@
                     departement +="<option value="+row.id+">"+row.nom+"</option>";
 
                 });
-              
+
                 $("#departement_id").append(departement);
             }
         });
     });
-   
+
     $("#departement_id").change(function () {
         var departement_id =  $("#departement_id").children("option:selected").val();
         $(".departement").val(departement_id);
@@ -368,7 +378,7 @@
                             centrevote +="<option value="+row.id+">"+row.nom+"</option>";
 
                         });
-                      
+
                         $("#centrevote_id").append(centrevote);
                     }
                 });
@@ -389,7 +399,7 @@
                                 lieuvote +="<option value="+row.id+">"+row.nom+"</option>";
 
                             });
-                            
+
                             $("#lieuvote_id").append(lieuvote);
                         }
                     });
@@ -402,11 +412,11 @@
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
-                           
+
                             $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>") 
-                           $('#nb_electeur').val(data.nb)             
-            
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>")
+                           $('#nb_electeur').val(data.nb)
+
                         }
                     });
                 });

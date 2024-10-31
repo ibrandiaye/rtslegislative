@@ -38,27 +38,13 @@ public function  rtsByOneCandidat($id){
   ->sum('nbvote');
 
 }
-
 public function  nbVoixByDepartement($id){
-    return   DB::table('rtslieus')
+    return   DB::table('lieuvotes')
   ->where("departement_id",$id)
   ->sum('nbvote');
 
 }
 
-public function  nbBulletinNullByDepartement($candidat_id,$departement){
-    return   DB::table('rtslieus')
-  ->where([["departement_id",$departement],["candidat_id",$candidat_id]])
-  ->sum('bulnull');
-
-}
-
-public function  nbHsByDepartement($candidat_id,$departement){
-    return   DB::table('rtslieus')
-  ->where([["departement_id",$departement],["candidat_id",$candidat_id]])
-  ->sum('hs');
-
-}
 public function  rtsGroupByLieuvVoteByCandidat($id){
 
     return   DB::table('rtslieus')

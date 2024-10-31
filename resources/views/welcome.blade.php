@@ -57,7 +57,7 @@
                             @if(Auth::user()->role=='admin')
                             <li class="menu-title">
 
-                              {{--   <li>
+                             <li>
                                     <a href="{{ route('home') }}">
                                         <i class="mdi mdi-airplay"></i> NATIONAL
                                     </a>
@@ -77,7 +77,7 @@
                                         <li><a href="{{ route('rtstemoin.index') }}">Lister</a></li>
                                     </ul>
                                 </li>
-                                <li class="has_sub">
+                                 {{--   <li class="has_sub">
                                     <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Centre de vote </span></a>
                                     <ul class="list-unstyled">
                                         <li><a href="{{ route('rtscentre.create') }}"> Ajouter</a></li>
@@ -252,10 +252,14 @@
 
                             </li>
                             <li>
-                                <a href="{{ route('voir.par.departement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Par département </span></a>
+                                <a href="{{ route('voir.par.departement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat départemental </span></a>
 
                             </li>
-                           
+                            <li>
+                                <a href="{{ route('rts.national') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National</span></a>
+
+                            </li>
+
 
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Utilisateur </span></a>
@@ -301,7 +305,7 @@
                             </li>
 
                             </li>
-                           
+
                             @endif
                            @if (Auth::user()->role=='superviseur')
                            <li>
@@ -331,13 +335,13 @@
                              </li> --}}
                              <li>
                                  <a href="{{ route('chercher.bureau') }}" class="waves-effect"><i class="mdi mdi-loupe"></i><span>Chercher </span></a>
- 
+
                              </li>
 
                             <li> <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalform2{{Auth::user()->id}}">
                                 modifier Mot de passe
                             </button></li>
-                             
+
                              @endif
 
                         </ul>
@@ -419,7 +423,7 @@
                                         <form action="{{ route('user.password.update') }}" method="POST">
                                             @csrf
                                         <div class="modal-body">
-                                           
+
                                             <input type="hidden" name="id" value="{{Auth::user()->id}}">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -429,7 +433,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group no-margin">
@@ -437,7 +441,7 @@
                                                         <input type="password" name="password_confirmation" class="form-control" id="field-3" placeholder="Repetez Mot de passe">                                                        </div>
                                                 </div>
                                             </div>
-                                        </div>                                          
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Annuler</button>
                                             <button type="submint" class="btn btn-primary">Modifier mot de passe</button>
@@ -445,7 +449,7 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
 
 
                         </div><!-- container -->

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lieuvote extends Model
 {
     use HasFactory;
-    protected $fillable = ["nom","centrevote_id","nb","etat"] ;
+    protected $fillable = ["nom","centrevote_id","nb","etat",'votant','bulnull','hs'] ;
     public function centrevote(){
         return $this->belongsTo(Centrevote::class);
     }

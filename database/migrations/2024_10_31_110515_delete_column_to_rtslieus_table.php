@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('rtslieus', function (Blueprint $table) {
-            $table->integer("votant");
-            $table->integer("bulnull");
-            $table->integer("hs");
+            $table->dropColumn("votant");
+            $table->dropColumn("bulnull");
+            $table->dropColumn("hs");
         });
     }
 
@@ -28,9 +28,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('rtslieus', function (Blueprint $table) {
-            $table->dropColumn("votant");
-            $table->dropColumn("bulnull");
-            $table->dropColumn("hs");
+            $table->integer("votant");
+            $table->integer("bulnull");
+            $table->integer("hs");
         });
     }
 };

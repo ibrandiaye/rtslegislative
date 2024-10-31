@@ -70,23 +70,53 @@ protected $arrondissementRepository;
 
        if($user->role=="admin")
        {
+        $region_id              ="";
+        $departement_id         = "";
+        $arrondissement_id      = "";
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+
         $regions = $this->regionRepository->getRegionAsc();
-        return view('rtslieu.add',compact('candidats',
-    "regions"));
+        $departements = [];
+        $arrondissements =[];
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+        $regions =[];
+        $lieuVotes  = $this->lieuvoteRepository->getByCentre($centrevote_id);
+        return view('rtslieu.add',compact('candidats',"regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+    "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"));
+
        }
        else if($user->role=="prefet")
        {
+
+        $arrondissement_id      = "";
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
         $arrondissements = $this->arrondissementRepository->getByDepartement($user->departement_id);
-        return view('rtslieu.add',compact('candidats',
-    "arrondissements"));
+        return view('rtslieu.addprefet',compact('candidats',"arrondissements","arrondissement_id","commune_id","centrevote_id",
+        "lieuvote_id","communes","centreVotes","lieuVotes"));
        }
        else if($user->role=="sous_prefet")
        {
+
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
         $communes = $this->communeRepository->getByArrondissement($user->arrondissement_id);
-        return view('rtslieu.add',compact('candidats',
-    "communes"));
+        return view('rtslieu.add_sousprefet',compact('candidats',"communes","centrevote_id",
+        "lieuvote_id","centreVotes","lieuVotes"));
        }
-      
+
     }
 
     /**
@@ -121,13 +151,12 @@ protected $arrondissementRepository;
           $rtslieu->candidat_id = $candidats[$i];
           $rtslieu->nbvote =(int)$rts[$i];
           $rtslieu->lieuvote_id = $request["lieuvote_id"];
-          $rtslieu->votant = $request["votant"];
-          $rtslieu->bulnull = $request["bulnull"];
-          $rtslieu->hs = $request["hs"];
           $rtslieu->departement_id = $request["departement_id"];
           $rtslieu->save();
         }
-        $this->lieuvoteRepository->updateEtat($request["lieuvote_id"]);
+        $rtslieu->votant = $request["votant"];
+
+        $this->lieuvoteRepository->updateEtat($request["lieuvote_id"],$request["votant"], $request["bulnull"],$request["hs"]);
         if($centreVote->niveau==false){
           $rtsCentres = $this->rtsCentrevoteRepository->getByCentre($centreVote->id);
 
@@ -149,6 +178,51 @@ protected $arrondissementRepository;
             }
           }
         }
+        $user = Auth::user();
+        $candidats = $this->candidatRepository->getAll();
+        if($user->role=="admin")
+       {
+        $region_id              = $request["region_id"];
+        $departement_id         = $request["departement_id"];
+        $arrondissement_id      = $request["arrondissement_id"];
+        $commune_id             = $request["commune_id"];
+        $centrevote_id          = $request["centrevote_id"];
+        $lieuvote_id            = $request["lieuvote_id"];
+
+        $regions = $this->regionRepository->getRegionAsc();
+        $departements = $this->departementRepository->getByRegion($region_id);
+        $arrondissements = $this->arrondissementRepository->getByDepartement($departement_id);
+        $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+        $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+        $lieuVotes  = $this->lieuvoteRepository->getByCentre($centrevote_id);
+        return view('rtslieu.add',compact('candidats',"regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+    "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+       }
+       else if($user->role=="prefet")
+       {
+        $arrondissement_id      = $request["arrondissement_id"];
+        $commune_id             = $request["commune_id"];
+        $centrevote_id          = $request["centrevote_id"];
+        $lieuvote_id            = $request["lieuvote_id"];
+        $arrondissements = $this->arrondissementRepository->getByDepartement($user->departement_id);
+        $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+        $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+        $lieuVotes  = $this->lieuvoteRepository->getByCentre($centrevote_id);
+        return view('rtslieu.addprefet',compact('candidats',"arrondissements","arrondissement_id","commune_id","centrevote_id",
+        "lieuvote_id","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+       }
+       else if($user->role=="sous_prefet")
+       {
+        $commune_id             = $request["commune_id"];
+        $centrevote_id          = $request["centrevote_id"];
+        $lieuvote_id            = $request["lieuvote_id"];
+        $communes = $this->communeRepository->getByArrondissement($user->arrondissement_id);
+        $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+        $lieuVotes  = $this->lieuvoteRepository->getByCentre($centrevote_id);
+        return view('rtslieu.add_sousprefet',compact('candidats',"communes","centrevote_id",
+        "lieuvote_id","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+       }
+
 
 
       //  $rtslieus = $this->rtslieuRepository->store($request->all());
@@ -251,22 +325,22 @@ protected $arrondissementRepository;
     }
     public function rtsDepartement(Request $request)
     {
-      $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartement($request->departement_id);
-      //$departements= $this->departementRepository->getAll();
-      $departement = DB::table("departements")->where("id",$request->departement_id)->first();
-      $departement_id = $request->departement_id;
-      $region_id = $request->region_id;
-      $regions  = $this->regionRepository->getAll();
-      $departements = $this->departementRepository->getByRegion($request->region_id);
-      $candidat = DB::table("candidats")->first();
-      $votant  = $this->rtslieuRepository->nbVoixByDepartement($departement_id);
-      $bullnull  = $this->rtslieuRepository->nbBulletinNullByDepartement($candidat->id,$departement_id);
-      $hs  = $this->rtslieuRepository->nbHsByDepartement($candidat->id,$departement_id);
-      $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
-       // dd($rts,$departement);
-      return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
-    "bullnull","hs","votant","inscrit","departement"));
-     // dd($rts,$departement);
+        $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartement($request->departement_id);
+        //$departements= $this->departementRepository->getAll();
+        $departement = DB::table("departements")->where("id",$request->departement_id)->first();
+        $departement_id = $request->departement_id;
+        $region_id = $request->region_id;
+        $regions  = $this->regionRepository->getAll();
+        $departements = $this->departementRepository->getByRegion($request->region_id);
+        $candidat = DB::table("candidats")->first();
+        $votant  = $this->lieuvoteRepository->nbVotantByDepartement($departement_id);
+        $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
+        $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
+        $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
+        // dd($rts,$departement);
+        return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+        "bullnull","hs","votant","inscrit","departement"));
+        // dd($rts,$departement);
     }
 
     public function resultatParDepartement()
@@ -282,56 +356,67 @@ protected $arrondissementRepository;
         $hs = null;
         $candidat = null;
         $regions  = $this->regionRepository->getAll();
- return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
-    "bullnull","hs","votant","inscrit","departement"));
+        return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+            "bullnull","hs","votant","inscrit","departement"));
   }
 
   public function rtsByCandidat()
   {
-    $rts = $this->rtslieuRepository->rtsByCandidat();
-    $departements = $this->departementRepository->getAllOnLy();
-    $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
-    $siegesParCirconscription = array();
-    //recuperer les departement et les nombre de partement par deputé
-    foreach ($departements as $key => $value) {
-        $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
-    }
-   //dd($siegesParCirconscription);
-    $votant = 0;
-    $votesProportionnels = array();
-    foreach ($rts as $key => $rt) {
-       $votant = $votant + $rt->nb;
-       $votesProportionnels[$rt->coalition]  = intval($rt->nb);
-    }
-    //dd($votesProportionnels);
-    $quotiant = $votant/53;
-
-    $circonscriptions = array();
-
-    foreach ($departements as $key => $value) {
-        $resultat = array();
-        foreach ($rtsByDepartements as $key => $rtsByDepartement) {
-            if($value->nom == $rtsByDepartement->departement)
-            {
-                $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
-            }
-
+        $rts = $this->rtslieuRepository->rtsByCandidat();
+        $departements = $this->departementRepository->getAllOnLy();
+        $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
+        $siegesParCirconscription = array();
+        //recuperer les departement et les nombre de partement par deputé
+        foreach ($departements as $key => $value) {
+            $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
         }
-        $circonscriptions[$value->nom] = $resultat;
+    //dd($siegesParCirconscription);
+        $votantVal = 0;
+        $votesProportionnels = array();
+        foreach ($rts as $key => $rt) {
+        $votantVal = $votantVal + $rt->nb;
+        $votesProportionnels[$rt->coalition]  = intval($rt->nb);
+        }
+        //dd($votesProportionnels);
+        $quotiant = round( $votantVal/53,0);
+
+        $circonscriptions = array();
+
+        foreach ($departements as $key => $value) {
+            $resultat = array();
+            foreach ($rtsByDepartements as $key => $rtsByDepartement) {
+                if($value->nom == $rtsByDepartement->departement)
+                {
+                    $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
+                }
+
+            }
+            $circonscriptions[$value->nom] = $resultat;
+        }
+
+    //dd($circonscriptions);
+    // dd(round($quotiant,0));
+
+
+    $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+    $bulletinnull = $this->lieuvoteRepository->nbBulletinNull();
+    $hs = $this->lieuvoteRepository->nbHs();
+    $votant = $this->lieuvoteRepository->nbVotant();
+    $inscrit = $this->lieuvoteRepository->nbElecteurs();
+    //dd($bulletinnull);
+
+    // Calcul
+    $resultats = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+    //dd($rts);
+
+    foreach ($rts as $key => $rt) {
+        $resultats[$rt->coalition]["nb"] = $rt->nb;
+        $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
     }
-
-   //dd($circonscriptions);
-   // dd(round($quotiant,0));
+    //dd($resultats);
 
 
-$totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
-
-// Calcul
-$resultat = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
-dd($resultat);
-
-
-    return view("rtslieu.rtsnational",compact("rts"));
+    return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant"));
 
   }
 
@@ -339,7 +424,7 @@ dd($resultat);
   public function calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants) {
     $resultatSiegesMajoritaires = [];
     $siegesProportionnels = [];
-    $siegesProp = 60;  // Nombre de sièges pour la proportionnelle
+    $siegesProp = 53;  // Nombre de sièges pour la proportionnelle
 
     // Distribution des sièges majoritaires : tout au parti ayant la majorité des voix
     foreach ($circonscriptions as $circonscription => $resultats) {
@@ -353,6 +438,7 @@ dd($resultat);
 
     // Calcul du quotient électoral pour la répartition proportionnelle
     $quotientElectoral = $totalVotants / $siegesProp;
+   //dd($quotientElectoral);
 
     // Distribution des sièges proportionnels en fonction du quotient électoral
     foreach ($votesProportionnels as $parti => $votes) {

@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rtslieus', function (Blueprint $table) {
-            $table->integer("votant");
-            $table->integer("bulnull");
-            $table->integer("hs");
+        Schema::table('lieuvotes', function (Blueprint $table) {
+            $table->integer("votant")->default(0);
+            $table->integer("bulnull")->default(0);
+            $table->integer("hs")->default(0);
         });
     }
 
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('rtslieus', function (Blueprint $table) {
+        Schema::table('lieuvotes', function (Blueprint $table) {
             $table->dropColumn("votant");
             $table->dropColumn("bulnull");
             $table->dropColumn("hs");

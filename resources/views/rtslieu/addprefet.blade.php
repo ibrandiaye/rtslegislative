@@ -39,37 +39,42 @@
                                     </div>
                                 @endif
                                 <div class="row">
-                                  
+
                                     <div class="col-4">
                                         <div class="row">
                                            <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}">
-                                            <div class="col-12">
-                                                <label>Arrondissement</label>
-                                                <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
-                                                    <option value="">Selectionner</option>
-                                                    @foreach ($arrondissements as $arrondissement)
-                                                        <option value="{{$arrondissements->id}}">{{$arrondissements->nom}}</option>
+                                           <div class="col-12">
+                                            <label>Arrondissement</label>
+                                            <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
+                                                @foreach ($arrondissements as $arrondissement)
+                                                <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
                                                     @endforeach
+                                            </select>
+                                        </div>
+                                          <div class="col-12">
+                                            <label>Commune</label>
+                                            <select class="form-control" id="commune_id" name="commune_id" required>
+                                                @foreach ($communes as $commune)
+                                                <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                            <div class="col-12">
+                                                <label>centrevote</label>
+                                                <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
+                                                    @foreach ($centreVotes as $centreVote)
+                                                    <option value="{{$centreVote->id}}" {{ $centrevote_id==$centreVote->id ? 'selected' : '' }}>{{$centreVote->nom}}</option>
+                                                        @endforeach
                                                 </select>
                                             </div>
-                                              <div class="col-12">
-                                                <label>Commune</label>
-                                                <select class="form-control" id="commune_id" name="commune_id" required>
-            
+                                            <div class="col-12">
+                                                <label>Lieu de Vote</label>
+                                                <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
+                                                    @foreach ($lieuVotes as $lieuVote)
+                                                    <option value="{{$lieuVote->id}}" {{ $lieuvote_id==$lieuVote->id ? 'selected' : '' }}>{{$lieuVote->nom}}</option>
+                                                        @endforeach
                                                 </select>
                                             </div>
-                                                <div class="col-12">
-                                                    <label>centrevote</label>
-                                                    <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
-                                                  
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <label>Lieu de Vote</label>
-                                                    <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
-                                                    
-                                                    </select>
-                                                </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Votant </label>
@@ -81,7 +86,7 @@
                                                         <label>Nuls </label>
                                                         <input type="number" name="bulnull" id="bulnull"  value="{{ old('bulnull') }}" class="form-control"  required>
                                                     </div>
-                                                </div>  
+                                                </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Hors Bureau </label>
@@ -96,7 +101,7 @@
                                                 </div>
 
                                         </div>
-                                        
+
                                     </div>
                                     <div class="col-8">
                                         <table class="table table-bordered table-responsive-md table-striped text-center">
@@ -119,7 +124,7 @@
                                         </table>
                                     </div>
                                 </div>
-                              
+
                                 <div>
                                     <input type="hidden" id="nb_electeur" name="nb_electeur">
 
@@ -140,7 +145,7 @@
 
 @section('script')
 <script>
-  
+
     $("#arrondissement_id").change(function () {
         var arrondissement_id =  $("#arrondissement_id").children("option:selected").val();
         $(".commune").val("");
@@ -186,7 +191,7 @@
                             centrevote +="<option value="+row.id+">"+row.nom+"</option>";
 
                         });
-                      
+
                         $("#centrevote_id").append(centrevote);
                     }
                 });
@@ -207,7 +212,7 @@
                                 lieuvote +="<option value="+row.id+">"+row.nom+"</option>";
 
                             });
-                            
+
                             $("#lieuvote_id").append(lieuvote);
                         }
                     });
@@ -220,11 +225,11 @@
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
-                           
+
                             $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>") 
-                           $('#nb_electeur').val(data.nb)             
-            
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>")
+                           $('#nb_electeur').val(data.nb)
+
                         }
                     });
                 });

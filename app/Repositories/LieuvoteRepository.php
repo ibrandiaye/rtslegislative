@@ -59,8 +59,8 @@ public function getByLieuvoteTemoin($centre){
     ->orderBy("nom","asc")
     ->get();
 }
-public function updateEtat($id){
-    return DB::table("lieuvotes")->where("id",$id)->update(["etat"=>1]);
+public function updateEtat($id, $votant,$bulnull,$hs){
+    return DB::table("lieuvotes")->where("id",$id)->update(["etat"=>1,"votant"=>$votant,"bulnull"=>$bulnull,"hs"=>$hs]);
 }
 public function getAllOnly(){
     return DB::table("lieuvotes")->get();
@@ -199,6 +199,54 @@ public function nbElecteursByDepartement($departement){
 ->join("communes","centrevotes.commune_id","=","communes.id")
 ->where("communes.departement_id",$departement)
 ->sum('nb');
+
+}
+
+
+
+public function  nbBulletinNullByDepartement($departement){
+    return   DB::table('lieuvotes')
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+->join("communes","centrevotes.commune_id","=","communes.id")
+    ->where("communes.departement_id",$departement)
+  ->sum('bulnull');
+
+}
+
+public function  nbHsByDepartement($departement){
+    return   DB::table('lieuvotes')
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+->join("communes","centrevotes.commune_id","=","communes.id")
+  ->where("communes.departement_id",$departement)
+  ->sum('hs');
+
+}
+
+public function  nbVotantByDepartement($departement){
+    return   DB::table('lieuvotes')
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+->join("communes","centrevotes.commune_id","=","communes.id")
+  ->where("communes.departement_id",$departement)
+  ->sum('votant');
+
+}
+
+public function  nbBulletinNull(){
+    return   DB::table('lieuvotes')
+   ->sum('bulnull');;
+
+}
+
+public function  nbHs(){
+    return  DB::table('lieuvotes')
+
+  ->sum('hs');
+
+}
+public function  nbVotant(){
+    return  DB::table('lieuvotes')
+
+  ->sum('votant');
 
 }
 
