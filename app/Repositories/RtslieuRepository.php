@@ -91,8 +91,8 @@ public function  rtsGroupByDepartementandCandidat(){
   return   DB::table('rtslieus')
 ->join('departements','rtslieus.departement_id','=','departements.id')
 ->join('candidats','rtslieus.candidat_id','=','candidats.id')
-->select('departements.nom as departement',"candidats.nom as candidat"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
-->groupBy('departements.nom','candidats.nom')
+->select('departements.nom as departement',"candidats.coalition as coalition"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+->groupBy('departements.nom','candidats.coalition')
 ->orderBy("nb","desc")
 ->get();
 

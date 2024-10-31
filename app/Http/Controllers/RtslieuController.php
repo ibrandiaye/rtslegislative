@@ -260,24 +260,119 @@ protected $rtsCentrevoteRepository;
         $candidat = null;
         $regions  = $this->regionRepository->getAll();
  return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
-    "bullnull","hs","votant","inscrit","departement"));    
+    "bullnull","hs","votant","inscrit","departement"));
   }
 
   public function rtsByCandidat()
   {
     $rts = $this->rtslieuRepository->rtsByCandidat();
-    dd($rts);
+    $departements = $this->departementRepository->getAllOnLy();
+    $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
+    $siegesParCirconscription = array();
+    //recuperer les departement et les nombre de partement par deputé
+    foreach ($departements as $key => $value) {
+        $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
+    }
+   //dd($siegesParCirconscription);
     $votant = 0;
+    $votesProportionnels = array();
     foreach ($rts as $key => $rt) {
        $votant = $votant + $rt->nb;
+       $votesProportionnels[$rt->coalition]  = intval($rt->nb);
     }
-    dd($votant);
+    //dd($votesProportionnels);
     $quotiant = $votant/53;
-    foreach ($rts as $key => $value) {
-      
+
+    $circonscriptions = array();
+
+    foreach ($departements as $key => $value) {
+        $resultat = array();
+        foreach ($rtsByDepartements as $key => $rtsByDepartement) {
+            if($value->nom == $rtsByDepartement->departement)
+            {
+                $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
+            }
+
+        }
+        $circonscriptions[$value->nom] = $resultat;
     }
+
+   //dd($circonscriptions);
    // dd(round($quotiant,0));
-      // Exemples de données d'entrée
+
+
+$totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+
+// Calcul
+$resultat = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+dd($resultat);
+
+
+    return view("rtslieu.rtsnational",compact("rts"));
+
+  }
+
+
+  public function calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants) {
+    $resultatSiegesMajoritaires = [];
+    $siegesProportionnels = [];
+    $siegesProp = 60;  // Nombre de sièges pour la proportionnelle
+
+    // Distribution des sièges majoritaires : tout au parti ayant la majorité des voix
+    foreach ($circonscriptions as $circonscription => $resultats) {
+        arsort($resultats);  // Trier les votes par ordre décroissant pour la circonscription
+        $partiGagnant = key($resultats);  // Parti ayant obtenu le plus de votes
+        $nombreSieges = $siegesParCirconscription[$circonscription] ?? 0;
+
+        // Attribuer tous les sièges de la circonscription au parti gagnant
+        $resultatSiegesMajoritaires[$partiGagnant] = ($resultatSiegesMajoritaires[$partiGagnant] ?? 0) + $nombreSieges;
+    }
+
+    // Calcul du quotient électoral pour la répartition proportionnelle
+    $quotientElectoral = $totalVotants / $siegesProp;
+
+    // Distribution des sièges proportionnels en fonction du quotient électoral
+    foreach ($votesProportionnels as $parti => $votes) {
+        $siegesProportionnels[$parti] = intdiv($votes, $quotientElectoral);
+    }
+
+    // Attribution des sièges restants par la méthode des plus forts restes
+    $siegesAttribues = array_sum($siegesProportionnels);
+    $siegesRestants = $siegesProp - $siegesAttribues;
+
+    if ($siegesRestants > 0) {
+        // Calculer les restes pour chaque parti
+        $restes = [];
+        foreach ($votesProportionnels as $parti => $votes) {
+            $reste = $votes % $quotientElectoral;
+            $restes[$parti] = $reste;
+        }
+
+        // Trier les partis par ordre décroissant des restes
+        arsort($restes);
+
+        // Distribuer les sièges restants aux partis avec les plus grands restes
+        foreach (array_keys($restes) as $parti) {
+            if ($siegesRestants <= 0) break;
+            $siegesProportionnels[$parti]++;
+            $siegesRestants--;
+        }
+    }
+
+    // Combinaison des résultats
+    $siegesTotal = array();
+      foreach (array_merge(array_keys($resultatSiegesMajoritaires), array_keys($siegesProportionnels)) as $parti) {
+            $siege = array();
+            $siege['proportionnel'] =  $siegesProportionnels[$parti] ?? 0;
+            $siege['majoritaire']   = $resultatSiegesMajoritaires[$parti] ?? 0;
+            $siege['total']         = ($resultatSiegesMajoritaires[$parti] ?? 0) + ($siegesProportionnels[$parti] ?? 0);
+          $siegesTotal[$parti] = $siege;
+      }
+
+      return $siegesTotal;
+  }
+/*
+    // Exemples de données d'entrée
   $circonscriptions = [
     'Dakar' => ['Parti A' => 50000, 'Parti B' => 30000, 'Parti C' => 20000],
     'Thies' => ['Parti A' => 20000, 'Parti B' => 25000, 'Parti C' => 15000],
@@ -295,81 +390,7 @@ $votesProportionnels = [
     'Parti B' => 100000,
     'Parti C' => 50000,
     // Votes des partis pour le scrutin proportionnel
-];
-
-$totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
-
-// Calcul
-$resultat = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
-dd($resultat);
+];*/
 
 
-    return view("rtslieu.rtsnational",compact("rts"));
-  
-  }
-  
-
-  public function calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants) {
-      $resultatSiegesMajoritaires = [];
-      $siegesProportionnels = [];
-      $siegesProp = 60;  // Nombre de sièges pour la proportionnelle
-  
-      // Distribution des sièges majoritaires par circonscription
-      foreach ($circonscriptions as $circonscription => $resultats) {
-          arsort($resultats);  // Trier les votes par ordre décroissant pour la circonscription
-          $nombreSieges = $siegesParCirconscription[$circonscription] ?? 0;
-  
-          $index = 0;
-          foreach ($resultats as $parti => $votes) {
-              if ($index < $nombreSieges) {
-                  $resultatSiegesMajoritaires[$parti] = ($resultatSiegesMajoritaires[$parti] ?? 0) + 1;
-                  $index++;
-              } else {
-                  break;
-              }
-          }
-      }
-  
-      // Calcul du quotient électoral pour la répartition proportionnelle
-      $quotientElectoral = $totalVotants / $siegesProp;
-  
-      // Distribution des sièges proportionnels en fonction du quotient électoral
-      foreach ($votesProportionnels as $parti => $votes) {
-          $siegesProportionnels[$parti] = intdiv($votes, $quotientElectoral);
-      }
-  
-      // Attribution des sièges restants par la méthode des plus forts restes
-      $siegesAttribues = array_sum($siegesProportionnels);
-      $siegesRestants = $siegesProp - $siegesAttribues;
-      
-      if ($siegesRestants > 0) {
-          // Calculer les restes pour chaque parti
-          $restes = [];
-          foreach ($votesProportionnels as $parti => $votes) {
-              $reste = $votes % $quotientElectoral;
-              $restes[$parti] = $reste;
-          }
-  
-          // Trier les partis par ordre décroissant des restes
-          arsort($restes);
-  
-          // Distribuer les sièges restants aux partis avec les plus grands restes
-          foreach (array_keys($restes) as $parti) {
-              if ($siegesRestants <= 0) break;
-              $siegesProportionnels[$parti]++;
-              $siegesRestants--;
-          }
-      }
-  
-      // Combinaison des résultats
-      $siegesTotal = [];
-      foreach (array_merge(array_keys($resultatSiegesMajoritaires), array_keys($siegesProportionnels)) as $parti) {
-          $siegesTotal[$parti] = ($resultatSiegesMajoritaires[$parti] ?? 0) + ($siegesProportionnels[$parti] ?? 0);
-      }
-  
-      return $siegesTotal;
-  }
-  
-
-  
 }
