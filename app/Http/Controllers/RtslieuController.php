@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rtscentre;
 use App\Models\Rtslieu;
+use App\Repositories\ArrondissementRepository;
 use App\Repositories\CandidatRepository;
 use App\Repositories\CentrevoteRepository;
 use App\Repositories\CommuneRepository;
@@ -13,6 +14,7 @@ use App\Repositories\RegionRepository;
 use App\Repositories\RtscentreRepository;
 use App\Repositories\RtslieuRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RtslieuController extends Controller
@@ -25,10 +27,12 @@ class RtslieuController extends Controller
 protected $departementRepository;
 protected $communeRepository;
 protected $rtsCentrevoteRepository;
+protected $arrondissementRepository;
 
     public function __construct(RtslieuRepository $rtslieuRepository, LieuvoteRepository $lieuvoteRepository,
     CentrevoteRepository $centrevoteRepository,CandidatRepository $candidatRepository,RegionRepository $regionRepository,
-    DepartementRepository $departementRepository,CommuneRepository $communeRepository,RtscentreRepository $rtsCentrevoteRepository){
+    DepartementRepository $departementRepository,CommuneRepository $communeRepository,RtscentreRepository $rtsCentrevoteRepository,
+    ArrondissementRepository $arrondissementRepository){
         $this->rtslieuRepository =$rtslieuRepository;
         $this->lieuvoteRepository = $lieuvoteRepository;
         $this->centrevoteRepository = $centrevoteRepository;
@@ -38,6 +42,7 @@ protected $rtsCentrevoteRepository;
         $this->communeRepository=$communeRepository;
         $this->centrevoteRepository =$centrevoteRepository;
         $this->rtsCentrevoteRepository =$rtsCentrevoteRepository;
+        $this->arrondissementRepository = $arrondissementRepository;
     }
 
     /**
@@ -60,10 +65,28 @@ protected $rtsCentrevoteRepository;
     {
        // $lieuvotes = $this->lieuvoteRepository->getAll();
        // $centrevotes = $this->centrevoteRepository->getAll();
-        $candidats = $this->candidatRepository->getAll();
+       $candidats = $this->candidatRepository->getAll();
+       $user = Auth::user();
+
+       if($user->role=="admin")
+       {
         $regions = $this->regionRepository->getRegionAsc();
         return view('rtslieu.add',compact('candidats',
     "regions"));
+       }
+       else if($user->role=="prefet")
+       {
+        $arrondissements = $this->arrondissementRepository->getByDepartement($user->departement_id);
+        return view('rtslieu.add',compact('candidats',
+    "arrondissements"));
+       }
+       else if($user->role=="sous_prefet")
+       {
+        $communes = $this->communeRepository->getByArrondissement($user->arrondissement_id);
+        return view('rtslieu.add',compact('candidats',
+    "communes"));
+       }
+      
     }
 
     /**
