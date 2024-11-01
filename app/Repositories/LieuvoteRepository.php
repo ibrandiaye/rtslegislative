@@ -83,6 +83,14 @@ public function sumByDepartements($departements){
     ->sum("lieuvotes.nb");;
 }
 
+public function sumByDepartementsTemoin($departements){
+    return DB::table("lieuvotes")
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->where([["communes.departement_id",$departements],["temoin",1]])
+    ->sum("lieuvotes.nb");;
+}
+
 public function sumByCommune($communes){
     return DB::table("lieuvotes")
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
@@ -222,11 +230,38 @@ public function  nbHsByDepartement($departement){
 
 }
 
+public function  nbBulletinNullByDepartementTemoin($departement){
+    return   DB::table('lieuvotes')
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+->join("communes","centrevotes.commune_id","=","communes.id")
+    ->where([["communes.departement_id",$departement],["temoin",1]])
+  ->sum('bulnull');
+
+}
+
+public function  nbHsByDepartementTemoin($departement){
+    return   DB::table('lieuvotes')
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->where([["communes.departement_id",$departement],["temoin",1]])
+  ->sum('hs');
+
+}
+
+
 public function  nbVotantByDepartement($departement){
     return   DB::table('lieuvotes')
     ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
 ->join("communes","centrevotes.commune_id","=","communes.id")
   ->where("communes.departement_id",$departement)
+  ->sum('votant');
+
+}
+public function  nbVotantByDepartementTemoin($departement){
+    return   DB::table('lieuvotes')
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+->join("communes","centrevotes.commune_id","=","communes.id")
+  ->where([["communes.departement_id",$departement],["temoin",1]])
   ->sum('votant');
 
 }
@@ -246,6 +281,26 @@ public function  nbHs(){
 public function  nbVotant(){
     return  DB::table('lieuvotes')
 
+  ->sum('votant');
+
+}
+
+public function  nbBulletinNullTemoin(){
+    return   DB::table('lieuvotes')
+    ->where("temoin",1)
+   ->sum('bulnull');;
+
+}
+
+public function  nbHsTemoin(){
+    return  DB::table('lieuvotes')
+    ->where("temoin",1)
+  ->sum('hs');
+
+}
+public function  nbVotantTemoin(){
+    return  DB::table('lieuvotes')
+    ->where("temoin",1)
   ->sum('votant');
 
 }

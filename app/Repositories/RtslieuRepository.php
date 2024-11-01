@@ -32,6 +32,19 @@ class RtslieuRepository extends RessourceRepository{
   ->get();
 
 }
+
+public function  rtsByCandidatTemoin(){
+
+    return   DB::table('rtslieus')
+  ->join('candidats','rtslieus.candidat_id','=','candidats.id')
+  ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+  ->select('candidats.id','candidats.nom','candidats.photo','candidats.coalition' ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->where("lieuvotes.temoin",1)
+  ->groupBy('candidats.id','candidats.nom','candidats.photo','candidats.coalition')
+  ->orderBy("nb","desc")
+->get();
+
+}
 public function  rtsByOneCandidat($id){
     return   DB::table('rtslieus')
   ->where("rtslieus.candidat_id",$id)
@@ -84,6 +97,21 @@ public function  rtsGroupByDepartementandCandidat(){
 
 }
 
+public function  rtsGroupByDepartementandCandidatByTemoin(){
+
+    return   DB::table('rtslieus')
+  ->join('departements','rtslieus.departement_id','=','departements.id')
+  ->join('candidats','rtslieus.candidat_id','=','candidats.id')
+  ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+
+  ->select('departements.nom as departement',"candidats.coalition as coalition"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->where("lieuvotes.temoin",1)
+  ->groupBy('departements.nom','candidats.coalition')
+  ->orderBy("nb","desc")
+  ->get();
+
+  }
+
 public function  rtsGroupByCandidatByDepartement($departement){
 
     return   DB::table('rtslieus')
@@ -92,6 +120,20 @@ public function  rtsGroupByCandidatByDepartement($departement){
   ->groupBy('candidats.nom')
   ->orderBy("nb","desc")
   ->where("rtslieus.departement_id",$departement)
+  ->get();
+
+  }
+
+  public function  rtsGroupByCandidatByDepartementTemoin($departement){
+
+    return   DB::table('rtslieus')
+  ->join('candidats','rtslieus.candidat_id','=','candidats.id')
+  ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+
+  ->select("candidats.nom as candidat"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->where([["lieuvotes.temoin",1],["rtslieus.departement_id",$departement]])
+  ->groupBy('candidats.nom')
+  ->orderBy("nb", "desc")
   ->get();
 
   }

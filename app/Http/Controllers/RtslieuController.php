@@ -358,6 +358,48 @@ protected $arrondissementRepository;
             "bullnull","hs","votant","inscrit","departement"));
   }
 
+
+    //temoin
+
+    public function rtsDepartementTemoin(Request $request)
+    {
+        $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartementTemoin($request->departement_id);
+     //   dd($rts);
+        //$departements= $this->departementRepository->getAll();
+        $departement = DB::table("departements")->where("id",$request->departement_id)->first();
+        $departement_id = $request->departement_id;
+        $region_id = $request->region_id;
+        $regions  = $this->regionRepository->getAll();
+        $departements = $this->departementRepository->getByRegion($request->region_id);
+        $candidat = DB::table("candidats")->first();
+        $votant  = $this->lieuvoteRepository->nbVotantByDepartementTemoin($departement_id);
+       // dd($votant);
+        $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartementTemoin($departement_id);
+        $hs  = $this->lieuvoteRepository->nbHsByDepartementTemoin($departement_id);
+        $inscrit = $this->lieuvoteRepository->sumByDepartementsTemoin($departement_id);
+        // dd($rts,$departement);
+        return view("rtslieu.rtsdepartementtemoin",compact("region_id","departement_id","departements","regions","rts",
+        "bullnull","hs","votant","inscrit","departement"));
+        // dd($rts,$departement);
+    }
+
+    public function resultatParDepartementTemoin()
+    {
+        $region_id = "";
+        $departement_id = "";
+        $departements = [];
+        $departement = null;
+        $rts = [];
+        $inscrit = null;
+        $votant = null;
+        $bullnull = null;
+        $hs = null;
+        $candidat = null;
+        $regions  = $this->regionRepository->getAll();
+        return view("rtslieu.rtsdepartementtemoin",compact("region_id","departement_id","departements","regions","rts",
+            "bullnull","hs","votant","inscrit","departement"));
+  }
+
   public function rtsByCandidat()
   {
         $rts = $this->rtslieuRepository->rtsByCandidat();
@@ -498,6 +540,68 @@ $votesProportionnels = [
     'Parti C' => 50000,
     // Votes des partis pour le scrutin proportionnel
 ];*/
+
+
+
+public function rtsByBureatTemoin()
+  {
+        $rts = $this->rtslieuRepository->rtsByCandidatTemoin();
+        $departements = $this->departementRepository->getAllOnLy();
+        $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidatByTemoin();
+        $siegesParCirconscription = array();
+        //recuperer les departement et les nombre de partement par deputé
+        foreach ($departements as $key => $value) {
+            $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
+        }
+    //dd($siegesParCirconscription);
+        $votantVal = 0;
+        $votesProportionnels = array();
+        foreach ($rts as $key => $rt) {
+        $votantVal = $votantVal + $rt->nb;
+        $votesProportionnels[$rt->coalition]  = intval($rt->nb);
+        }
+        //dd($votesProportionnels);
+        $quotiant = round( $votantVal/53,0);
+
+        $circonscriptions = array();
+
+        foreach ($departements as $key => $value) {
+            $resultat = array();
+            foreach ($rtsByDepartements as $key => $rtsByDepartement) {
+                if($value->nom == $rtsByDepartement->departement)
+                {
+                    $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
+                }
+
+            }
+            $circonscriptions[$value->nom] = $resultat;
+        }
+
+    //dd($circonscriptions);
+    // dd(round($quotiant,0));
+
+
+    $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+    $bulletinnull = $this->lieuvoteRepository->nbBulletinNullTemoin();
+    $hs = $this->lieuvoteRepository->nbHsTemoin();
+    $votant = $this->lieuvoteRepository->nbVotantTemoin();
+    $inscrit = $this->lieuvoteRepository->nbElecteursTemoin();
+    //dd($bulletinnull);
+
+    // Calcul
+    $resultats = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+    //dd($rts);
+
+    foreach ($rts as $key => $rt) {
+        $resultats[$rt->coalition]["nb"] = $rt->nb;
+        $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
+    }
+    //dd(10%14);
+
+
+    return view("rtslieu.rtsnationaltemoin",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant"));
+
+  }
 
 
 }

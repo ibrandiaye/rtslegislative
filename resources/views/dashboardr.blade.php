@@ -17,10 +17,10 @@
     <div class="clearfix"></div>
 </div>
 @if (Auth::user()->role=="admin")
-<h4>Diaspora : {{ $electeursDiaspora }} inscrits</h4> 
+{{-- <h4>Diaspora : {{ $electeursDiaspora }} inscrits</h4>
 <div class="row">
-    
-   
+
+
     <div class="col">
         <div class="card">
             <div class="card-body">
@@ -43,7 +43,7 @@
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
-    
+
 
      <div class="col">
         <div class="card">
@@ -67,7 +67,7 @@
                 </div>
             </div><!--end card-body-->
         </div><!--end card-->
-    </div><!--end col--> 
+    </div><!--end col-->
     <div class="col">
         <div class="card">
             <div class="card-body">
@@ -115,10 +115,10 @@
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
-    </div> 
-    <h4>National : {{ $electeurs }} inscrits</h4> 
+    </div>  --}}
+    <h4>National : {{ $electeurs }} inscrits</h4>
 <div class="row">
-   
+
     <div class="col">
         <div class="card">
             <div class="card-body">
@@ -142,7 +142,7 @@
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
-   
+
      <div class="col">
         <div class="card">
             <div class="card-body">
@@ -166,7 +166,7 @@
                 </div>
             </div><!--end card-body-->
         </div><!--end card-->
-    </div><!--end col--> 
+    </div><!--end col-->
     <div class="col">
         <div class="card">
             <div class="card-body">
@@ -202,7 +202,7 @@
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10 ">
                             <h5 class="mt-0">@if($votants >0)
-                                {{ round( ($votants/$electeurs)*100,2) }}% @else 0% 
+                                {{ round( ($votants/$electeurs)*100,2) }}% @else 0%
                                 @endif
                             </h5>
                             <p class="mb-0 text-muted">Taux de Participation</p>
@@ -238,8 +238,8 @@
         </div><!--end card-->
     </div><!--end col-->
 
-   
-   
+
+
 
     <div class="col-lg-4">
         <div class="card">
@@ -288,9 +288,9 @@
     </div><!--end col-->
     --}}
 </div>
-<h4>Général : {{ $electeurs + $electeursDiaspora}} inscrits</h4> 
+{{-- <h4>Général : {{ $electeurs + $electeursDiaspora}} inscrits</h4>
 <div class="row">
-   
+
     <div class="col">
         <div class="card">
             <div class="card-body">
@@ -314,7 +314,7 @@
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
-   
+
      <div class="col">
         <div class="card">
             <div class="card-body">
@@ -338,7 +338,7 @@
                 </div>
             </div><!--end card-body-->
         </div><!--end card-->
-    </div><!--end col--> 
+    </div><!--end col-->
     <div class="col">
         <div class="card">
             <div class="card-body">
@@ -374,7 +374,7 @@
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10 ">
                             <h5 class="mt-0">@if($votants >0)
-                                {{round ( (($votants+$nbVotantDiaspora)/($electeurs+$electeursDiaspora))*100,2) }}% @else 0% 
+                                {{round ( (($votants+$nbVotantDiaspora)/($electeurs+$electeursDiaspora))*100,2) }}% @else 0%
                                 @endif
                             </h5>
                             <p class="mb-0 text-muted">Taux de Participation</p>
@@ -387,8 +387,8 @@
             </div><!--end card-body-->
         </div><!--end card-->
     </div><!--end col-->
-</div>
-<h4>Taux de Participation</h4> 
+</div> --}}
+<h4>Taux de Participation</h4>
 <div class="row">
     @foreach($tauxDeParticipations as $tauxDeParticipation)
     <div class="col-lg-3">
@@ -414,14 +414,14 @@
         </div><!--end card-->
     </div><!--end col-->
     @endforeach
-   
+
 </div>
-{{-- <h4>Resultat Bureau Temoin</h4> 
+ <h4>Resultat Bureau Temoin</h4>
 
 <div class="row">
     @foreach ($rtsTemoins as $rtsTemoin)
     <div class="col-md-3" >
-                
+
 
         <div class="card" >
             <div class="row">
@@ -440,11 +440,11 @@
         &nbsp;&nbsp;
     </div>
  @endforeach
-</div> --}}
-<h4>Resultat Bureau National</h4> 
+</div>
+<h4>Resultat Bureau National</h4>
 
 <div class="row">
-    
+
     @foreach ($rtsParCandidats  as $k =>  $rtsParCandidat)
     @if($k==0)
     <div class="col-md-6 col-lg-4">
@@ -456,7 +456,7 @@
              <a href="{{ route('candidat.show', ['candidat'=>$rtsParCandidat->id]) }}"> <h4 class="card-title font-20 mt-0">{{ $rtsParCandidat->nom }}</h4></a>
 
             </div>
-           
+
             <img class="rounded-circle" src="{{ asset('photo/'.$rtsParCandidat->photo) }}" alt="Card image cap" style="height: 250px;">
             <div class="card-body">
                <h4> <p class="card-text text-center">{{round(((int)$rtsParCandidat->nb/($votants + $nbVotantDiaspora))*100,2) }}%</p>
@@ -470,7 +470,7 @@
     </div>
     @else
         <div class="col-md-3" >
-                    
+
 
             <div class="card" >
                 <div class="row">
@@ -486,7 +486,7 @@
                             <br>{{$rtsParCandidat->nb}} voix</p>
 
                             @endif
-                                
+
                         </h4>
                     </div>
                 </div>
@@ -496,7 +496,7 @@
         </div>
         @endif
      @endforeach
- 
+
    {{--
         <div class="col-md-6 col-lg-6 col-xl-3">
 
@@ -505,7 +505,7 @@
                  <a href="{{ route('candidat.show', ['candidat'=>$rtsParCandidat->id]) }}"> <h4 class="card-title font-20 mt-0">{{ $rtsParCandidat->nom }}</h4></a>
 
                 </div>
-               
+
                 <img class="rounded-circle" src="{{ asset('photo/'.$rtsParCandidat->photo) }}" alt="Card image cap" style="height: 250px;">
                 <div class="card-body">
                    <h4> <p class="card-text text-center">{{round(((int)$rtsParCandidat->nb/$votants)*100,2) }}%</p></h4>
@@ -513,10 +513,10 @@
                 </div>
             </div>
 
-        </div> end col 
+        </div> end col
       --> --}}
 
-</div>  
+</div>
   {{--  <div class="row">
     <div class="col-12">
         <div class="card">
@@ -561,9 +561,9 @@
 </div>
 
 
-    
+
 @else
-    
+
     <div class="row">
         <div class="col-4">
             <div class="card">
@@ -588,7 +588,7 @@
                 </div><!--end card-body-->
             </div><!--end card-->
         </div>
-       
+
         <div class="col-4">
             <div class="card">
                 <div class="card-body">
@@ -639,7 +639,7 @@
                 </div><!--end card-body-->
             </div><!--end card-->
         </div>
-       
+
         <div class="col-4">
             <div class="card">
                 <div class="card-body">
@@ -688,9 +688,9 @@
             </div><!--end card-->
         </div>
     </div>
-        
+
 @endif
- 
+
 
 @endsection
 

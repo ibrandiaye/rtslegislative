@@ -9,7 +9,7 @@ class Participation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'resultat','heure_id','departement_id',"etat","region_id"
+        'resultat','heure_id','departement_id',"etat","region_id","lieuvote_id"
     ];
 
     public function departement(){

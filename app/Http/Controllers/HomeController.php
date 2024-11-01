@@ -41,12 +41,12 @@ class HomeController extends Controller
     private $rtsPayrrepository;
     private $paysRepository;
     private $communeRepository;
-  
+
 
     public function __construct(CentrevoteRepository $centrevoteRepository,
     RtscentreRepository $rtscentreRepository, RtslieuRepository $rtslieuRepository,
     LieuvoteRepository $lieuvoteRepository,CandidatRepository $candidatRepository,
-    CentrevoteeRepository $centrevoteeRepository,RtscentreeRepository $rtscentreeRepository, 
+    CentrevoteeRepository $centrevoteeRepository,RtscentreeRepository $rtscentreeRepository,
 RtslieueRepository $rtslieueRepository,LieuvoteeRepository $lieuvoteeRepository,ParticipationRepository $participationRepository,
 RtstemoinRepository $rtstemoinRepository,RtsdepartementRepository $rtsdepartementRepository,
 DepartementRepository $departementRepository,RtspaysRepository $rtspaysRepository,PaysRepository $paysRepository,
@@ -81,41 +81,46 @@ CommuneRepository $communeRepository){
            $tauxDepouillement = round(($nbRtsCentre/$nbCentrevotes)*100,2);
            $electeurs = $this->lieuvoteRepository->nbElecteurs();
            $votants = $this->rtsDepartementRepository->nbVotants();
-           $votantDiaspores = $this->rtsPayrrepository->nbVotants();
-          // dd($votantDiaspores);    
+         //  $votantDiaspores = $this->rtsPayrrepository->nbVotants();
+          // dd($votantDiaspores);
            $tauxDepouillementElecteurs = round(($votants/$electeurs)*100,2);
-    
+
            $rtsParCandidats = $this->rtsDepartementRepository->rtsByCandidat();
-           $rtsParCandidatDiasporas = $this->rtsPayrrepository->rtsByCandidat();
-         
+         //  $rtsParCandidatDiasporas = $this->rtsPayrrepository->rtsByCandidat();
+
           $candidats = $this->candidatRepository->getAll();
-    
-          $electeursDiaspora = $this->lieuvoteeRepository->nbElecteurs();
-          $nbureauDiaspora = $this->lieuvoteeRepository->nbLieuVotee();
+
+        //  $electeursDiaspora = $this->lieuvoteeRepository->nbElecteurs();
+        //  $nbureauDiaspora = $this->lieuvoteeRepository->nbLieuVotee();
           $nCentreVote = $this->centrevoteeRepository->nbCentrevotee();
-    
+
           //Taux de particippation
-    
+
           $tauxDeParticipations = $this->participationRepository->getParticipationGroupByHeure();
           $nbElecteursTemoin = $this->lieuvoteRepository->nbElecteursTemoin();
           $rtsTemoins = $this->rtsTemoinRepository->rtsByCandidat();
           $nbVotantTemoin = $this->rtsTemoinRepository->nbVotants();
           //dd($rtsTemoins);
-          $nbVotantDiaspora = $this->rtsPayrrepository->nbVotants();
+        //  $nbVotantDiaspora = $this->rtsPayrrepository->nbVotants();
           $nullNational = $this->departementRepository->nbNull();
-          $nullEtrangers = $this->paysRepository->nbNull();
-           foreach ($rtsParCandidats as $key => $value) {
+        //  $nullEtrangers = $this->paysRepository->nbNull();
+         /*  foreach ($rtsParCandidats as $key => $value) {
                 foreach ($rtsParCandidatDiasporas as $k => $val) {
                     if($value->id ==$val->id){
                         $rtsParCandidats[$key]->nb = $rtsParCandidats[$key]->nb + $val->nb;
                     }
                 }
-           }
-           return view("dashboardr",compact("nbCentrevotes","nbRtsCentre","electeurs",
+           }*/
+          /* return view("dashboardr",compact("nbCentrevotes","nbRtsCentre","electeurs",
             "tauxDepouillement","votants","tauxDepouillementElecteurs","rtsParCandidats","nbVotantDiaspora",
             "nbureauDiaspora","electeursDiaspora","nCentreVote","tauxDeParticipations",
             "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","nullEtrangers"));
+            */
            // return redirect()->route("centre.by.arrondissement");
+           return view("dashboardr",compact("nbCentrevotes","nbRtsCentre","electeurs",
+           "tauxDepouillement","votants","tauxDepouillementElecteurs","rtsParCandidats",
+           "nCentreVote","tauxDeParticipations",
+           "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational"));
         }
         else
         {
@@ -134,7 +139,7 @@ CommuneRepository $communeRepository){
         return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
         "bullnull","hs","votant","inscrit","departement"));
         }
-       
+
     }
     public function carteByDepartement($id,$nom){
 
@@ -151,7 +156,7 @@ CommuneRepository $communeRepository){
     public function nbVoteStat(){
         $nbElecteursParRegion = $this->lieuvoteRepository->sommeGroupByRegion();
         $nbVotesParRegion = $this->rtsDepartementRepository->rtsStatGroupByRegion();
-       
+
         foreach ($nbVotesParRegion as $key => $value) {
             foreach ($nbElecteursParRegion as $key1 => $value1) {
                  if($value->region == $value1->region){

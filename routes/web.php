@@ -173,3 +173,10 @@ Route::post('/rts/departement',[RtslieuController::class,'rtsDepartement'])->nam
 Route::get('/resultat/par/departement',[RtslieuController::class,'resultatParDepartement'])->name('voir.par.departement')->middleware("auth");
 
 Route::get('/resultat/national',[RtslieuController::class,'rtsByCandidat'])->name('rts.national')->middleware("auth");
+
+Route::get('/resultat/national/temoin',[RtslieuController::class,'rtsByBureatTemoin'])->name('rts.national.temoin')->middleware("auth");
+
+
+Route::post('/rts/departement/temoin',[RtslieuController::class,'rtsDepartementTemoin'])->name('rts.by.departement.temoin')->middleware("auth");
+
+Route::get('/resultat/par/departement/temoin',[RtslieuController::class,'resultatParDepartementTemoin'])->name('voir.par.departement.temoin')->middleware("auth");

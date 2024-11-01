@@ -98,6 +98,7 @@ protected $arrondissementRepository;
      */
     public function store(Request $request)
     {
+      //  dd("fsdf");
 
       $rts = $request["nbvote"];
       $candidats = $request["candidat_id"];
@@ -116,7 +117,7 @@ protected $arrondissementRepository;
       {
 
         $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
-       
+
         for ($i= 0; $i < count($rts); $i++) {
           $rtstemoin = new Rtstemoin();
           $rtstemoin->candidat_id = $candidats[$i];
@@ -127,12 +128,13 @@ protected $arrondissementRepository;
           $rtslieu->candidat_id = $candidats[$i];
           $rtslieu->nbvote =(int)$rts[$i];
           $rtslieu->lieuvote_id = $request["lieuvote_id"];
+          $rtslieu->lieuvote_id = $request["departement_id"];
           $rtslieu->save();
         }
         $this->lieuvoteRepository->updateEtat($request["lieuvote_id"],$request["votant"], $request["bulnull"],$request["hs"]);
         if($centreVote->niveau==false){
           $rtsCentres = $this->rtsCentrevoteRepository->getByCentre($centreVote->id);
-         
+
           if(count($rtsCentres) ==0){
             for ($i= 0; $i < count($rts); $i++) {
               $rtscentre = new Rtscentre();
@@ -165,12 +167,12 @@ protected $arrondissementRepository;
         $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
         $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
         $lieuVotes  = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote_id);
-      
+        $candidats = $this->candidatRepository->getAll();
 
       //  $rtstemoins = $this->rtstemoinRepository->store($request->all());
       return view('rtstemoin.add',compact('candidats',
       "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
-      "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");      
+      "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes","candidats"))->with( "success","enregistrement avec succès");
     }
 
     }
@@ -234,7 +236,7 @@ protected $arrondissementRepository;
          /*  $lieuvotes = $this->lieuvoteRepository->getAll();
       $rtstemoin = $this->rtstemoinRepository->getById($id);
         $centrevotes = $this->centrevoteRepository->getAll();
-       
+
         $regions = $this->regionRepository->getRegionAsc(); */
         $candidats = $this->candidatRepository->getAll();
         $lieuvote = $this->lieuvoteRepository->getById($rtstemoin->lieuvote_id);
@@ -264,7 +266,7 @@ protected $arrondissementRepository;
       $totalRts = 0;
       $rts = $request["nbvote"];
       $candidats = $request["candidat_id"];
-     /* 
+     /*
       for ($i= 0; $i < count($rts); $i++) {
         $totalRts = $rts[$i] + $totalRts;
 
@@ -286,7 +288,7 @@ protected $arrondissementRepository;
           $rtstemoin->nbvote =(int)$rts[$i];
           $rtstemoin->lieuvote_id = $request["lieuvote_id"];
           $rtstemoin->save();
-        
+
         }
         return redirect('rtstemoin');
 

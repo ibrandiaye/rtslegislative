@@ -259,7 +259,10 @@
                                 <a href="{{ route('rts.national') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National</span></a>
 
                             </li>
+                            <li>
+                                <a href="{{ route('rts.national.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National Temoin</span></a>
 
+                            </li>
 
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Utilisateur </span></a>
@@ -332,7 +335,7 @@
                                      <li><a href="{{ route('bureau.create') }}"> Ajouter</a></li>
                                      <li><a href="{{ route('bureau.index') }}">Lister</a></li>
                                  </ul>
-                             </li> 
+                             </li>
                              <li>
                                  <a href="{{ route('chercher.bureau') }}" class="waves-effect"><i class="mdi mdi-loupe"></i><span>Chercher </span></a>
 

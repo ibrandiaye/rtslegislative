@@ -29,9 +29,9 @@ class ParticipationController extends Controller
         $this->participationRepository =$participationRepository;
         $this->heureRepository = $heureRepository;
         $this->lieuvoteRepository = $lieuvoteRepository;
-        $this->regionRepository = $regionRepository; 
+        $this->regionRepository = $regionRepository;
         $this->departementRepository = $departementRepository;
-        $this->communeRepository = $communeRepository; 
+        $this->communeRepository = $communeRepository;
         $this->centrevoteRepository = $centrevoteRepository;
 
     }
@@ -47,7 +47,7 @@ class ParticipationController extends Controller
         return view('participation.index',compact('participations'));
     }
 
- 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -69,8 +69,21 @@ class ParticipationController extends Controller
      */
     public function store(Request $request)
     {
-        $participations = $this->participationRepository->store($request->all());
-        DB::table("departements")->where("id",$request->departement_id)->update(["participation"=>true]);
+
+        $participation = DB::table("participations")->where(["lieuvote_id"=>$request->lieuvote_id,"heure_id"=>$request->heure_id])->first();
+        if(!empty($participation))
+        {
+            return redirect()->back()->withErrors(["erreur"=>"Bureau déja saisi"]);
+
+        }
+        else
+        {
+            $participations = $this->participationRepository->store($request->all());
+            return redirect()->back()->with("success","Enregistrement avec succés");
+
+
+        }
+       // DB::table("departements")->where("id",$request->departement_id)->update(["participation"=>true]);
        /*  $participation = $this->participationRepository->getParticpationByBureaudeVote($request->lieuvote_id);
         if($participation){
             if($participation->heure_id==$request->heure_id){
@@ -80,10 +93,10 @@ class ParticipationController extends Controller
                 $participations = $this->participationRepository->store($request->all());
             }
         }else{
-            $participations = $this->participationRepository->store($request->all());   
-        } */
-        
-        return redirect('participation');
+            $participations = $this->participationRepository->store($request->all());
+        }
+
+        return redirect('participation');*/
 
     }
 
@@ -147,7 +160,7 @@ class ParticipationController extends Controller
         $participations = $this->participationRepository->getByHeure($heure);
         return response()->json($participations);
     }
-    
+
     public function getByHeure($heure){
         $participations = $this->participationRepository->getByHeure($heure);
         return response()->json($participations);
@@ -168,6 +181,6 @@ class ParticipationController extends Controller
         $data = $this->departementRepository->getByRegionParticipation($departement);
         return response()->json($data);
     }
-      
+
 
 }

@@ -38,46 +38,61 @@
                                         </ul>
                                     </div>
                                 @endif
+                                @if ($message = Session::get('success'))
+                                    <div class="alert alert-success">
+                                        <p>{{ $message }}</p>
+                                    </div>
+                                @endif
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-3">
                                         <label>Région</label>
                                         <select class="form-control" id="region_id" name="region_id" required="">
                                             <option value="">Selectionner</option>
                                             @foreach ($regions as $region)
                                             <option value="{{$region->id}}">{{$region->nom}}</option>
                                                 @endforeach
-    
+
                                         </select>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-3">
                                         <label>Département</label>
                                         <select class="form-control" id="departement_id" name="departement_id" >
-    
+
                                         </select>
                                     </div>
-    
-                                     {{--  <div class="col">
+
+                                    <div class="col-3">
+                                        <label>Arrondissement</label>
+                                        <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
+                                          {{--   @foreach ($arrondissements as $arrondissement)
+                                            <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
+                                                @endforeach --}}
+                                        </select>
+                                    </div>
+                                      <div class="col-3">
                                         <label>Commune</label>
                                         <select class="form-control" id="commune_id" name="commune_id" required>
-    
+                                           {{--  @foreach ($communes as $commune)
+                                            <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
+                                                @endforeach --}}
                                         </select>
                                     </div>
-                                        <div class="col">
+                                        <div class="col-3">
                                             <label>centrevote</label>
                                             <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
-                                            
+
                                             </select>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-3">
                                             <label>Lieu de Vote</label>
                                             <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
-                                             
-    
+
+
                                             </select>
                                         </div>
-                               
-                               --}}
-                                <div class="col">
+
+
+                                <div class="col-3">
                                     <label>Heure</label>
                                     <select class="form-control" id="heure_id" name="heure_id" required="">
                                         <option value="">Selectionner</option>
@@ -87,7 +102,7 @@
 
                                     </select>
                                 </div>
-                                <div class="col">
+                                <div class="col-3">
                                     <div class="form-group">
                                         <label> Nombre de votes</label>
                                         <input type="number" name="resultat"  value="{{ old('resultat') }}" class="form-control"  required>
@@ -95,7 +110,7 @@
                                 </div>
 
                                 </div>
-                                
+
                                     <input type="hidden" id="nb_electeur" name="nb_electeur">
 
                                     <br>
@@ -142,18 +157,42 @@
             }
         });
     });
-   $("#departement_ids").change(function () {
+    $("#departement_id").change(function () {
         var departement_id =  $("#departement_id").children("option:selected").val();
         $(".departement").val(departement_id);
         $(".commune").val("");
-            var commune = "<option value=''>Veuillez selectionner</option>";
-          /*   $.ajax({
+        $("#commune_id").empty();
+        $("#arrondissement_id").empty();
+        $("#centrevote_id").empty();
+        $("#lieuvote_id").empty();
+            var arrondissement = "<option value=''>Veuillez selectionner</option>";
+            $.ajax({
                 type:'GET',
-                url:'/resultats/commune/by/departement/'+departement_id,
-              //  url:'http://vmi435145.contaboserver.net:9000/commune/by/departement/'+departement_id,
-             //   url:'http://127.0.0.1/gestionmateriel/public/commune/by/departement/'+departement_id,
-             //    url:'http://127.0.0.1:8000/commune/by/departement/'+departement_id,
+                url:' /arrondissement/by/departement/'+departement_id,
                 data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+
+                    $.each(data,function(index,row){
+                        //alert(row.nomd);
+                        arrondissement +="<option value="+row.id+">"+row.nom+"</option>";
+
+                    });
+                    $("#arrondissement_id").empty();
+                    $("#arrondissement_id").append(arrondissement);
+                }
+            });
+        });
+    $("#arrondissement_id").change(function () {
+        var arrondissement_id =  $("#arrondissement_id").children("option:selected").val();
+        $(".commune").val("");
+        $("#commune_id").empty();
+        $("#centrevote_id").empty();
+        $("#lieuvote_id").empty();
+            var commune = "<option value=''>Veuillez selectionner</option>";
+            $.ajax({
+                type:'GET',
+                url:'/commune/by/arrondissement/'+arrondissement_id,
+                 data:'_token = <?php echo csrf_token() ?>',
                 success:function(data) {
 
                     $.each(data,function(index,row){
@@ -164,31 +203,17 @@
                     $("#commune_id").empty();
                     $("#commune_id").append(commune);
                 }
-            }); */
-
-            $.ajax({
-                        type:'GET',
-                         url:url_app+'/resultats/lieuvote-temoin/by/departement/'+departement_id,
-                        vdata:'_token = <?php echo csrf_token() ?>',
-                        success:function(data) {
-                         //   alert(data)
-                           
-                            $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data+"</h4>") 
-                           $('#nb_electeur').val(data)             
-            
-                        }
-                    });
+            });
         });
         $("#commune_id").change(function () {
             var commune_id =  $("#commune_id").children("option:selected").val();
                 var centrevote = "<option value=''>Veuillez selectionner</option>";
+                $("#centrevote_id").empty();
+                $("#lieuvote_id").empty();
                 $.ajax({
                     type:'GET',
-                    url:url_app+'/resultats/centrevote-temoin/by/commune/'+commune_id,
-                //   url:'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
-                 //  url:'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
-                //  url:'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
+                    url:'/centrevote/by/commune/'+commune_id,
+
                     vdata:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 
@@ -197,18 +222,19 @@
                             centrevote +="<option value="+row.id+">"+row.nom+"</option>";
 
                         });
-                        $("#centrevote_id").empty();
+
                         $("#centrevote_id").append(centrevote);
                     }
                 });
             });
 
-            $("#centrevote_id").change(function () {
+        $("#centrevote_id").change(function () {
                 var centrevote_id =  $("#centrevote_id").children("option:selected").val();
                     var lieuvote = "<option value=''>Veuillez selectionner</option>";
+                    $("#lieuvote_id").empty();
                     $.ajax({
                         type:'GET',
-                         url:url_app+'/resultats/lieuvote-temoin/by/centrevote/'+centrevote_id,
+                        url:'/lieuvote/temoin/by/centrevote/'+centrevote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 
@@ -217,45 +243,27 @@
                                 lieuvote +="<option value="+row.id+">"+row.nom+"</option>";
 
                             });
-                            $("#lieuvote_id").empty();
+
                             $("#lieuvote_id").append(lieuvote);
                         }
                     });
                 });
-               /*  $("#lieuvote_id").change(function () {
-                var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
-                    $.ajax({
-                        type:'GET',
-                        url:'/resultats/electeur/by/lieuvote/'+lieuvote_id,
-                        vdata:'_token = <?php echo csrf_token() ?>',
-                        success:function(data) {
-                         //   alert(data)
-                           
-                            $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>") 
-                           $('#nb_electeur').val(data.nb)             
-            
-                        }
-                    });
-                }); */
-
                 $("#lieuvote_id").change(function () {
                 var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
                     $.ajax({
                         type:'GET',
-                        url:url_app+'/resultats/electeur/by/lieuvote/'+lieuvote_id,
+                        url:'/electeur/by/lieuvote/'+lieuvote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
-                           
+
                             $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>") 
-                           $('#nb_electeur').val(data.nb)             
-            
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>")
+                           $('#nb_electeur').val(data.nb)
+
                         }
                     });
                 });
-
 
 
 </script>
