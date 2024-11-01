@@ -156,6 +156,10 @@ class LieuvoteController extends Controller
         $lieuvotes = $this->lieuvoteRepository->getByCentre($centrevote);
         return response()->json($lieuvotes);
     }
+    public function getTemoinByCentreVote($centrevote){
+        $lieuvotes = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote);
+        return response()->json($lieuvotes);
+    }
 
     public function getById($id)
     {

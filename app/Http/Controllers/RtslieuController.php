@@ -83,8 +83,6 @@ protected $arrondissementRepository;
         $communes = [];
         $centreVotes =[];
         $lieuVotes  =[];
-        $regions =[];
-        $lieuVotes  = $this->lieuvoteRepository->getByCentre($centrevote_id);
         return view('rtslieu.add',compact('candidats',"regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
     "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"));
 
@@ -413,7 +411,7 @@ protected $arrondissementRepository;
         $resultats[$rt->coalition]["nb"] = $rt->nb;
         $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
     }
-    //dd($resultats);
+    //dd(10%14);
 
 
     return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant"));

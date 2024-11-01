@@ -68,7 +68,7 @@
                                                     </select>
 
                                         </div>
-                                            <div class="col">
+                                           {{--  <div class="col">
                                                 <label>centrevote</label>
                                                 <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
                                                     <option value="">Selectionner</option>
@@ -85,7 +85,7 @@
                                                     <option value="{{$lieuvote->id}}" {{ $lieuvote->id==$participation->lieuvote_id ? 'selected' : ''}}>{{$lieuvote->nom}} </option>
         
                                                 </select>
-                                            </div>
+                                            </div> --}}
                                    
                                   
                                     <div class="col">
@@ -123,6 +123,7 @@
 @endsection
 @section('script')
 <script>
+    url_app = '{{ config('app.url') }}';
     $("#region_id").change(function () {
     var region_id =  $("#region_id").children("option:selected").val();
     $(".region").val(region_id);
@@ -131,7 +132,7 @@
         var departement = "<option value=''>Veuillez selectionner</option>";
         $.ajax({
             type:'GET',
-            url:'/resultats/departement/by/region/'+region_id,
+            url:url_app+'/departement/by/region/'+region_id,
         //   url:'http://vmi435145.contaboserver.net:9000/departement/by/region/'+region_id,
           // url:'http://127.0.0.1/gestionmateriel/public/departement/by/region/'+region_id,
           //    url:'http://127.0.0.1:8000/departement/by/region/'+region_id,
@@ -149,12 +150,12 @@
             }
         });
     });
-    $("#departement_id").change(function () {
+   $("#departement_ids").change(function () {
         var departement_id =  $("#departement_id").children("option:selected").val();
         $(".departement").val(departement_id);
         $(".commune").val("");
             var commune = "<option value=''>Veuillez selectionner</option>";
-            $.ajax({
+          /*   $.ajax({
                 type:'GET',
                 url:'/resultats/commune/by/departement/'+departement_id,
               //  url:'http://vmi435145.contaboserver.net:9000/commune/by/departement/'+departement_id,
@@ -171,14 +172,28 @@
                     $("#commune_id").empty();
                     $("#commune_id").append(commune);
                 }
-            });
+            }); */
+
+            $.ajax({
+                        type:'GET',
+                         url:url_app+'/resultats/lieuvote-temoin/by/departement/'+departement_id,
+                        vdata:'_token = <?php echo csrf_token() ?>',
+                        success:function(data) {
+                         //   alert(data)
+                           
+                            $('#electeur').empty()
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data+"</h4>") 
+                           $('#nb_electeur').val(data)             
+            
+                        }
+                    });
         });
         $("#commune_id").change(function () {
             var commune_id =  $("#commune_id").children("option:selected").val();
                 var centrevote = "<option value=''>Veuillez selectionner</option>";
                 $.ajax({
                     type:'GET',
-                    url:'/resultats/centrevote-temoin/by/commune/'+commune_id,
+                    url:url_app+'/resultats/centrevote-temoin/by/commune/'+commune_id,
                 //   url:'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
                  //  url:'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
                 //  url:'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
@@ -201,7 +216,7 @@
                     var lieuvote = "<option value=''>Veuillez selectionner</option>";
                     $.ajax({
                         type:'GET',
-                        url:'/resultats/lieuvote-temoin/by/centrevote/'+centrevote_id,
+                         url:url_app+'/resultats/lieuvote-temoin/by/centrevote/'+centrevote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 
@@ -215,7 +230,7 @@
                         }
                     });
                 });
-                $("#lieuvote_id").change(function () {
+               /*  $("#lieuvote_id").change(function () {
                 var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
                     $.ajax({
                         type:'GET',
@@ -230,7 +245,25 @@
             
                         }
                     });
+                }); */
+
+                $("#lieuvote_id").change(function () {
+                var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
+                    $.ajax({
+                        type:'GET',
+                        url:url_app+'/resultats/electeur/by/lieuvote/'+lieuvote_id,
+                        vdata:'_token = <?php echo csrf_token() ?>',
+                        success:function(data) {
+                         //   alert(data)
+                           
+                            $('#electeur').empty()
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>") 
+                           $('#nb_electeur').val(data.nb)             
+            
+                        }
+                    });
                 });
+
 
 
 </script>

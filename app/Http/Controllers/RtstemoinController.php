@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rtscentre;
 use App\Models\Rtslieu;
 use App\Models\Rtstemoin;
+use App\Repositories\ArrondissementRepository;
 use App\Repositories\CandidatRepository;
 use App\Repositories\CentrevoteRepository;
 use App\Repositories\CommuneRepository;
@@ -29,12 +30,13 @@ protected $departementRepository;
 protected $communeRepository;
 protected $rtsCentrevoteRepository;
 protected $rtslieuvoteRepository;
+protected $arrondissementRepository;
 
 
     public function __construct(RtstemoinRepository $rtstemoinRepository, LieuvoteRepository $lieuvoteRepository,
     CentrevoteRepository $centrevoteRepository,CandidatRepository $candidatRepository,RegionRepository $regionRepository,
     DepartementRepository $departementRepository,CommuneRepository $communeRepository,RtscentreRepository $rtsCentrevoteRepository,
-    RtslieuRepository $rtslieuRepository){
+    RtslieuRepository $rtslieuRepository,ArrondissementRepository $arrondissementRepository){
         $this->rtstemoinRepository =$rtstemoinRepository;
         $this->lieuvoteRepository = $lieuvoteRepository;
         $this->centrevoteRepository = $centrevoteRepository;
@@ -45,6 +47,7 @@ protected $rtslieuvoteRepository;
         $this->centrevoteRepository =$centrevoteRepository;
         $this->rtsCentrevoteRepository =$rtsCentrevoteRepository;
         $this->rtsLieuRepository =$rtslieuRepository;
+        $this->arrondissementRepository = $arrondissementRepository;
     }
 
     /**
@@ -69,8 +72,22 @@ protected $rtslieuvoteRepository;
        // $centrevotes = $this->centrevoteRepository->getAll();
         $candidats = $this->candidatRepository->getAll();
         $regions = $this->regionRepository->getRegionAsc();
+        $region_id              ="";
+        $departement_id         = "";
+        $arrondissement_id      = "";
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+
+        $regions = $this->regionRepository->getRegionAsc();
+        $departements = [];
+        $arrondissements =[];
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
         return view('rtstemoin.add',compact('candidats',
-    "regions"));
+    "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+    "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"));
     }
 
     /**
@@ -112,7 +129,7 @@ protected $rtslieuvoteRepository;
           $rtslieu->lieuvote_id = $request["lieuvote_id"];
           $rtslieu->save();
         }
-        $this->lieuvoteRepository->updateEtat($request["lieuvote_id"]);
+        $this->lieuvoteRepository->updateEtat($request["lieuvote_id"],$request["votant"], $request["bulnull"],$request["hs"]);
         if($centreVote->niveau==false){
           $rtsCentres = $this->rtsCentrevoteRepository->getByCentre($centreVote->id);
          
@@ -134,11 +151,27 @@ protected $rtslieuvoteRepository;
             }
           }
         }
+
+        $region_id              = $request["region_id"];
+        $departement_id         = $request["departement_id"];
+        $arrondissement_id      = $request["arrondissement_id"];
+        $commune_id             = $request["commune_id"];
+        $centrevote_id          = $request["centrevote_id"];
+        $lieuvote_id            = $request["lieuvote_id"];
+
+        $regions = $this->regionRepository->getRegionAsc();
+        $departements = $this->departementRepository->getByRegion($region_id);
+        $arrondissements = $this->arrondissementRepository->getByDepartement($departement_id);
+        $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+        $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+        $lieuVotes  = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote_id);
       
 
       //  $rtstemoins = $this->rtstemoinRepository->store($request->all());
-        return redirect('rtstemoin');
-      }
+      return view('rtstemoin.add',compact('candidats',
+      "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+      "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");      
+    }
 
     }
     public function storeApi(Request $request)

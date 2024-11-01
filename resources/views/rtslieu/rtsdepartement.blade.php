@@ -34,6 +34,7 @@
     <div class="card ">
         <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif</div>
             <div class="card-body">
+                @if (Auth::user()->role=="admin")
                 <form method="POST" action="{{ route('rts.by.departement') }}">
                     @csrf
                     <div class="row">
@@ -64,6 +65,7 @@
 
                 </form>
                 <br>
+                @endif
                 <div class="row">
                     <div class="col-8">
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">

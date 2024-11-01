@@ -21,6 +21,7 @@ use App\Repositories\RtspaysRepository;
 use App\Repositories\RtstemoinRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -74,7 +75,7 @@ CommuneRepository $communeRepository){
         $user = Auth::user();
         if($user->role=="admin" || $user->role=="superviseur" )
         {
-          /*  $nbCentrevotes = $this->departementRepository->nbDepartements();
+            $nbCentrevotes = $this->departementRepository->nbDepartements();
             $nbRtsCentre = $this->departementRepository->nbDepartementBEtat(true);
            // dd($nbCentrevotes);
            $tauxDepouillement = round(($nbRtsCentre/$nbCentrevotes)*100,2);
@@ -113,39 +114,25 @@ CommuneRepository $communeRepository){
            return view("dashboardr",compact("nbCentrevotes","nbRtsCentre","electeurs",
             "tauxDepouillement","votants","tauxDepouillementElecteurs","rtsParCandidats","nbVotantDiaspora",
             "nbureauDiaspora","electeursDiaspora","nCentreVote","tauxDeParticipations",
-            "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","nullEtrangers"));*/
-            return redirect()->route("centre.by.arrondissement");
+            "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","nullEtrangers"));
+           // return redirect()->route("centre.by.arrondissement");
         }
         else
         {
-           /* $nbCentreVote = $this->centrevoteRepository->countByArrondissement($user->arrondissement_id);
-            $nbLieuVote  = $this->lieuvoteRepository->countByArrondissementt($user->arrondissement_id);
-            $communes   = $this->communeRepository->getByArrondissment();
-            $complet   = 0;
-            $incomplete = 0;
-            $nonCommence  = 0;
-            foreach ($communes as $key => $commune) {
-                foreach ($commune->centrevotes as $key1 => $centrevote) {
-                    foreach ($centrevote->lieuvotes as $key2 => $lieuvote) {
-                        if(count($lieuvote->bureaus) >= 1 && count($lieuvote->bureaus) <3)
-                        {
-                            $incomplete = $incomplete + 1;
-                        }
-                        else if(count($lieuvote->bureaus) == 0)
-                        {
-                            $nonCommence = $nonCommence +1;
-                        }
-                        else
-                        {
-                            $complet = $complet + 1;
-                        }
-                    }
-                }
-            }
-          //  dd($complet,$incomplete,$nonCommence);
-            return view("dashboardr",compact("nbCentreVote","nbLieuVote","incomplete","nonCommence",
-        "complet"));*/
-        return redirect()->route("centre.by.arrondissement");
+            $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartement($user->departement_id);
+        //$departements= $this->departementRepository->getAll();
+        $departement = DB::table("departements")->where("id",$user->departement_id)->first();
+        $departement_id = $user->departement_id;
+        $region_id = $user->region_id;
+        $regions  = [];
+        $departements =[];
+        $votant  = $this->lieuvoteRepository->nbVotantByDepartement($departement_id);
+        $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
+        $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
+        $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
+        // dd($rts,$departement);
+        return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+        "bullnull","hs","votant","inscrit","departement"));
         }
        
     }

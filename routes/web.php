@@ -95,6 +95,9 @@ Route::get('/departement/by/region/{region}',[DepartementController::class,'getB
 Route::get('/commune/by/departement/{departement}',[CommuneController::class,'getByDepartement']);
 Route::get('/centrevote/by/commune/{commune}',[CentrevoteController::class,'getBycommune']);
 Route::get('/lieuvote/by/centrevote/{centrevote}',[LieuvoteController::class,'getByCentreVote']);
+Route::get('/lieuvote/temoin/by/centrevote/{centrevote}',[LieuvoteController::class,'getTemoinByCentreVote']);
+
+
 Route::get('/commune/by/arrondissement/{arrondissement}',[CommuneController::class,'getByArrondissement']);
 
 
