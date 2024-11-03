@@ -207,7 +207,7 @@
             var arrondissement = "<option value=''>Veuillez selectionner</option>";
             $.ajax({
                 type:'GET',
-                url:url_app+' /arrondissement/by/departement/'+departement_id,
+                url:url_app+'/arrondissement/by/departement/'+departement_id,
                 data:'_token = <?php echo csrf_token() ?>',
                 success:function(data) {
 

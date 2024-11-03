@@ -123,13 +123,13 @@ protected $arrondissementRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
-        if($totalRts > $request->nb_electeur)
+        /*if($totalRts > $request->nb_electeur)
       {
         return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);
 
       }
       else
-      {
+      {*/
 
         $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
 
@@ -197,7 +197,7 @@ protected $arrondissementRepository;
           return view('rtstemoin.addprefet',compact('candidats',"departement_id","arrondissement_id","commune_id","centrevote_id",
           "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
         }
-      }
+     // }
 
     }
     public function storeApi(Request $request)
