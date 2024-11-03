@@ -179,4 +179,16 @@ public function  rtsGroupByRegionByCandidat($id){
 ->get();
 
 } */
+
+public function deleteByBureau($id)
+{
+  return DB::table("rtslieus")->where("lieuvote_id",$id)->delete();
+}
+public function getByCandidatAndLieuvote($lieuvote)
+{
+  return DB::table("rtslieus")
+  ->join("candidats","rtslieus.candidat_id","=","candidats.id")
+  ->select("candidats.*","rtslieus.nbvote")
+  ->where("lieuvote_id",$lieuvote)->get();
+}
 }

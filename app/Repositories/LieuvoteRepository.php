@@ -16,9 +16,44 @@ class LieuvoteRepository extends RessourceRepository{
 
 
     }
+
     public function nbLieuVoteByEtat($etat){
         return   DB::table('lieuvotes')
         ->where("etat",$etat)
+        ->count();
+        //->get();
+
+
+    }
+
+    public function nbLieuVoteByEtatAndDepartement($etat,$departement){
+        return   DB::table('lieuvotes')
+        ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+        ->join("communes","centrevotes.commune_id","=","communes.id")
+        ->where("lieuvotes.etat",$etat)
+        ->where("communes.departement_id",$departement)
+        ->count();
+        //->get();
+
+
+    }
+   
+    public function nbLieuVoteTemoinByEtat($etat){
+        return   DB::table('lieuvotes')
+        ->where("etat",$etat)
+        ->where("temoin",1)
+        ->count();
+        //->get();
+
+
+    }
+    public function nbLieuVoteTemoinByEtatAndDepartement($etat,$departement){
+        return   DB::table('lieuvotes')
+        ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+        ->join("communes","centrevotes.commune_id","=","communes.id")
+        ->where("lieuvotes.etat",$etat)
+        ->where("temoin",1)
+        ->where("communes.departement_id",$departement)
         ->count();
         //->get();
 
@@ -33,6 +68,7 @@ class LieuvoteRepository extends RessourceRepository{
         return   Lieuvote::where("temoin",true)->sum('nb');
 
     }
+    
 
     public function nbElecteursTemoinByDepartement($departement){
         return  DB::table("lieuvotes")
@@ -53,9 +89,16 @@ class LieuvoteRepository extends RessourceRepository{
         ->orderBy("nom","asc")
         ->get();
 }
+
 public function getByLieuvoteTemoin($centre){
     return DB::table("lieuvotes")
     ->where([["centrevote_id",$centre],["etat",false],["temoin",true]])
+    ->orderBy("nom","asc")
+    ->get();
+}
+public function getByLieuvoteTemoinParticipation($centre){
+    return DB::table("lieuvotes")
+    ->where([["centrevote_id",$centre],["temoin",true]])
     ->orderBy("nom","asc")
     ->get();
 }
@@ -303,6 +346,31 @@ public function  nbVotantTemoin(){
     ->where("temoin",1)
   ->sum('votant');
 
+}
+
+public function getByDepartement($departements){
+    return DB::table("lieuvotes")
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->select("communes.nom as commune","centrevotes.nom as centre","lieuvotes.nom as  bureau","lieuvotes.nb","lieuvotes.etat",
+    "communes.id as commune_id","lieuvotes.id as lieuvote_id","centrevotes.id as centrevote_id")
+    ->where([["communes.departement_id",$departements],["lieuvotes.etat",1]])
+    ->get();
+}
+public function  getOnlyById($id){
+    return  DB::table('lieuvotes')
+   ->find($id);
+
+}
+
+public function search(){
+    return DB::table("lieuvotes")
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->select("communes.nom as commune","centrevotes.nom as centre","lieuvotes.nom as  bureau","lieuvotes.nb","lieuvotes.etat",
+    "communes.id as commune_id","lieuvotes.id as lieuvote_id","centrevotes.id as centrevote_id")
+    ->where("lieuvotes.etat",1)
+   ;
 }
 
 }

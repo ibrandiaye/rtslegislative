@@ -17,6 +17,7 @@ use App\Repositories\RtscentreRepository;
 use App\Repositories\RtslieuRepository;
 use App\Repositories\RtstemoinRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RtstemoinController extends Controller
@@ -70,24 +71,38 @@ protected $arrondissementRepository;
     {
        // $lieuvotes = $this->lieuvoteRepository->getAll();
        // $centrevotes = $this->centrevoteRepository->getAll();
+       $user = Auth::user();
         $candidats = $this->candidatRepository->getAll();
-        $regions = $this->regionRepository->getRegionAsc();
-        $region_id              ="";
-        $departement_id         = "";
+       
         $arrondissement_id      = "";
         $commune_id             = "";
         $centrevote_id          = "";
         $lieuvote_id            = "";
 
-        $regions = $this->regionRepository->getRegionAsc();
-        $departements = [];
-        $arrondissements =[];
+       
         $communes = [];
         $centreVotes =[];
         $lieuVotes  =[];
-        return view('rtstemoin.add',compact('candidats',
-    "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
-    "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"));
+        if($user->role=='admin')
+        {
+          $departements = [];
+          $regions = $this->regionRepository->getRegionAsc();
+          $region_id              ="";
+          $departement_id         = "";
+          $arrondissements =[];
+          return view('rtstemoin.add',compact('candidats',
+          "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+          "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"));
+        }
+        elseif ($user->role=="prefet") 
+        {
+          $arrondissements =$this->arrondissementRepository->getByDepartement($user->departement_id);
+          $departement_id = $user->departement_id;
+          return view('rtstemoin.addprefet',compact('candidats',
+          "departement_id","arrondissement_id","commune_id","centrevote_id",
+          "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"));
+        }
+        
     }
 
     /**
@@ -128,7 +143,7 @@ protected $arrondissementRepository;
           $rtslieu->candidat_id = $candidats[$i];
           $rtslieu->nbvote =(int)$rts[$i];
           $rtslieu->lieuvote_id = $request["lieuvote_id"];
-          $rtslieu->lieuvote_id = $request["departement_id"];
+          $rtslieu->departement_id = $request["departement_id"];
           $rtslieu->save();
         }
         $this->lieuvoteRepository->updateEtat($request["lieuvote_id"],$request["votant"], $request["bulnull"],$request["hs"]);
@@ -154,15 +169,12 @@ protected $arrondissementRepository;
           }
         }
 
-        $region_id              = $request["region_id"];
         $departement_id         = $request["departement_id"];
         $arrondissement_id      = $request["arrondissement_id"];
         $commune_id             = $request["commune_id"];
         $centrevote_id          = $request["centrevote_id"];
         $lieuvote_id            = $request["lieuvote_id"];
 
-        $regions = $this->regionRepository->getRegionAsc();
-        $departements = $this->departementRepository->getByRegion($region_id);
         $arrondissements = $this->arrondissementRepository->getByDepartement($departement_id);
         $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
         $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
@@ -170,10 +182,22 @@ protected $arrondissementRepository;
         $candidats = $this->candidatRepository->getAll();
 
       //  $rtstemoins = $this->rtstemoinRepository->store($request->all());
-      return view('rtstemoin.add',compact('candidats',
-      "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
-      "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes","candidats"))->with( "success","enregistrement avec succès");
-    }
+      $user = Auth::user();
+      if($user->role=='admin')
+        {
+          $region_id              = $request["region_id"];
+          $departements = $this->departementRepository->getByRegion($region_id);
+          $regions = $this->regionRepository->getRegionAsc();
+          return view('rtstemoin.add',compact('candidats',
+          "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+          "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+        }
+        elseif ($user->role=="prefet") 
+        {
+          return view('rtstemoin.addprefet',compact('candidats',"departement_id","arrondissement_id","commune_id","centrevote_id",
+          "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+        }
+      }
 
     }
     public function storeApi(Request $request)

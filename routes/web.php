@@ -96,6 +96,7 @@ Route::get('/commune/by/departement/{departement}',[CommuneController::class,'ge
 Route::get('/centrevote/by/commune/{commune}',[CentrevoteController::class,'getBycommune']);
 Route::get('/lieuvote/by/centrevote/{centrevote}',[LieuvoteController::class,'getByCentreVote']);
 Route::get('/lieuvote/temoin/by/centrevote/{centrevote}',[LieuvoteController::class,'getTemoinByCentreVote']);
+Route::get('/lieuvote/temoin/participation/by/centrevote/{centrevote}',[LieuvoteController::class,'getByLieuvoteTemoinParticipation']);
 
 
 Route::get('/commune/by/arrondissement/{arrondissement}',[CommuneController::class,'getByArrondissement']);
@@ -180,3 +181,21 @@ Route::get('/resultat/national/temoin',[RtslieuController::class,'rtsByBureatTem
 Route::post('/rts/departement/temoin',[RtslieuController::class,'rtsDepartementTemoin'])->name('rts.by.departement.temoin')->middleware("auth");
 
 Route::get('/resultat/par/departement/temoin',[RtslieuController::class,'resultatParDepartementTemoin'])->name('voir.par.departement.temoin')->middleware("auth");
+
+Route::get('/resultat/par/departement/temoin/prefet',[RtslieuController::class,'rtsDepartementTemoinPrefet'])->name('voir.par.departement.temoin.prefet')->middleware("auth");
+
+
+Route::get('/bureau/by/departement',[LieuvoteController::class,'getByDepartement'])->name('bureau.by.departement')->middleware("auth");
+
+Route::get('/editer/rtslieu/{centrevoteId}/{lieuvoteId}/{communeId}',[RtslieuController::class,'showEdit'])->name('editer.rtslieu')->middleware("auth");
+
+Route::post('/update/Perso/rtslieu',[RtslieuController::class,'updatePerso'])->name('update.perso.rtslieu')->middleware("auth");
+
+Route::get('/show/rtslieu/by/lieu/{lieuvote}',[RtslieuController::class,'showRtsByLieuvote'])->name('show.rtslieu.by.lieu')->middleware("auth");
+
+Route::post('/search/multi',[LieuvoteController::class,'search'])->name('search.multi')->middleware("auth");
+
+Route::get('/impression/rts/departement/{departement}/{type}',[RtslieuController::class,'rtsDepartementImpression'])->name('impression.rts.departement')->middleware("auth");
+
+Route::get('/impression/rts/national/{type}',[RtslieuController::class,'rtsByCandidatImpression'])->name('impression.rts.national')->middleware("auth");
+

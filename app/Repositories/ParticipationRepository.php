@@ -35,6 +35,20 @@ class ParticipationRepository extends RessourceRepository{
         ->groupBy("heures.designation")
         ->get();
     }
+    public function getParticipationGroupByHeureByDepartement($departement){
+        return DB::table("participations")
+        ->join('heures','participations.heure_id','=','heures.id')
+      
+        ->select('heures.designation',DB::raw('sum(participations.resultat) as nb'))
+        ->where("participations.departement_id",$departement)
+        ->groupBy("heures.designation")
+        ->get();
+    }
    
-   
+  public function getByDepartement($id)
+  {
+    return Participation::with(["departement","lieuvote","lieuvote.centrevote"])
+    ->where("departement_id",$id)
+    ->get();
+  } 
 }

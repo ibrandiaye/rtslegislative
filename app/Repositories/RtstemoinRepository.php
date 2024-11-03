@@ -28,6 +28,7 @@ class RtstemoinRepository extends RessourceRepository{
       ->join('candidats','rtstemoins.candidat_id','=','candidats.id')
       ->select('candidats.id','candidats.nom','candidats.photo','candidats.coalition' ,DB::raw('sum(rtstemoins.nbvote) as nb'))
       ->groupBy('candidats.id','candidats.nom','candidats.photo','candidats.coalition')
+      ->orderBy("nb","desc")
   ->get();
 
 }

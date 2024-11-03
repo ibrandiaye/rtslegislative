@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\ArrondissementRepository;
 use App\Repositories\CentrevoteRepository;
 use App\Repositories\CommuneRepository;
 use App\Repositories\DepartementRepository;
@@ -10,6 +11,7 @@ use App\Repositories\LieuvoteRepository;
 use App\Repositories\ParticipationRepository;
 use App\Repositories\RegionRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ParticipationController extends Controller
@@ -21,11 +23,14 @@ class ParticipationController extends Controller
 
     protected $departementRepository;
     protected $communeRepository;
+
+    protected $arrondissementRepository;
+
     protected $centrevoteRepository;
 
     public function __construct(ParticipationRepository $participationRepository, HeureRepository $heureRepository,
     LieuvoteRepository $lieuvoteRepository,RegionRepository $regionRepository,DepartementRepository $departementRepository,
-    CommuneRepository $communeRepository,CentrevoteRepository $centrevoteRepository){
+    CommuneRepository $communeRepository,CentrevoteRepository $centrevoteRepository,ArrondissementRepository $arrondissementRepository){
         $this->participationRepository =$participationRepository;
         $this->heureRepository = $heureRepository;
         $this->lieuvoteRepository = $lieuvoteRepository;
@@ -33,6 +38,7 @@ class ParticipationController extends Controller
         $this->departementRepository = $departementRepository;
         $this->communeRepository = $communeRepository;
         $this->centrevoteRepository = $centrevoteRepository;
+        $this->arrondissementRepository = $arrondissementRepository;
 
     }
 
@@ -43,7 +49,16 @@ class ParticipationController extends Controller
      */
     public function index()
     {
-        $participations = $this->participationRepository->getAll();
+        $user = Auth::user();
+        if($user->role=="admin")
+        {
+            $participations = $this->participationRepository->getAll();
+        }
+        elseif($user->role=="prefet")
+        {
+            $participations = $this->participationRepository->getByDepartement($user->departement_id);
+        }
+        
         return view('participation.index',compact('participations'));
     }
 
@@ -56,9 +71,38 @@ class ParticipationController extends Controller
     public function create()
     {
         $heures = $this->heureRepository->getAll();
-        $lieuvotes = $this->lieuvoteRepository->getAll();
-        $regions = $this->regionRepository->getAll();
-        return view('participation.add',compact('heures','lieuvotes','regions'));
+        $user = Auth::user();
+
+      
+        $arrondissement_id      = "";
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+        if($user->role=='admin')
+        {
+          $departements = [];
+          $regions = $this->regionRepository->getRegionAsc();
+          $region_id              ="";
+          $departement_id         = "";
+          $arrondissements =[];
+          return view('participation.add',compact('heures',
+          "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+          "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"));
+        }
+        elseif ($user->role=="prefet") 
+        {
+          $arrondissements =$this->arrondissementRepository->getByDepartement($user->departement_id);
+          $departement_id = $user->departement_id;
+          return view('participation.addprefet',compact("departement_id","arrondissement_id","commune_id","centrevote_id",
+          "lieuvote_id","arrondissements","communes","centreVotes",'heures',"lieuVotes"));
+        }
+        
+      
+       // return view('participation.add',compact('heures','lieuvotes','regions'));
     }
 
     /**
@@ -69,17 +113,73 @@ class ParticipationController extends Controller
      */
     public function store(Request $request)
     {
-
+        
         $participation = DB::table("participations")->where(["lieuvote_id"=>$request->lieuvote_id,"heure_id"=>$request->heure_id])->first();
         if(!empty($participation))
         {
-            return redirect()->back()->withErrors(["erreur"=>"Bureau déja saisi"]);
+            //return redirect()->back()->withErrors(["erreur"=>"Bureau déja saisi"]);
+            $departement_id         = $request["departement_id"];
+            $arrondissement_id      = $request["arrondissement_id"];
+            $commune_id             = $request["commune_id"];
+            $centrevote_id          = $request["centrevote_id"];
+            $lieuvote_id            = $request["lieuvote_id"];
+            $heures = $this->heureRepository->getAll();
+
+            $arrondissements = $this->arrondissementRepository->getByDepartement($departement_id);
+            $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+            $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+            $lieuVotes  = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote_id);
+    
+          //  $rtstemoins = $this->rtstemoinRepository->store($request->all());
+          $user = Auth::user();
+          if($user->role=='admin')
+            {
+              $region_id              = $request["region_id"];
+              $departements = $this->departementRepository->getByRegion($region_id);
+              $regions = $this->regionRepository->getRegionAsc();
+              return view('participation.add',compact("heures",
+              "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+              "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->withErrors(["erreur"=>"Bureau déja saisi"]);
+            }
+            elseif ($user->role=="prefet") 
+            {
+              return view('participation.addprefet',compact("heures","departement_id","arrondissement_id","commune_id","centrevote_id",
+              "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"))->withErrors(["erreur"=>"Bureau déja saisi"]);
+            }
 
         }
         else
         {
             $participations = $this->participationRepository->store($request->all());
-            return redirect()->back()->with("success","Enregistrement avec succés");
+           // return redirect()->back()->with("success","Enregistrement avec succés");
+            $departement_id         = $request["departement_id"];
+            $arrondissement_id      = $request["arrondissement_id"];
+            $commune_id             = $request["commune_id"];
+            $centrevote_id          = $request["centrevote_id"];
+            $lieuvote_id            = $request["lieuvote_id"];
+            $heures = $this->heureRepository->getAll();
+
+            $arrondissements = $this->arrondissementRepository->getByDepartement($departement_id);
+            $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+            $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+            $lieuVotes  = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote_id);
+    
+          //  $rtstemoins = $this->rtstemoinRepository->store($request->all());
+          $user = Auth::user();
+          if($user->role=='admin')
+            {
+              $region_id              = $request["region_id"];
+              $departements = $this->departementRepository->getByRegion($region_id);
+              $regions = $this->regionRepository->getRegionAsc();
+              return view('participation.add',compact("heures",
+              "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+              "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+            }
+            elseif ($user->role=="prefet") 
+            {
+              return view('participation.addprefet',compact("departement_id","arrondissement_id","commune_id","centrevote_id",
+             "heures", "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+            }
 
 
         }
@@ -120,6 +220,7 @@ class ParticipationController extends Controller
      */
     public function edit($id)
     {
+        
         $participation = $this->participationRepository->getById($id);
         $lieuvote = $this->lieuvoteRepository->getById($participation->lieuvote_id);
         $centrevote = $this->centrevoteRepository->getById($lieuvote->centrevote_id);

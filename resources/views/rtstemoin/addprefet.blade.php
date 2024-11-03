@@ -12,7 +12,7 @@
 
                         <ol class="breadcrumb hide-phone p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}" >ACCUEIL</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('rtslieu.index') }}">LISTE D'ENREGISTREMENT DES rtslieu</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('rtstemoin.index') }}">LISTE D'ENREGISTREMENT DES rtstemoin</a></li>
 
                         </ol>
                     </div>
@@ -24,7 +24,7 @@
         <div id="electeur">
 
         </div>
-        <form action="{{ route('rtslieu.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('rtstemoin.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
              <div class="card ">
                         <div class="card-header text-center">FORMULAIRE D'ENREGISTREMENT DES RESULTATS</div>
@@ -38,23 +38,25 @@
                                         </ul>
                                     </div>
                                 @endif
-                                @if ($message = Session::get('error'))
-                                    <div class="alert alert-danger">
-                                        <p>{{ $message }}</p>
-                                    </div>
-                                @endif
                                 @if ($message = Session::get('success'))
                                     <div class="alert alert-success">
                                         <p>{{ $message }}</p>
                                     </div>
                                 @endif
                                 <div class="row">
-                                    <input type="hidden" name="departement_id" value="{{Auth::user()->arrondissement->departement_id}}">
 
                                     <div class="col-4">
                                         <div class="row">
-
-
+                                           <input type="hidden" name="departement_id" value="{{$departement_id}}" required>
+                                            <div class="col-12">
+                                                <label>Arrondissement</label>
+                                                <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
+                                                    <option value="">Selectionner</option>
+                                                    @foreach ($arrondissements as $arrondissement)
+                                                    <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
+                                                        @endforeach
+                                                </select>
+                                            </div>
                                               <div class="col-12">
                                                 <label>Commune</label>
                                                 <select class="form-control" id="commune_id" name="commune_id" required>
@@ -128,7 +130,6 @@
                                         </table>
                                     </div>
                                 </div>
-
                                 <div>
                                     <input type="hidden" id="nb_electeur" name="nb_electeur">
 
@@ -149,7 +150,83 @@
 
 @section('script')
 <script>
+    $("#region_id").change(function () {
+    var region_id =  $("#region_id").children("option:selected").val();
+    $(".region").val(region_id);
+    $(".departement").val("");
+    $(".commune").val("");
+    $("#departement_id").empty();
+    $("#commune_id").empty();
+    $("#arrondissement_id").empty();
+    $("#centrevote_id").empty();
+    $("#lieuvote_id").empty();
+        var departement = "<option value=''>Veuillez selectionner</option>";
+        $.ajax({
+            type:'GET',
+            url:'/departement/by/region/'+region_id,
+ 
+            data:'_token = <?php echo csrf_token() ?>',
+            success:function(data) {
 
+                $.each(data,function(index,row){
+                    //alert(row.nomd);
+                    departement +="<option value="+row.id+">"+row.nom+"</option>";
+
+                });
+
+                $("#departement_id").append(departement);
+            }
+        });
+    });
+
+    $("#departement_id").change(function () {
+        var departement_id =  $("#departement_id").children("option:selected").val();
+        $(".departement").val(departement_id);
+        $(".commune").val("");
+        $("#commune_id").empty();
+        $("#arrondissement_id").empty();
+        $("#centrevote_id").empty();
+        $("#lieuvote_id").empty();
+            var arrondissement = "<option value=''>Veuillez selectionner</option>";
+            $.ajax({
+                type:'GET',
+                url:' /arrondissement/by/departement/'+departement_id,
+                data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+
+                    $.each(data,function(index,row){
+                        //alert(row.nomd);
+                        arrondissement +="<option value="+row.id+">"+row.nom+"</option>";
+
+                    });
+                    $("#arrondissement_id").empty();
+                    $("#arrondissement_id").append(arrondissement);
+                }
+            });
+        });
+    $("#arrondissement_id").change(function () {
+        var arrondissement_id =  $("#arrondissement_id").children("option:selected").val();
+        $(".commune").val("");
+        $("#commune_id").empty();
+        $("#centrevote_id").empty();
+        $("#lieuvote_id").empty();
+            var commune = "<option value=''>Veuillez selectionner</option>";
+            $.ajax({
+                type:'GET',
+                url:'/commune/by/arrondissement/'+arrondissement_id,
+                 data:'_token = <?php echo csrf_token() ?>',
+                success:function(data) {
+
+                    $.each(data,function(index,row){
+                        //alert(row.nomd);
+                        commune +="<option value="+row.id+">"+row.nom+"</option>";
+
+                    });
+                    $("#commune_id").empty();
+                    $("#commune_id").append(commune);
+                }
+            });
+        });
         $("#commune_id").change(function () {
             var commune_id =  $("#commune_id").children("option:selected").val();
                 var centrevote = "<option value=''>Veuillez selectionner</option>";
@@ -158,9 +235,7 @@
                 $.ajax({
                     type:'GET',
                     url:'/centrevote/by/commune/'+commune_id,
-                //   url:'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
-                 //  url:'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
-                //  url:'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
+               
                     vdata:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 
@@ -181,7 +256,7 @@
                     $("#lieuvote_id").empty();
                     $.ajax({
                         type:'GET',
-                        url:'/lieuvote/by/centrevote/'+centrevote_id,
+                        url:'/lieuvote/temoin/by/centrevote/'+centrevote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 

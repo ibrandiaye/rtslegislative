@@ -39,10 +39,12 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Region</th>
+                          {{--   <th>Region</th> --}}
                             <th>Departement</th>
                             <th>Heure</th>
                             <th>nombre de votes</th>
+                            <th>Centre de vote</th>
+                            <th>Lieu de vote</th>
                             
 {{--                              <th>nombre de vote valide</th>
   --}}                            <th>Actions</th>
@@ -52,7 +54,7 @@
                     @foreach ($participations as $participation)
                         <tr>
                             <td>{{ $participation->id }}</td>
-                            <td>{{ $participation->region->nom }}</td>
+                         {{--    <td>{{ $participation->region->nom }}</td> --}}
                             
                             <td> @if ($participation->departement)
                                 
@@ -60,6 +62,8 @@
                             <td>{{ $participation->heure->designation }}</td>
                             
                             <td>{{ $participation->resultat }}</td>
+                            <td>{{ $participation->lieuvote->centrevote->nom }}</td>
+                            <td>{{ $participation->lieuvote->nom }}</td>
                              <td>
                                {{--  <a href="{{ route('participation.edit', $participation->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a> --}}
                                 {!! Form::open(['method' => 'DELETE', 'route'=>['participation.destroy', $participation->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}

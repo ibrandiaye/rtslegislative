@@ -50,4 +50,9 @@ public function getOneByName($nom)
     return DB::table("arrondissements")->where("nom",$nom)->first();
 }
 
+public function getOneOnly($id)
+{
+    return DB::table("arrondissements")->find($id);
+}
+
 }

@@ -44,28 +44,13 @@
                                     </div>
                                 @endif
                                 <div class="row">
-                                    <div class="col-3">
-                                        <label>Région</label>
-                                        <select class="form-control" id="region_id" name="region_id" required="">
-                                            <option value="">Selectionner</option>
-                                            @foreach ($regions as $region)
-                                            <option value="{{$region->id}}" {{ $region_id==$region->id ? 'selected' : '' }}>{{$region->nom}}</option>
-                                                @endforeach
-
-                                        </select>
-                                    </div>
-                                    <div class="col-3">
-                                        <label>Département</label>
-                                        <select class="form-control" id="departement_id" name="departement_id" >
-                                            @foreach ($departements as $departement)
-                                                <option value="{{$departement->id}}" {{ $departement_id==$departement->id ? 'selected' : '' }}>{{$departement->nom}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
+                                   
+                                  
+                                    <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}">
                                     <div class="col-3">
                                         <label>Arrondissement</label>
                                         <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
+                                            <option value="">Selectionnez</option>
                                             @foreach ($arrondissements as $arrondissement)
                                             <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
                                                 @endforeach 
@@ -74,7 +59,8 @@
                                       <div class="col-3">
                                         <label>Commune</label>
                                         <select class="form-control" id="commune_id" name="commune_id" required>
-                                             @foreach ($communes as $commune)
+                                         
+                                            @foreach ($communes as $commune)
                                             <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
                                                 @endforeach 
                                         </select>
@@ -137,57 +123,8 @@
 @section('script')
 <script>
     url_app = '{{ config('app.url') }}';
-    $("#region_id").change(function () {
-    var region_id =  $("#region_id").children("option:selected").val();
-    $(".region").val(region_id);
-    $(".departement").val("");
-    $(".commune").val("");
-        var departement = "<option value=''>Veuillez selectionner</option>";
-        $.ajax({
-            type:'GET',
-            url:url_app+'/departement/by/region/'+region_id,
-        //   url:'http://vmi435145.contaboserver.net:9000/departement/by/region/'+region_id,
-          // url:'http://127.0.0.1/gestionmateriel/public/departement/by/region/'+region_id,
-          //    url:'http://127.0.0.1:8000/departement/by/region/'+region_id,
-            data:'_token = <?php echo csrf_token() ?>',
-            success:function(data) {
-
-                $.each(data,function(index,row){
-                    //alert(row.nomd);
-                    departement +="<option value="+row.id+">"+row.nom+"</option>";
-
-                });
-                $("#departement_id").empty();
-                $("#commune_id").empty();
-                $("#departement_id").append(departement);
-            }
-        });
-    });
-    $("#departement_id").change(function () {
-        var departement_id =  $("#departement_id").children("option:selected").val();
-        $(".departement").val(departement_id);
-        $(".commune").val("");
-        $("#commune_id").empty();
-        $("#arrondissement_id").empty();
-        $("#centrevote_id").empty();
-        $("#lieuvote_id").empty();
-            var arrondissement = "<option value=''>Veuillez selectionner</option>";
-            $.ajax({
-                type:'GET',
-                url:' /arrondissement/by/departement/'+departement_id,
-                data:'_token = <?php echo csrf_token() ?>',
-                success:function(data) {
-
-                    $.each(data,function(index,row){
-                        //alert(row.nomd);
-                        arrondissement +="<option value="+row.id+">"+row.nom+"</option>";
-
-                    });
-                    $("#arrondissement_id").empty();
-                    $("#arrondissement_id").append(arrondissement);
-                }
-            });
-        });
+   
+   
     $("#arrondissement_id").change(function () {
         var arrondissement_id =  $("#arrondissement_id").children("option:selected").val();
         $(".commune").val("");

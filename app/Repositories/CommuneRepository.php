@@ -71,5 +71,8 @@ public function getOneCommuneWithArrondissementdepartementAndRegion($id){
     ->where('region_id',$id)
     ->get();
  }
- 
+ public function getOnlyById($id)
+ {
+    return DB::table("communes")->find($id);
+ }
 }

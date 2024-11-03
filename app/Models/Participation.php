@@ -20,6 +20,9 @@ class Participation extends Model
     }
     public function region(){
         return $this->belongsTo(Region::class);
-        }
+    }
+    public function lieuvote(){
+        return $this->belongsTo(Lieuvote::class);
+    }
 }
 

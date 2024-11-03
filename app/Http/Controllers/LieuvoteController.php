@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Imports\BureauTemoin;
 use App\Imports\LieuvoteImport;
 use App\Models\Lieuvote;
+use App\Repositories\ArrondissementRepository;
 use App\Repositories\CentrevoteRepository;
+use App\Repositories\CommuneRepository;
 use App\Repositories\LieuvoteRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
@@ -15,10 +18,15 @@ class LieuvoteController extends Controller
 {
     protected $lieuvoteRepository;
     protected $centrevoteRepository;
+    protected $communeRepository;
+    protected $arrondissementRepository;
 
-    public function __construct(LieuvoteRepository $lieuvoteRepository, CentrevoteRepository $centrevoteRepository){
+    public function __construct(LieuvoteRepository $lieuvoteRepository, CentrevoteRepository $centrevoteRepository,
+    CommuneRepository $communeRepository,ArrondissementRepository $arrondissementRepository){
         $this->lieuvoteRepository =$lieuvoteRepository;
         $this->centrevoteRepository = $centrevoteRepository;
+        $this->communeRepository = $communeRepository;
+        $this->arrondissementRepository = $arrondissementRepository;
     }
 
     /**
@@ -160,6 +168,12 @@ class LieuvoteController extends Controller
         $lieuvotes = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote);
         return response()->json($lieuvotes);
     }
+    public function getByLieuvoteTemoinParticipation($centrevote){
+        $lieuvotes = $this->lieuvoteRepository->getByLieuvoteTemoinParticipation($centrevote);
+        return response()->json($lieuvotes);
+    }
+
+    
 
     public function getById($id)
     {
@@ -190,5 +204,64 @@ class LieuvoteController extends Controller
     {
         $lieuvotes = $this->lieuvoteRepository->getByCentreVote($id);   
         return view("bureau.bureauvote",compact("lieuvotes"));
+    }
+
+    public function getByDepartement()
+    {
+        $user = Auth::user();
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+        $arrondissement_id      = "";
+        $arrondissements = $this->arrondissementRepository->getByDepartement($user->departement_id);
+
+        $lieuvotess = $this->lieuvoteRepository->getByDepartement(Auth::user()->departement_id);  
+        return view("lieuvote.bydepartement",compact("arrondissements","arrondissement_id","commune_id","centrevote_id",
+        "lieuvote_id","communes","centreVotes","lieuVotes","lieuvotess"));
+ 
+    }
+
+    public function search(Request $request)
+    {
+        $req = $this->lieuvoteRepository->search();
+        $user = Auth::user();
+        $commune_id             = $request->commune_id;
+        $centrevote_id          = $request->centrevote_id;
+        $lieuvote_id            = $request->lieuvote_id;
+        $arrondissement_id      = $request->arrondissement_id;
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+       
+        $arrondissements = $this->arrondissementRepository->getByDepartement($user->departement_id);
+        if($request->arrondissement_id)
+        {
+            $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+            
+            $req = $req->where("communes.arrondissement_id",$request->arrondissement_id);
+        }
+        if($request->commune_id)
+        {
+            $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+               
+            $req = $req->where("communes.id",$request->commune_id);
+        }
+        if($request->centrevote_id)
+        {
+            $lieuVotes = $this->lieuvoteRepository->getByCentreVote($centrevote_id);
+            $req = $req->where("centrevotes.id",$request->centrevote_id);
+        }
+        if($request->lieuvote_id)
+        {
+          
+            $req = $req->where("lieuvotes.id",$request->lieuvote_id);
+        }
+        $lieuvotess = $req->get();
+        return view("lieuvote.bydepartement",compact("arrondissements","arrondissement_id","commune_id","centrevote_id",
+        "lieuvote_id","communes","centreVotes","lieuVotes","lieuvotess"));
+
     }
 }

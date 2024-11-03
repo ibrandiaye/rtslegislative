@@ -29,8 +29,36 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-
-<div class="col-12">
+    <h4>Taux de Participation</h4>
+    <div class="row">
+        @foreach($tauxDeParticipations as $tauxDeParticipation)
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-row">
+                        <div class="col-3 align-self-center">
+                            <div class="round">
+                                <i class="mdi mdi-eye"></i>
+                            </div>
+                        </div>
+                        <div class="col-9 align-self-center text-right">
+                            <div class="m-l-10">
+                                <h5 class="mt-0">{{round(((int)$tauxDeParticipation->nb/$inscrit)*100,2) }}%</h5>
+                                <p class="mb-0 text-muted"><a href="{{ route('participation.heure', ['heure'=>$tauxDeParticipation->designation]) }}">  à {{$tauxDeParticipation->designation}} </a><span class="badge bg-soft-success"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress mt-3" style="height:3px;">
+                        <div class="progress-bar  bg-success" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div><!--end card-body-->
+            </div><!--end card-->
+        </div><!--end col-->
+        @endforeach
+    
+    </div>
+    <div class="row">
+<div class="col-8">
     <div class="card ">
         <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif</div>
             <div class="card-body">
@@ -67,7 +95,9 @@
                 <br>
                 @endif
                 <div class="row">
-                    <div class="col-8">
+                    <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>2]) }}" class="btn btn-success" >Imprimer</a>
+<br>
+                    <div class="col-12">
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>
@@ -93,14 +123,8 @@
 
 
                     </div>
-                    <div class="col-4">
-                        <h6>Inscrits : {{$inscrit}}</h6>
-                        <h6>Votant : {{$votant}}</h6>
-                        <h6>Nuls : {{$bullnull}}</h6>
-                        <h6>Exprimés : {{$votant - $bullnull}}</h6>
-                        <h6>Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6>
-                        <h6>Siège  : @if(!empty($departement)){{$departement->nbcandidat}} @endif</h6>
-                    </div>
+                    
+                       
                 </div>
 
 
@@ -109,9 +133,27 @@
 
     </div>
 </div>
-
+<div class="col-4">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations Générales</h5>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Inscrits : {{$inscrit}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Votant : {{$votant}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Nuls : {{$bullnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$votant - $bullnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Siège  : @if(!empty($departement)){{$departement->nbcandidat}} @endif</h6><br>
+        </div>
+    </div>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+</div>
+</div>
 @endsection
 @section('script')
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js" integrity="sha512-CAv0l04Voko2LIdaPmkvGjH3jLsH+pmTXKFoyh5TIimAME93KjejeP9j7wSeSRXqXForv73KUZGJMn8/P98Ifg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
  url_app = '{{ config('app.url') }}';
  $("#region_id").change(function () {
@@ -139,7 +181,38 @@
     });
 
 
+    $(document).ready(function(){
 
+const ctx = document.getElementById('myChart');
+
+var myChart =new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: [
+             'Depouiller',
+            'Non Depouiller'
+        ],
+  datasets: [{
+    label: 'Etat depouillement',
+    data: [{{$depouillement[0]}},{{$depouillement[1]}}],
+    backgroundColor: [
+     
+      'rgb(54, 162, 235)',
+      'rgb(255, 99, 132)',
+    ],
+    hoverOffset: 4
+  }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+});
 
 
 

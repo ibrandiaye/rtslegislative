@@ -263,6 +263,11 @@
                                 <a href="{{ route('rts.national.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National Temoin</span></a>
 
                             </li>
+                            <li>
+                                <a href="{{ route('voir.par.departement.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Departement Temoin</span></a>
+
+                            </li>
+                          
 
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Utilisateur </span></a>
@@ -271,34 +276,7 @@
                                     <li><a href="{{ route('user.index') }}">Lister</a></li>
                                 </ul>
                             </li>
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Region </span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="{{ route('region.create') }}"> Ajouter</a></li>
-                                    <li><a href="{{ route('region.index') }}">Lister</a></li>
-                                </ul>
-                            </li>
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Departement </span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="{{ route('departement.create') }}"> Ajouter</a></li>
-                                    <li><a href="{{ route('departement.index') }}"> Lister</a></li>
-                                </ul>
-                            </li>
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Arrondissement </span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="{{ route('arrondissement.create') }}"> Ajouter</a></li>
-                                    <li><a href="{{ route('arrondissement.index') }}">Lister</a></li>
-                                </ul>
-                            </li>
-                            <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Commune </span></a>
-                                <ul class="list-unstyled">
-                                    <li><a href="{{ route('commune.create') }}"> Ajouter</a></li>
-                                    <li><a href="{{ route('commune.index') }}">Lister</a></li>
-                                </ul>
-                            </li>
+                         
                             <li class="has_sub">
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Bureau de vote </span></a>
                                 <ul class="list-unstyled">
@@ -317,15 +295,36 @@
                         </li>
                            @endif
                             @if( Auth::user()->role=='prefet' || Auth::user()->role=='sous_prefet' || Auth::user()->role=='gouverneur')
-                          {{--   <li>
+                             <li>
                                 <a href="{{ route('home') }}">
-                                <i class="mdi mdi-clock"></i> Tableau de bords
+                                <i class="mdi mdi-clock"></i> Resultat Departement
                                 </a>
-                            </li> --}}
+                            </li> 
                             <li>
-                                <a href="{{ route('rtslieu.create') }}xxxxxxx" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Bureau de vote </span></a>
+                                <a href="{{ route('rtslieu.create') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collecte par Bureau de vote </span></a>
 
                             </li>
+                            <li>
+                                <a href="{{ route('rtstemoin.create') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collecte par Bureau temoin </span></a>
+
+                            </li>
+                            <li>
+                                <a href="{{ route('voir.par.departement.temoin.prefet') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Bureau temoin </span></a>
+
+                            </li>
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Taux de Participation </span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('participation.create') }}"> Ajouter</a></li>
+                                    <li><a href="{{ route('participation.index') }}">Lister</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{ route('bureau.by.departement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau de vote </span></a>
+
+                            </li>
+                            
+                            
                             @endif
 
                             @if( Auth::user()->role=='prefet' || Auth::user()->role=='sous_prefet' || Auth::user()->role=='gouverneur')
@@ -441,7 +440,7 @@
                                                 <div class="col-md-12">
                                                     <div class="form-group no-margin">
                                                         <label for="field-7" class="control-label">Repetez Mot de passe</label>
-                                                        <input type="password" name="password_confirmation" class="form-control" id="field-3" placeholder="Repetez Mot de passe">                                                        </div>
+                                                        <input type="password" name="password_confirmation" class="form-control" id="field-4" placeholder="Repetez Mot de passe">                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -505,12 +504,16 @@
         <script src="{{asset('js/app.js') }}"></script>
         <script src="{{asset('plugins/parsleyjs/parsley.min.js') }}"></script>
         <script src="{{asset('plugins/parsleyjs/fr.js') }}"></script>
+         {{-- Chart JS 
+         <script src="{{asset('plugins/chart.js/chart.min.js') }}"></script>
+         <script src="{{asset('pages/chartjs.init.js') }}"></script> --}}
+ 
 
         <script type="text/javascript">
-            $(document).ready(function() {
+          /*  $(document).ready(function() {
                 $('form').parsley();
                 window.Parsley.setLocale("fr");
-            });
+            });*/
 
         </script>
 

@@ -38,6 +38,11 @@
                                         </ul>
                                     </div>
                                 @endif
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success">
+                                    <p>{{ $message }}</p>
+                                </div>
+                            @endif
                                 <div class="row">
 
                                     <div class="col-4">
@@ -89,7 +94,7 @@
                                                     <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
                                                         @foreach ($lieuVotes as $lieuVote)
                                                         <option value="{{$lieuVote->id}}" {{ $lieuvote_id==$lieuVote->id ? 'selected' : '' }}>{{$lieuVote->nom}}</option>
-                                                            @endforeach
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-12">

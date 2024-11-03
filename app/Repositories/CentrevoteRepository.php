@@ -139,4 +139,10 @@ public function allCentre(){
         ->where("departements.region_id",$id)
         ->count();
     }
+
+
+    public function getOneOnly($id)
+    {
+        return DB::table("centrevotes")->find($id);
+    }
 }

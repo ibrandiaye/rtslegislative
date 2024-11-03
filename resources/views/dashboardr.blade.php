@@ -459,7 +459,7 @@
 
             <img class="rounded-circle" src="{{ asset('photo/'.$rtsParCandidat->photo) }}" alt="Card image cap" style="height: 250px;">
             <div class="card-body">
-               <h4> <p class="card-text text-center">{{round(((int)$rtsParCandidat->nb/($votants + $nbVotantDiaspora))*100,2) }}%</p>
+               <h4> <p class="card-text text-center">{{round((int)$rtsParCandidat->nb/$votants*100,2) }}%</p>
                 <br>{{$rtsParCandidat->nb}} voix</p></h4>
 
             </div>
@@ -482,7 +482,8 @@
                       <a href="{{ route('candidat.show', ['candidat'=>$rtsParCandidat->id]) }}"  > <p style="font-weight: 700;font-size: small;text-align: center!important;margin-right: 5px;margin-top: 5px;">{{ $rtsParCandidat->nom }}</p></a>
                         <h4>
                             <p class="card-text text-center text-danger">@if ((int)$rtsParCandidat->nb > 0 && $votants > 0)
-                                {{round(((int)$rtsParCandidat->nb/($votants+$nbVotantDiaspora))*100,2) }}%
+                               {{--    {{round(((int)$rtsParCandidat->nb/($votants+$nbVotantDiaspora))*100,2) }}%  --}}
+                               {{round(((int)$rtsParCandidat->nb/$votants)*100,2) }}% 
                             <br>{{$rtsParCandidat->nb}} voix</p>
 
                             @endif

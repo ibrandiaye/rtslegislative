@@ -29,8 +29,8 @@
             <p>{{ $message }}</p>
         </div>
     @endif
-
-<div class="col-12">
+<div class="row">
+<div class="col-8">
     <div class="card ">
         <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif</div>
             <div class="card-body">
@@ -67,7 +67,8 @@
                 <br>
                 @endif
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-12">
+                        <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}" class="btn btn-success" >Imprimer</a>
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>
@@ -93,14 +94,7 @@
         
         
                     </div>
-                    <div class="col-4">
-                        <h6>Inscrits : {{$inscrit}}</h6>
-                        <h6>Votant : {{$votant}}</h6>
-                        <h6>Nuls : {{$bullnull}}</h6>
-                        <h6>Exprimés : {{$votant - $bullnull}}</h6>
-                        <h6>Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6>
-                        <h6>Siège  : @if(!empty($departement)){{$departement->nbcandidat}} @endif</h6>
-                    </div>
+                   
                 </div>
 
              
@@ -109,9 +103,27 @@
 
     </div>
 </div>
-
+<div class="col-4">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Informations Générales</h5>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Inscrits : {{$inscrit}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Votant : {{$votant}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Nuls : {{$bullnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$votant - $bullnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Siège  : @if(!empty($departement)){{$departement->nbcandidat}} @endif</h6>
+        </div>
+    </div>
+    <div>
+        <canvas id="myChart"></canvas>
+      </div>
+</div>
+</div>
 @endsection
 @section('script')
+<script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js" integrity="sha512-CAv0l04Voko2LIdaPmkvGjH3jLsH+pmTXKFoyh5TIimAME93KjejeP9j7wSeSRXqXForv73KUZGJMn8/P98Ifg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
  url_app = '{{ config('app.url') }}';
  $("#region_id").change(function () {
@@ -139,7 +151,38 @@
     });
 
 
+    $(document).ready(function(){
 
+const ctx = document.getElementById('myChart');
+
+var myChart =new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: [
+             'Depouiller',
+            'Non Depouiller'
+        ],
+  datasets: [{
+    label: 'Etat depouillement',
+    data: [{{$depouillement[0]}},{{$depouillement[1]}}],
+    backgroundColor: [
+     
+      'rgb(54, 162, 235)',
+      'rgb(255, 99, 132)',
+    ],
+    hoverOffset: 4
+  }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+});
 
 
 
