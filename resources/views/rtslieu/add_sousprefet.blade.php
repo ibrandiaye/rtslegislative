@@ -149,6 +149,7 @@
 
 @section('script')
 <script>
+     url_app = '{{ config('app.url') }}';
 
         $("#commune_id").change(function () {
             var commune_id =  $("#commune_id").children("option:selected").val();
@@ -157,10 +158,10 @@
                 $("#lieuvote_id").empty();
                 $.ajax({
                     type:'GET',
-                    url:'/centrevote/by/commune/'+commune_id,
-                //   url:'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
-                 //  url:'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
-                //  url:'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
+                    url:url_app+'/centrevote/by/commune/'+commune_id,
+                //   url:url_app+'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
+                 //  url:url_app+'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
+                //  url:url_app+'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
                     vdata:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 
@@ -181,7 +182,7 @@
                     $("#lieuvote_id").empty();
                     $.ajax({
                         type:'GET',
-                        url:'/lieuvote/by/centrevote/'+centrevote_id,
+                        url:url_app+'/lieuvote/by/centrevote/'+centrevote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 
@@ -199,7 +200,7 @@
                 var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
                     $.ajax({
                         type:'GET',
-                        url:'/electeur/by/lieuvote/'+lieuvote_id,
+                        url:url_app+'/electeur/by/lieuvote/'+lieuvote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)

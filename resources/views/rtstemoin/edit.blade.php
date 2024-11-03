@@ -124,6 +124,7 @@
 @endsection
 @section('script')
 <script>
+      url_app = '{{ config('app.url') }}';
     $("#region_id").change(function () {
     var region_id =  $("#region_id").children("option:selected").val();
     $(".region").val(region_id);
@@ -132,10 +133,10 @@
         var departement = "<option value=''>Veuillez selectionner</option>";
         $.ajax({
             type:'GET',
-            url:'/resultats/departement/by/region/'+region_id,
-        //   url:'http://vmi435145.contaboserver.net:9000/departement/by/region/'+region_id,
-          // url:'http://127.0.0.1/gestionmateriel/public/departement/by/region/'+region_id,
-          //    url:'http://127.0.0.1:8000/departement/by/region/'+region_id,
+            url:url_app+'/resultats/departement/by/region/'+region_id,
+        //   url:url_app+'http://vmi435145.contaboserver.net:9000/departement/by/region/'+region_id,
+          // url:url_app+'http://127.0.0.1/gestionmateriel/public/departement/by/region/'+region_id,
+          //    url:url_app+'http://127.0.0.1:8000/departement/by/region/'+region_id,
             data:'_token = <?php echo csrf_token() ?>',
             success:function(data) {
 
@@ -157,10 +158,10 @@
             var commune = "<option value=''>Veuillez selectionner</option>";
             $.ajax({
                 type:'GET',
-                url:'/resultats/commune/by/departement/'+departement_id,
-              //  url:'http://vmi435145.contaboserver.net:9000/commune/by/departement/'+departement_id,
-             //   url:'http://127.0.0.1/gestionmateriel/public/commune/by/departement/'+departement_id,
-             //    url:'http://127.0.0.1:8000/commune/by/departement/'+departement_id,
+                url:url_app+'/resultats/commune/by/departement/'+departement_id,
+              //  url:url_app+'http://vmi435145.contaboserver.net:9000/commune/by/departement/'+departement_id,
+             //   url:url_app+'http://127.0.0.1/gestionmateriel/public/commune/by/departement/'+departement_id,
+             //    url:url_app+'http://127.0.0.1:8000/commune/by/departement/'+departement_id,
                 data:'_token = <?php echo csrf_token() ?>',
                 success:function(data) {
 
@@ -179,10 +180,10 @@
                 var centrevote = "<option value=''>Veuillez selectionner</option>";
                 $.ajax({
                     type:'GET',
-                    url:'/resultats/centrevote-temoin/by/commune/'+commune_id,
-                //   url:'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
-                 //  url:'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
-                //  url:'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
+                    url:url_app+'/resultats/centrevote-temoin/by/commune/'+commune_id,
+                //   url:url_app+'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
+                 //  url:url_app+'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
+                //  url:url_app+'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
                     vdata:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 
@@ -202,7 +203,7 @@
                     var lieuvote = "<option value=''>Veuillez selectionner</option>";
                     $.ajax({
                         type:'GET',
-                        url:'/resultats/lieuvote-temoin/by/centrevote/'+centrevote_id,
+                        url:url_app+'/resultats/lieuvote-temoin/by/centrevote/'+centrevote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 
@@ -220,7 +221,7 @@
                 var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
                     $.ajax({
                         type:'GET',
-                        url:'/resultats/electeur/by/lieuvote/'+lieuvote_id,
+                        url:url_app+'/resultats/electeur/by/lieuvote/'+lieuvote_id,
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
