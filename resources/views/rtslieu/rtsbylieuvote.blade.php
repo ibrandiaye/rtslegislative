@@ -26,7 +26,7 @@
         </div>
             @csrf
              <div class="card ">
-                        <div class="card-header text-center"> Resultat Lieu de vote  : {{$centrevote->nom}}, Bureau N° {{$lieuvote->nom}}</div>
+                        <div class="card-header text-center"> Resultat Bureau  de vote  : {{$centrevote->nom}}, Bureau N° {{$lieuvote->nom}}</div>
                             <div class="card-body">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">

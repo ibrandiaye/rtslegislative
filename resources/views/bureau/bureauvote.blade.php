@@ -38,7 +38,7 @@
                     <thead>
                         <tr>
                             <th>Commune</th>
-                            <th>Lieu de vote</th>
+                            <th>Bureau  de vote</th>
                             <th>Bureau</th>
                             <th>Electeurs</th>
                             <th>Etat</th>

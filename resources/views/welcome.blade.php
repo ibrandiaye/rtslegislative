@@ -248,7 +248,7 @@
 
  --}}
                             <li>
-                                <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Lieu de Vote </span></a>
+                                <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau  de vote </span></a>
 
                             </li>
                             <li>
@@ -286,11 +286,24 @@
                             </li>
 
                             </li>
-
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Candidat </span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('candidat.create') }}"> Ajouter</a></li>
+                                    <li><a href="{{ route('candidat.index') }}">Lister</a></li>
+                                </ul>
+                            </li>
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-clock"></i><span>Heure de collecte </span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('heure.create') }}"> Ajouter</a></li>
+                                    <li><a href="{{ route('heure.index') }}">Lister</a></li>
+                                </ul>
+                            </li>
                             @endif
                            @if (Auth::user()->role=='superviseur')
                            <li>
-                            <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Lieu de Vote </span></a>
+                            <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau  de vote </span></a>
 
                         </li>
                            @endif

@@ -69,7 +69,7 @@
 
                                     </div>
                                         <div class="col">
-                                            <label>centrevote</label>
+                                            <label>Lieu de vote</label>
                                             <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
                                                 <option value="">Selectionner</option>
                                                 @foreach ($centrevotes as $centrevote)
@@ -79,7 +79,7 @@
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label>Lieu de Vote  </label>
+                                            <label>Bureau  de vote  </label>
                                             <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
                                                 <option value="">Selectionner</option>
                                                 <option value="{{$lieuvote->id}}" {{ $lieuvote->id==$rtstemoin->lieuvote_id ? 'selected' : ''}}>{{$lieuvote->nom}} </option>

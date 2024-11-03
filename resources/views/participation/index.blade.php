@@ -44,7 +44,7 @@
                             <th>Heure</th>
                             <th>nombre de votes</th>
                             <th>Centre de vote</th>
-                            <th>Lieu de vote</th>
+                            <th>Bureau  de vote</th>
                             
 {{--                              <th>nombre de vote valide</th>
   --}}                            <th>Actions</th>

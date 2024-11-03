@@ -68,7 +68,9 @@
                 @endif
                 <div class="row">
                     <div class="col-12">
+                        @if($departement)
                         <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}" class="btn btn-success" >Imprimer</a>
+                        @endif
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>

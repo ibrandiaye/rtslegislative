@@ -64,7 +64,7 @@
                             </select>
                         </div>
                         <div class="col-2">
-                            <label>Lieu de Vote</label>
+                            <label>Bureau  de vote</label>
                             <select class="form-control" name="lieuvote_id" id="lieuvote_id" >
                                 <option value="">Veuillez selectionner </option>
 

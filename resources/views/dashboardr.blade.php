@@ -416,31 +416,6 @@
     @endforeach
 
 </div>
- <h4>Resultat Bureau Temoin</h4>
-
-<div class="row">
-    @foreach ($rtsTemoins as $rtsTemoin)
-    <div class="col-md-3" >
-
-
-        <div class="card" >
-            <div class="row">
-                <div class="col-2">
-                    <img class="rounded-circle" src="{{ asset('photo/'.$rtsTemoin->photo) }}" alt="Card image cap" style="height: 100px;width: 100px;">
-                </div>
-                <div class="col-10">
-                    <a href="{{ route('candidat.show', ['candidat'=>$rtsTemoin->id]) }}"  > <p style="font-weight: 700;font-size: small;text-align: center!important;margin-right: 5px;margin-top: 5px;">{{ $rtsTemoin->nom }}</p></a>
-                    <h4>
-                        <p class="card-text text-center text-danger">{{round(((int)$rtsTemoin->nb/$nbVotantTemoin)*100,2) }}%</p>
-                    </h4>
-                </div>
-            </div>
-
-        </div>
-        &nbsp;&nbsp;
-    </div>
- @endforeach
-</div>
 <h4>Resultat Bureau National</h4>
 
 <div class="row">
@@ -497,6 +472,32 @@
         </div>
         @endif
      @endforeach
+ <h4>Resultat Bureau Temoin</h4>
+
+<div class="row">
+    @foreach ($rtsTemoins as $rtsTemoin)
+    <div class="col-md-3" >
+
+
+        <div class="card" >
+            <div class="row">
+                <div class="col-2">
+                    <img class="rounded-circle" src="{{ asset('photo/'.$rtsTemoin->photo) }}" alt="Card image cap" style="height: 100px;width: 100px;">
+                </div>
+                <div class="col-10">
+                    <a href="{{ route('candidat.show', ['candidat'=>$rtsTemoin->id]) }}"  > <p style="font-weight: 700;font-size: small;text-align: center!important;margin-right: 5px;margin-top: 5px;">{{ $rtsTemoin->nom }}</p></a>
+                    <h4>
+                        <p class="card-text text-center text-danger">{{round(((int)$rtsTemoin->nb/$nbVotantTemoin)*100,2) }}%</p>
+                    </h4>
+                </div>
+            </div>
+
+        </div>
+        &nbsp;&nbsp;
+    </div>
+ @endforeach
+</div>
+
 
    {{--
         <div class="col-md-6 col-lg-6 col-xl-3">

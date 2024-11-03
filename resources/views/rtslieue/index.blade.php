@@ -40,7 +40,7 @@
                         <tr>
                             <th>#</th>
                             <th>centre de vote</th>
-                            <th>Lieu Vote</th>
+                            <th>Bureau vote</th>
                             <th>Candidat</th>
                             <th>nombre de votes</th>
 {{--                              <th>nombre de vote valide</th>

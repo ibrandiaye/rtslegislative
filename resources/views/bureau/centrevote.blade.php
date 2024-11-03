@@ -31,7 +31,7 @@
     @endif
     <div class="row">
         <div class="col">
-            <h5>Nombre de Lieu de vote  : {{$nbCentreVote}}</h4>
+            <h5>Nombre de Bureau  de vote  : {{$nbCentreVote}}</h4>
            
            
         </div>
@@ -57,7 +57,7 @@
     </div>
 <div class="col-12">
     <div class="card ">
-        <div class="card-header  text-center">LISTE D'ENREGISTREMENT DES Lieu de vote</div>
+        <div class="card-header  text-center">LISTE D'ENREGISTREMENT DES Bureau  de vote</div>
             <div class="card-body">
                 
                     <form method="POST" action="{{ route('searhAdmin') }}">
@@ -101,7 +101,7 @@
                                 </select>
                             </div>
                             <div class="col-2">
-                                <label>Lieu de vote</label>
+                                <label>Bureau  de vote</label>
                                 <select class="form-control" name="centrevote_id" id="centrevote_id" >
                                     <option value=""> Veuillez choisir</option>
                                     @foreach ($centrevotes as $item)
@@ -126,7 +126,7 @@
                             <th>Departement</th>
                             <th>Arrondissement</th>
                             <th>Commune</th>
-                            <th>Nom Lieu de vote</th>
+                            <th>Nom Bureau  de vote</th>
                             <th>Actions</th>
                         </tr>
                     </thead>

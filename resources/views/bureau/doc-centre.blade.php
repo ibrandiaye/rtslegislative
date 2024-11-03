@@ -95,7 +95,7 @@ table{
     <div class="row">
         <div class="col-2"></div>
         <div class="col-8">
-            <h6>Lieu de vote {{ $centrevote->nom}}</h6>
+            <h6>Bureau  de vote {{ $centrevote->nom}}</h6>
 
         </div>
     </div>

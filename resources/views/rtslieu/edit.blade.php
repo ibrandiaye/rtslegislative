@@ -64,14 +64,14 @@
                                             </select>
                                         </div>
                                             <div class="col-12">
-                                                <label>centrevote</label>
+                                                <label>Lieu de vote</label>
                                                 <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
                                                   
                                                     <option value="{{$centreVote->id}}" >{{$centreVote->nom}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-12">
-                                                <label>Lieu de Vote</label>
+                                                <label>Bureau  de vote</label>
                                                 <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
                                                     
                                                     <option value="{{$lieuVote->id}}" >{{$lieuVote->nom}}</option>

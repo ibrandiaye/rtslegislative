@@ -90,7 +90,7 @@ table{
 <div class="row">
     <div class="col-2"></div>
     <div class="col-8">
-        <h6>Lieu de vote @if(count($bureaus) > 0){{ $bureaus[0]->centrevote}} @endif</h6>
+        <h6>Bureau  de vote @if(count($bureaus) > 0){{ $bureaus[0]->centrevote}} @endif</h6>
 
     </div>
 </div>

@@ -61,7 +61,7 @@
                                     </select>
                                 </div>
                                 <div class="col-lg-6">
-                                    <label>Lieu de vote</label>
+                                    <label>Bureau  de vote</label>
                                     <select class="form-control" name="lieuvotee_id" required="">
                                         @foreach ($lieuvotees as $lieuvotee)
                                         <option {{old('lieuvotee_id', $rtslieu->lieuvotee_id) == $lieuvotee->id ? 'selected' : ''}}

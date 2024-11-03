@@ -74,7 +74,7 @@
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label>Lieu de Vote</label>
+                                            <label>Bureau  de vote</label>
                                             <select class="form-control" name="lieuvotee_id" id="lieuvotee_id" required="">
                                              {{--     @foreach ($lieuvotees as $lieuvotee)
                                                 <option value="{{$lieuvotee->id}}">{{$lieuvotee->nom}}</option>
