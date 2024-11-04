@@ -51,6 +51,7 @@
                                            <div class="col-12">
                                             <label>Arrondissement</label>
                                             <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
+                                                <option value="">Selectionner</option>
                                                 @foreach ($arrondissements as $arrondissement)
                                                 <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
                                                     @endforeach
