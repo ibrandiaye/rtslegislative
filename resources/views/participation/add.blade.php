@@ -174,7 +174,7 @@
             var arrondissement = "<option value=''>Veuillez selectionner</option>";
             $.ajax({
                 type:'GET',
-                url:'/arrondissement/by/departement/'+departement_id,
+                url:url_app+'/arrondissement/by/departement/'+departement_id,
                 data:'_token = <?php echo csrf_token() ?>',
                 success:function(data) {
 
@@ -197,7 +197,7 @@
             var commune = "<option value=''>Veuillez selectionner</option>";
             $.ajax({
                 type:'GET',
-                url:'/commune/by/arrondissement/'+arrondissement_id,
+                url:url_app+'/commune/by/arrondissement/'+arrondissement_id,
                  data:'_token = <?php echo csrf_token() ?>',
                 success:function(data) {
 
@@ -218,9 +218,9 @@
                 $("#lieuvote_id").empty();
                 $.ajax({
                     type:'GET',
-                    url:'/centrevote/by/commune/'+commune_id,
+                    url:url_app+'/centrevote/by/commune/'+commune_id,
 
-                    vdata:'_token = <?php echo csrf_token() ?>',
+                    data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 
                         $.each(data,function(index,row){
@@ -240,8 +240,8 @@
                     $("#lieuvote_id").empty();
                     $.ajax({
                         type:'GET',
-                        url:'/lieuvote/temoin/participation/by/centrevote/'+centrevote_id,
-                        vdata:'_token = <?php echo csrf_token() ?>',
+                        url:url_app+'/lieuvote/temoin/participation/by/centrevote/'+centrevote_id,
+                        data:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 
                             $.each(data,function(index,row){
@@ -258,8 +258,8 @@
                 var lieuvote_id =  $("#lieuvote_id").children("option:selected").val();
                     $.ajax({
                         type:'GET',
-                        url:'/electeur/by/lieuvote/'+lieuvote_id,
-                        vdata:'_token = <?php echo csrf_token() ?>',
+                        url:url_app+'/electeur/by/lieuvote/'+lieuvote_id,
+                        data:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
 

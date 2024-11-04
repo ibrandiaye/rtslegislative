@@ -188,7 +188,7 @@
                 //   url:url_app+'http://vmi435145.contaboserver.net:9000/commune/by/commune/'+commune_id,
                  //  url:url_app+'http://127.0.0.1/gestionmateriel/public/commune/by/commune/'+commune_id,
                 //  url:url_app+'http://127.0.0.1:8000/commune/by/commune/'+commune_id,
-                    vdata:'_token = <?php echo csrf_token() ?>',
+                    data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 
                         $.each(data,function(index,row){
@@ -209,7 +209,7 @@
                     $.ajax({
                         type:'GET',
                         url:url_app+'/lieuvote/by/centrevote/'+centrevote_id,
-                        vdata:'_token = <?php echo csrf_token() ?>',
+                        data:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
 
                             $.each(data,function(index,row){
@@ -227,7 +227,7 @@
                     $.ajax({
                         type:'GET',
                         url:url_app+'/electeur/by/lieuvote/'+lieuvote_id,
-                        vdata:'_token = <?php echo csrf_token() ?>',
+                        data:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
 
