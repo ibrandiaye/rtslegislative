@@ -52,11 +52,12 @@ public function  rtsByOneCandidat($id){
 
 }
 public function  nbVoixByDepartement($id){
-    return   DB::table('lieuvotes')
+    return   DB::table('rtslieus')
   ->where("departement_id",$id)
   ->sum('nbvote');
 
 }
+
 
 public function  rtsGroupByLieuvVoteByCandidat($id){
 
