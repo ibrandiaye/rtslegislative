@@ -92,7 +92,7 @@
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Inscrits : {{$inscrit}}</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Votant : {{$totalVotants + $bulletinnull}}</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Nuls : {{$bulletinnull}}</h6><br>
-            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$totalVotants - $bulletinnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$totalVotants }}</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Taux de participation : @if($inscrit>0){{ round(($totalVotants*100)/$inscrit,2)}}% @endif</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Qutotient  : {{ $quotiant }}</h6><br>
         </div>

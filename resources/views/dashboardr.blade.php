@@ -131,7 +131,7 @@
                     </div>
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10 ">
-                            <h5 class="mt-0">{{ $votants + $nullNational}}</h5>
+                            <h5 class="mt-0">{{ $totalVotants + $nullNational}}</h5>
                           <a href="{{ route('nbVoteStat') }}">  <p class="mb-0 text-muted">Nombre de votants</p></a>
                         </div>
                     </div>
@@ -178,7 +178,7 @@
                     </div>
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10">
-                            <h5 class="mt-0">{{ $votants  }}</h5>
+                            <h5 class="mt-0">{{ $totalVotants  }}</h5>
                             <p class="mb-0 text-muted">surfrage valablement exprime <span class="badge bg-soft-success"></span></p>
                         </div>
                     </div>
@@ -201,8 +201,8 @@
                     </div>
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10 ">
-                            <h5 class="mt-0">@if($votants >0)
-                                {{ round( ($votants/$electeurs)*100,2) }}% @else 0%
+                            <h5 class="mt-0">@if($totalVotants >0)
+                                {{ round( ($totalVotants/$electeurs)*100,2) }}% @else 0%
                                 @endif
                             </h5>
                             <p class="mb-0 text-muted">Taux de Participation</p>
@@ -434,7 +434,7 @@
 
             <img class="rounded-circle" src="{{ asset('photo/'.$rtsParCandidat->photo) }}" alt="Card image cap" style="height: 250px;">
             <div class="card-body">
-               <h4> <p class="card-text text-center">{{round((int)$rtsParCandidat->nb/$votants*100,2) }}%</p>
+               <h4> <p class="card-text text-center">{{$resultats[$rtsParCandidat->coalition]['total']}} Députés <br> {{round((int)$rtsParCandidat->nb/$totalVotants*100,2) }}%</p>
                 <br>{{$rtsParCandidat->nb}} voix</p></h4>
 
             </div>
@@ -456,9 +456,9 @@
                         {{--   <p style="font-weight: 700;font-size: small;text-align: center!important;margin-right: 5px;margin-top: 5px;">{{ $rtsParCandidat->nom }}</p> --}}
                       <a href="{{ route('candidat.show', ['candidat'=>$rtsParCandidat->id]) }}"  > <p style="font-weight: 700;font-size: small;text-align: center!important;margin-right: 5px;margin-top: 5px;">{{ $rtsParCandidat->nom }}</p></a>
                         <h4>
-                            <p class="card-text text-center text-danger">@if ((int)$rtsParCandidat->nb > 0 && $votants > 0)
+                            <p class="card-text text-center text-danger">@if ((int)$rtsParCandidat->nb > 0 && $totalVotants > 0)
                                {{--    {{round(((int)$rtsParCandidat->nb/($votants+$nbVotantDiaspora))*100,2) }}%  --}}
-                               {{round(((int)$rtsParCandidat->nb/$votants)*100,2) }}% 
+                               {{round(((int)$rtsParCandidat->nb/$totalVotants)*100,2) }}% 
                             <br>{{$rtsParCandidat->nb}} voix</p>
 
                             @endif
@@ -472,6 +472,7 @@
         </div>
         @endif
      @endforeach
+     <br>
  <h4>Resultat Bureau Temoin</h4>
 
 <div class="row">

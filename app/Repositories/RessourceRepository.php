@@ -86,4 +86,64 @@ class RessourceRepository {
 
     }
 
+    public function calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants) {
+        $resultatSiegesMajoritaires = [];
+        $siegesProportionnels = [];
+        $siegesProp = 53;  // Nombre de sièges pour la proportionnelle
+    
+        // Distribution des sièges majoritaires : tout au parti ayant la majorité des voix
+        foreach ($circonscriptions as $circonscription => $resultats) {
+            arsort($resultats);  // Trier les votes par ordre décroissant pour la circonscription
+            $partiGagnant = key($resultats);  // Parti ayant obtenu le plus de votes
+            $nombreSieges = $siegesParCirconscription[$circonscription] ?? 0;
+    
+            // Attribuer tous les sièges de la circonscription au parti gagnant
+            $resultatSiegesMajoritaires[$partiGagnant] = ($resultatSiegesMajoritaires[$partiGagnant] ?? 0) + $nombreSieges;
+        }
+    
+        // Calcul du quotient électoral pour la répartition proportionnelle
+        $quotientElectoral = $totalVotants / $siegesProp;
+       //dd($quotientElectoral);
+    
+        // Distribution des sièges proportionnels en fonction du quotient électoral
+        foreach ($votesProportionnels as $parti => $votes) {
+            $siegesProportionnels[$parti] = intdiv($votes, $quotientElectoral);
+        }
+    
+        // Attribution des sièges restants par la méthode des plus forts restes
+        $siegesAttribues = array_sum($siegesProportionnels);
+        $siegesRestants = $siegesProp - $siegesAttribues;
+    
+        if ($siegesRestants > 0) {
+            // Calculer les restes pour chaque parti
+            $restes = [];
+            foreach ($votesProportionnels as $parti => $votes) {
+                $reste = $votes % $quotientElectoral;
+                $restes[$parti] = $reste;
+            }
+    
+            // Trier les partis par ordre décroissant des restes
+            arsort($restes);
+    
+            // Distribuer les sièges restants aux partis avec les plus grands restes
+            foreach (array_keys($restes) as $parti) {
+                if ($siegesRestants <= 0) break;
+                $siegesProportionnels[$parti]++;
+                $siegesRestants--;
+            }
+        }
+    
+        // Combinaison des résultats
+        $siegesTotal = array();
+          foreach (array_merge(array_keys($resultatSiegesMajoritaires), array_keys($siegesProportionnels)) as $parti) {
+                $siege = array();
+                $siege['proportionnel'] =  $siegesProportionnels[$parti] ?? 0;
+                $siege['majoritaire']   = $resultatSiegesMajoritaires[$parti] ?? 0;
+                $siege['total']         = ($resultatSiegesMajoritaires[$parti] ?? 0) + ($siegesProportionnels[$parti] ?? 0);
+              $siegesTotal[$parti] = $siege;
+          }
+    
+          return $siegesTotal;
+      }
+
 }

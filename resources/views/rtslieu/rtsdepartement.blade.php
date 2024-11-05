@@ -112,7 +112,7 @@
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Inscrits : {{$inscrit}}</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Votant : {{$votant +$bullnull }}</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Nuls : {{$bullnull}}</h6><br>
-            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$votant - $bullnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$votant }}</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6><br>
             <h6 class="badge badge-success" style="font-size: 17px ! important;">Siège  : @if(!empty($departement)){{$departement->nbcandidat}} @endif</h6>
         </div>

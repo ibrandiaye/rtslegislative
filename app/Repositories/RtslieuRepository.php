@@ -18,7 +18,7 @@ class RtslieuRepository extends RessourceRepository{
     }
 
     public function nbVotants(){
-        return   Rtslieu::sum('nbvote');
+        return    DB::table('rtslieus')->sum('nbvote');
 
 
     }

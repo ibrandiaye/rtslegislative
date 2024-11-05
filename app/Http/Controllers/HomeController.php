@@ -80,11 +80,10 @@ CommuneRepository $communeRepository){
            // dd($nbCentrevotes);
            $tauxDepouillement = round(($nbRtsCentre/$nbCentrevotes)*100,2);
            $electeurs = $this->lieuvoteRepository->nbElecteurs();
-           $votants = $this->lieuvoteRepository->nbVotant();
+          // $votants = $this->rtslieuRepository->nbVotants();
            //$votants = $this->rtsDepartementRepository->nbVotants();
          //  $votantDiaspores = $this->rtsPayrrepository->nbVotants();
           // dd($votantDiaspores);
-           $tauxDepouillementElecteurs = round(($votants/$electeurs)*100,2);
 
           // $rtsParCandidats = $this->rtsDepartementRepository->rtsByCandidat();
          //  $rtsParCandidatDiasporas = $this->rtsPayrrepository->rtsByCandidat();
@@ -120,10 +119,53 @@ CommuneRepository $communeRepository){
             "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","nullEtrangers"));
             */
            // return redirect()->route("centre.by.arrondissement");
+
+          // $rts = $this->rtslieuRepository->rtsByCandidat();
+        
+            $departements = $this->departementRepository->getAllOnLy();
+            $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
+            $siegesParCirconscription = array();
+            //recuperer les departement et les nombre de partement par deputé
+            foreach ($departements as $key => $value) {
+                $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
+            }
+            //dd($rtsParCandidats);
+            $votantVal = 0;
+            $votesProportionnels = array();
+            foreach ($rtsParCandidats as $key => $rt) {
+            $votantVal = $votantVal + $rt->nb;
+            $votesProportionnels[$rt->coalition]  = intval($rt->nb);
+            }
+            //dd($votesProportionnels);
+            $quotiant = round( $votantVal/53,0);
+
+            $circonscriptions = array();
+
+            foreach ($departements as $key => $value) {
+                $resultat = array();
+                foreach ($rtsByDepartements as $key => $rtsByDepartement) {
+                    if($value->nom == $rtsByDepartement->departement)
+                    {
+                        $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
+                    }
+
+                }
+                $circonscriptions[$value->nom] = $resultat;
+            }
+
+        
+            $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+          // dd($circonscriptions);
+          $tauxDepouillementElecteurs = round(($totalVotants/$electeurs)*100,2);
+
+        
+            $resultats = $this->rtslieuRepository->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+           // dd($resultats);
+        
            return view("dashboardr",compact("nbCentrevotes","nbRtsCentre","electeurs",
-           "tauxDepouillement","votants","tauxDepouillementElecteurs","rtsParCandidats",
-           "nCentreVote","tauxDeParticipations",
-           "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational"));
+           "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
+           "nCentreVote","tauxDeParticipations","totalVotants",
+           "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats"));
         }
         else
         {
