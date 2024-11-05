@@ -347,7 +347,9 @@ protected $participationRepository;
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
+
     {
+      
         $this->rtslieuRepository->destroy($id);
         return redirect('rtslieu');
     }

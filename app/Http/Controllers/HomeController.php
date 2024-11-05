@@ -132,7 +132,7 @@ CommuneRepository $communeRepository){
         $departement = DB::table("departements")->where("id",$user->departement_id)->first();
         $departement_id = $user->departement_id;
       
-        $votant  = $this->lieuvoteRepository->nbVotantByDepartement($departement_id);
+        $votant  = $this->rtslieuRepository->nbVoixByDepartement($departement_id);
         $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
         $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
         $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
