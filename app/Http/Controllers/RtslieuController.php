@@ -486,6 +486,7 @@ protected $participationRepository;
   public function rtsByCandidat()
   {
         $rts = $this->rtslieuRepository->rtsByCandidat();
+        
         $departements = $this->departementRepository->getAllOnLy();
         $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
         $siegesParCirconscription = array();
@@ -520,13 +521,13 @@ protected $participationRepository;
     //dd($circonscriptions);
     // dd(round($quotiant,0));
 
-
+    //dd($rts);
     $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
     $bulletinnull = $this->lieuvoteRepository->nbBulletinNull();
     $hs = $this->lieuvoteRepository->nbHs();
-    $votant = $this->lieuvoteRepository->nbVotant();
+    //$votant = $this->lieuvoteRepository->nbVotant();
     $inscrit = $this->lieuvoteRepository->nbElecteurs();
-    //dd($bulletinnull);
+   // dd($votant);
 
     // Calcul
     $resultats = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
@@ -542,7 +543,7 @@ protected $participationRepository;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(1) ?? 0;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(0) ?? 0;
 
-    return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant","depouillement"));
+    return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","depouillement"));
 
   }
 
