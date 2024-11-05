@@ -363,7 +363,7 @@ protected $participationRepository;
         $regions  = $this->regionRepository->getAll();
         $departements = $this->departementRepository->getByRegion($request->region_id);
         $candidat = DB::table("candidats")->first();
-        $votant  = $this->lieuvoteRepository->nbVotantByDepartement($departement_id);
+        $votant  = $this->rtslieuRepository->nbVoixByDepartement($departement_id);
         $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
         $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
         $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
