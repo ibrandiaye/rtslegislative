@@ -434,7 +434,7 @@
 
             <img class="rounded-circle" src="{{ asset('photo/'.$rtsParCandidat->photo) }}" alt="Card image cap" style="height: 250px;">
             <div class="card-body">
-               <h4> <p class="card-text text-center">{{$resultats[$rtsParCandidat->coalition]['total']}} Députés <br> {{round((int)$rtsParCandidat->nb/$totalVotants*100,2) }}%</p>
+               <h4> <p class="card-text text-center">{{$resultats[$rtsParCandidat->coalition]['total']}} Deputes <br> {{round((int)$rtsParCandidat->nb/$totalVotants*100,2) }}%</p>
                 <br>{{$rtsParCandidat->nb}} voix</p></h4>
 
             </div>
@@ -458,7 +458,7 @@
                         <h4>
                             <p class="card-text text-center text-danger">@if ((int)$rtsParCandidat->nb > 0 && $totalVotants > 0)
                                {{--    {{round(((int)$rtsParCandidat->nb/($votants+$nbVotantDiaspora))*100,2) }}%  --}}
-                               {{round(((int)$rtsParCandidat->nb/$totalVotants)*100,2) }}% 
+                               {{$resultats[$rtsParCandidat->coalition]['total']}} Députés <br>  {{round(((int)$rtsParCandidat->nb/$totalVotants)*100,2) }}% 
                             <br>{{$rtsParCandidat->nb}} voix</p>
 
                             @endif
