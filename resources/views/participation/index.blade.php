@@ -47,7 +47,7 @@
 
                             </select>
                         </div>
-                        <div class="col-3">
+                        {{--<div class="col-3">
                             <label>Département</label>
                             <select class="form-control" id="departement_id" name="departement_id" >
                                 <option value="">Selectionner</option>
@@ -95,7 +95,7 @@
                                         <option value="{{$lieuVote->id}}" {{ $lieuvote_id==$lieuVote->id ? 'selected' : '' }}>{{$lieuVote->nom}}</option>
                                             @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
         
     
                         <div class="col-lg-2">
@@ -104,7 +104,7 @@
                     </div>
 
                 </form>
-                <table id="example1" class="table table-bordered table-responsive-md table-striped text-center">
+                <table id="datatable-buttons" class="table table-bordered table-responsive-md table-striped text-center">
                     <thead>
                         <tr>
                             <th>#</th>
