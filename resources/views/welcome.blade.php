@@ -248,7 +248,7 @@
 
  --}}
                             <li>
-                                <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau  de vote </span></a>
+                                <a href="{{ route('bureau.by.national') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau  de vote </span></a>
 
                             </li>
                             <li>

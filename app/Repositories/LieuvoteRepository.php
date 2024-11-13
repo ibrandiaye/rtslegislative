@@ -373,4 +373,19 @@ public function search(){
    ;
 }
 
+public function searchNational(){
+    return DB::table("lieuvotes")
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->join("departements","communes.departement_id","=","departements.id")
+    ->select("communes.nom as commune","centrevotes.nom as centre","lieuvotes.nom as  bureau","lieuvotes.nb","lieuvotes.etat",
+    "communes.id as commune_id","lieuvotes.id as lieuvote_id","centrevotes.id as centrevote_id","lieuvotes.temoin")
+    //->where("lieuvotes.etat",1)
+   ;
+}
+
+public function mettreBureauTemoin($id)
+{
+    return DB::table("lieuvotes")->where("id",$id)->update(["temoin"=>1]);
+}
 }

@@ -388,7 +388,6 @@
         </div><!--end card-->
     </div><!--end col-->
 </div> --}}
-<h4>Taux de Participation</h4>
 <div class="row">
     @foreach($tauxDeParticipations as $tauxDeParticipation)
     <div class="col-lg-3">
@@ -403,7 +402,7 @@
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10">
                             <h5 class="mt-0">{{round(((int)$tauxDeParticipation->nb/$nbElecteursTemoin)*100,2) }}%</h5>
-                            <p class="mb-0 text-muted"><a href="{{ route('participation.heure', ['heure'=>$tauxDeParticipation->designation]) }}">  à {{$tauxDeParticipation->designation}} </a><span class="badge bg-soft-success"></span></p>
+                            <p class="mb-0 text-muted"><a href="{{ route('participation.heure', ['heure'=>$tauxDeParticipation->designation]) }}"> Taux de Participation à {{$tauxDeParticipation->designation}} </a><span class="badge bg-soft-success"></span></p>
                         </div>
                     </div>
                 </div>
@@ -416,7 +415,61 @@
     @endforeach
 
 </div>
-<h4>Resultat Bureau National</h4>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="col-3 align-self-center">
+                        <div class="round">
+                            <i class="mdi mdi-eye"></i>
+                        </div>
+                    </div>
+                    <div class="col-9 align-self-center text-right">
+                        <div class="m-l-10">
+                            <h5 class="mt-0">{{ $totalLieuvote }}</h5>
+                            <p class="mb-0 text-muted">Nombre de Bureaux votes <span class="badge bg-soft-success"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height:3px;">
+                    <div class="progress-bar  bg-success" role="progressbar" style="width: 35%;" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+
+
+
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-row">
+                    <div class="col-3 align-self-center">
+                        <div class="round">
+                            <i class="mdi mdi-eye"></i>
+                        </div>
+                    </div>
+                    <div class="col-9 align-self-center text-right">
+                        <div class="m-l-10">
+                            <h5 class="mt-0">{{ $tauxDepouillement }}%</h5>
+                            <p class="mb-0 text-muted">Depouillé   {{$depouille }} sur  {{$totalLieuvote }} <span class="badge bg-soft-success"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height:3px;">
+                    <div class="progress-bar  bg-success" role="progressbar" style="width: 35%;" aria-valuenow="{{ $tauxDepouillement }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div><!--end card-body-->
+        </div><!--end card-->
+    </div><!--end col-->
+    <div class="col-lg-3">
+        <canvas id="myChart"></canvas>
+    </div>
+</div>
+
+
 
 <div class="row">
 
@@ -425,6 +478,7 @@
     <div class="col-md-6 col-lg-4">
     </div>
     <div class="col-md-6 col-lg-6 col-xl-3 ">
+        <h4 class="text-center">Resultat  National</h4>
 
         <div class="card">
             <div class="card-body">
@@ -472,8 +526,8 @@
         </div>
         @endif
      @endforeach
-     <br>
- <h4>Resultat Bureau Temoin</h4>
+</div>
+ <h4 class="text-center">Resultat Bureau Temoin</h4>
 
 <div class="row">
     @foreach ($rtsTemoins as $rtsTemoin)
@@ -697,7 +751,45 @@
 
 @endsection
 
+@section('script')
 
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+        <script>
+$(document).ready(function(){
+    const ctx = document.getElementById('myChart');
+    
+    var myChart =new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                 'Depouiller',
+                'Non Depouiller'
+            ],
+      datasets: [{
+        label: 'Etat depouillement',
+        data: [{{$depouille}},{{$totalLieuvote-$depouille}}],
+        backgroundColor: [
+         
+          'rgb(54, 162, 235)',
+          'rgb(255, 99, 132)',
+        ],
+        hoverOffset: 4
+      }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    
+    });
+    </script>
+        
+@endsection
 {{-- @section("script")
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script> }}

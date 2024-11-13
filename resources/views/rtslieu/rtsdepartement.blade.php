@@ -67,10 +67,24 @@
                 <br>
                 @endif
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-10">
                         @if($departement)
                         <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}" class="btn btn-success" >Imprimer</a>
                         @endif
+                    </div>
+                    @if (count($rts) > 0)
+                    <div class="col-2">
+                        <img class="rounded-circle" src="{{ asset('photo/'.$rts[0]->photo) }}" alt="Card image cap" style="height: 100px;">
+
+                    </div>
+                    @endif
+  
+                    <div class="col-12">
+                        @php
+                        $nb = 0;
+                        $taux = 0;
+                       
+                    @endphp
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>
@@ -86,10 +100,21 @@
                                 <tr>
                                     <td>{{ $rt->candidat }}</td>
                                     <td>{{ $rt->nb }}</td>
-                                    <td>@if($votant>0){{ round(($rt->nb *100)/$votant,2)}} @endif</td>
+                                    <td>@if($votant>0){{ round(($rt->nb *100)/$votant,1)}} @endif</td>
         
                                 </tr>
+                                @php
+                                $nb =   $rt->nb+ $nb;
+                                $taux =  round(($rt->nb *100)/$votant,1) + $taux;
+                              
+                            @endphp
                                 @endforeach
+                                <tr>
+                                    <td>Total </td>
+                                    <td>@php echo $nb; @endphp </td>
+                                    <td>@php echo intval($taux); @endphp </td>
+                                   
+                                </tr>
         
                             </tbody>
                         </table>

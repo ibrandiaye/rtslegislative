@@ -36,9 +36,26 @@
             <div class="card-body">
 
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-10">
                         <a href="{{ route('impression.rts.national', ['type'=>2]) }}" class="btn btn-success" >Imprimer</a>
-                        <br>
+
+                    </div>
+                    @if (count($rts) > 0)
+                    <div class="col-2">
+                        <img class="rounded-circle" src="{{ asset('photo/'.$rts[0]->photo) }}" alt="Card image cap" style="height: 100px;">
+
+                    </div>
+  
+                          @endif
+                          @php
+                          $nb = 0;
+                          $taux = 0;
+                          $proportionnel = 0;
+                          $majoritaire = 0;
+                          $total = 0;
+                          $restant = 0;
+                      @endphp
+                    <div class="col-12">
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>
@@ -68,9 +85,25 @@
                                     <td>{{ $sieges['restant']  ?? 0 }}</td>
 
                                 </tr>
+                                @php
+                                $nb =  $sieges['nb'] + $nb;
+                                $taux =  round(($sieges['nb'] *100)/($totalVotants  ),1) + $taux;
+                                $proportionnel =  $sieges['proportionnel']  + $proportionnel;
+                                $majoritaire = $majoritaire +  $sieges['majoritaire'] ;
+                                $total = $sieges['total']   + $total;
+                                $restant = $sieges['restant'] + $restant;
+                            @endphp
                                 @endif
                                 @endforeach
-
+                                <tr>
+                                    <td>Total </td>
+                                    <td>@php echo $nb; @endphp </td>
+                                    <td>@php echo $taux; @endphp </td>
+                                    <td>@php echo $proportionnel; @endphp </td>
+                                    <td>@php echo $majoritaire; @endphp </td>
+                                    <td>@php echo $total; @endphp </td>
+                                    <td>@php echo $restant; @endphp </td>
+                                </tr>
                             </tbody>
                         </table>
 

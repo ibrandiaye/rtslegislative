@@ -75,10 +75,12 @@ CommuneRepository $communeRepository){
         $user = Auth::user();
         if($user->role=="admin" || $user->role=="superviseur" )
         {
-            $nbCentrevotes = $this->departementRepository->nbDepartements();
-            $nbRtsCentre = $this->departementRepository->nbDepartementBEtat(true);
+            //$nbCentrevotes = $this->departementRepository->nbDepartements();
+           // $nbRtsCentre = $this->departementRepository->nbDepartementBEtat(true);
            // dd($nbCentrevotes);
-           $tauxDepouillement = round(($nbRtsCentre/$nbCentrevotes)*100,2);
+           $totalLieuvote = $this->lieuvoteRepository->nbLieuVote();
+           $depouille = $this->lieuvoteRepository->nbLieuVoteByEtat(true);
+           $tauxDepouillement = round(($depouille/$totalLieuvote)*100,2);
            $electeurs = $this->lieuvoteRepository->nbElecteurs();
           // $votants = $this->rtslieuRepository->nbVotants();
            //$votants = $this->rtsDepartementRepository->nbVotants();
@@ -162,7 +164,7 @@ CommuneRepository $communeRepository){
             $resultats = $this->rtslieuRepository->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
            // dd($resultats);
         
-           return view("dashboardr",compact("nbCentrevotes","nbRtsCentre","electeurs",
+           return view("dashboardr",compact("totalLieuvote","depouille","electeurs",
            "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
            "nCentreVote","tauxDeParticipations","totalVotants",
            "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats"));

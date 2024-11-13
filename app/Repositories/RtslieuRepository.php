@@ -91,8 +91,8 @@ public function  rtsGroupByDepartementandCandidat(){
   return   DB::table('rtslieus')
 ->join('departements','rtslieus.departement_id','=','departements.id')
 ->join('candidats','rtslieus.candidat_id','=','candidats.id')
-->select('departements.nom as departement',"candidats.coalition as coalition"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
-->groupBy('departements.nom','candidats.coalition')
+->select('departements.nom as departement',"candidats.coalition as coalition","candidats.photo"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+->groupBy('departements.nom','candidats.coalition',"candidats.photo")
 ->orderBy("nb","desc")
 ->get();
 
@@ -105,9 +105,9 @@ public function  rtsGroupByDepartementandCandidatByTemoin(){
   ->join('candidats','rtslieus.candidat_id','=','candidats.id')
   ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
 
-  ->select('departements.nom as departement',"candidats.coalition as coalition"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->select('departements.nom as departement',"candidats.coalition as coalition","candidats.photo"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
   ->where("lieuvotes.temoin",1)
-  ->groupBy('departements.nom','candidats.coalition')
+  ->groupBy('departements.nom','candidats.coalition',"candidats.photo")
   ->orderBy("nb","desc")
   ->get();
 
@@ -117,8 +117,8 @@ public function  rtsGroupByCandidatByDepartement($departement){
 
     return   DB::table('rtslieus')
   ->join('candidats','rtslieus.candidat_id','=','candidats.id')
-  ->select("candidats.nom as candidat"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
-  ->groupBy('candidats.nom')
+  ->select("candidats.nom as candidat" ,"candidats.photo"  ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->groupBy('candidats.nom',"candidats.photo")
   ->orderBy("nb","desc")
   ->where("rtslieus.departement_id",$departement)
   ->get();
@@ -131,9 +131,9 @@ public function  rtsGroupByCandidatByDepartement($departement){
   ->join('candidats','rtslieus.candidat_id','=','candidats.id')
   ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
 
-  ->select("candidats.nom as candidat"   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->select("candidats.nom as candidat" ,"candidats.photo"  ,DB::raw('sum(rtslieus.nbvote) as nb'))
   ->where([["lieuvotes.temoin",1],["rtslieus.departement_id",$departement]])
-  ->groupBy('candidats.nom')
+  ->groupBy('candidats.nom',"candidats.photo")
   ->orderBy("nb", "desc")
   ->get();
 

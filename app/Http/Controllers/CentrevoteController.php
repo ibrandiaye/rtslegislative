@@ -168,6 +168,10 @@ class CentrevoteController extends Controller
         $centrevotes = $this->centrevoteRepository->getByCommune($commune);
         return response()->json($centrevotes);
     }
+    public function getBycommuneAndTemoin($commune){
+        $centrevotes = $this->centrevoteRepository->getByCommuneAndTemoin($commune);
+        return response()->json($centrevotes);
+    }
 
     public function sumElecteurByCentre($id){
         $electeurs = $this->centrevoteRepository->sumElecteurByCentre($id);

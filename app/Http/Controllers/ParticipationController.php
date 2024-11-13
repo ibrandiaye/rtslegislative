@@ -50,6 +50,20 @@ class ParticipationController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $heure_id = "";
+        $heures = $this->heureRepository->getAlls();
+        $departement = $this->departementRepository->getAllOnLy();
+        $commune_id             ="";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+        $arrondissement_id      = "";
+        $departement_id         = "";
+        $region_id              = "";
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+        $departements =[];
+        $etat      = "";
         if($user->role=="admin")
         {
             $participations = $this->participationRepository->getAll();
@@ -59,7 +73,7 @@ class ParticipationController extends Controller
             $participations = $this->participationRepository->getByDepartement($user->departement_id);
         }
         
-        return view('participation.index',compact('participations'));
+        return view('participation.index',compact('participations',"heures","heure_id"));
     }
 
 
@@ -115,7 +129,7 @@ class ParticipationController extends Controller
     {
         
         $participation = DB::table("participations")->where(["lieuvote_id"=>$request->lieuvote_id,"heure_id"=>$request->heure_id])->first();
-        if(!empty($participation))
+        if(empty($participation))
         {
             //return redirect()->back()->withErrors(["erreur"=>"Bureau déja saisi"]);
             $departement_id         = $request["departement_id"];
@@ -150,7 +164,6 @@ class ParticipationController extends Controller
         }
         else
         {
-            $participations = $this->participationRepository->store($request->all());
            // return redirect()->back()->with("success","Enregistrement avec succés");
             $departement_id         = $request["departement_id"];
             $arrondissement_id      = $request["arrondissement_id"];
@@ -163,24 +176,67 @@ class ParticipationController extends Controller
             $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
             $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
             $lieuVotes  = $this->lieuvoteRepository->getByLieuvoteTemoin($centrevote_id);
-    
-          //  $rtstemoins = $this->rtstemoinRepository->store($request->all());
-          $user = Auth::user();
-          if($user->role=='admin')
+           
+            $user = Auth::user();
+            $participation = DB::table("participations")->where("lieuvote_id",$request["lieuvote_id"])->orderBy("id","desc")->first();
+
+            if( empty($participation) || $participation->resultat <= $request["resultat"])
             {
-              $region_id              = $request["region_id"];
-              $departements = $this->departementRepository->getByRegion($region_id);
-              $regions = $this->regionRepository->getRegionAsc();
-              return view('participation.add',compact("heures",
-              "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
-              "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
-            }
+                $participations = $this->participationRepository->store($request->all());
+                if($request["heure_id"]==1)
+                {
+                    DB::table("lieuvotes")->where("id",$request["lieuvote_id"])->update(['heure1'=>1]);
+                }
+                else if($request["heure_id"]==2)
+                {
+                    DB::table("lieuvotes")->where("id",$request["lieuvote_id"])->update(['heure2'=>1]);
+
+                }
+                else if($request["heure_id"]==3)
+                {
+                    DB::table("lieuvotes")->where("id",$request["lieuvote_id"])->update(['heure3'=>1]);
+
+                }
+                else if($request["heure_id"]==4)
+                {
+                    DB::table("lieuvotes")->where("id",$request["lieuvote_id"])->update(['heure4'=>1]);
+
+                }
+                if($user->role=='admin')
+                {
+                    $region_id              = $request["region_id"];
+                    $departements = $this->departementRepository->getByRegion($region_id);
+                    $regions = $this->regionRepository->getRegionAsc();
+                    return view('participation.add',compact("heures",
+                    "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+                    "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
+                }
             elseif ($user->role=="prefet") 
             {
               return view('participation.addprefet',compact("departement_id","arrondissement_id","commune_id","centrevote_id",
              "heures", "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"))->with( "success","enregistrement avec succès");
             }
 
+            }
+            else
+            {
+                if($user->role=='admin')
+            {
+              $region_id              = $request["region_id"];
+              $departements = $this->departementRepository->getByRegion($region_id);
+              $regions = $this->regionRepository->getRegionAsc();
+              return view('participation.add',compact("heures",
+              "regions","region_id","departement_id","arrondissement_id","commune_id","centrevote_id",
+              "lieuvote_id","regions","departements","arrondissements","communes","centreVotes","lieuVotes"))->withErrors(["erreur"=>"Nombre Inferieur à la dernière enregistrement"]);
+            }
+            elseif ($user->role=="prefet") 
+            {
+              return view('participation.addprefet',compact("departement_id","arrondissement_id","commune_id","centrevote_id",
+             "heures", "lieuvote_id","arrondissements","communes","centreVotes","lieuVotes"))->withErrors(["erreur"=>"Nombre Inferieur à la dernière enregistrement"]);
+            }
+            }
+    
+          //  $rtstemoins = $this->rtstemoinRepository->store($request->all());          
 
         }
        // DB::table("departements")->where("id",$request->departement_id)->update(["participation"=>true]);
@@ -281,6 +337,24 @@ class ParticipationController extends Controller
     public function getByRegionParticipation($departement){
         $data = $this->departementRepository->getByRegionParticipation($departement);
         return response()->json($data);
+    }
+
+    public function search(Request $request)
+    {
+       
+        $user = Auth::user();
+        $heure_id = $request->heure_id;
+        $heures = $this->heureRepository->getAlls();
+        if($user->role=="admin")
+        {
+            $participations = $this->participationRepository->getByHeure($request->heure_id);
+        }
+        elseif($user->role=="prefet")
+        {
+            $participations = $this->participationRepository->getByHeureAndDepartement($request->heure_id,$user->departement_id);
+        }
+        
+        return view('participation.index',compact('participations',"heures","heure_id"));
     }
 
 

@@ -118,8 +118,10 @@
                                                     <td>
                                                         <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
                                                     </td>
-                                                    <td><input type="number" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="{{$candidat->nbvote}}" class="form-control"  required>
+                                                    <td><input type="text" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="{{$candidat->nbvote}}" class="form-control"  required>
                                                         <input type="hidden" name="candidat_id[]" value="{{ $candidat->id }}">
+                                                        <td><input type="hidden" name="nbvoteold[]"   value="{{$candidat->nbvote}}" class="form-control"  >
+
                                                     </td>
                                                 </tr>
                                                 @endforeach

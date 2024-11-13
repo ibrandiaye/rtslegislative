@@ -8,7 +8,9 @@ use App\Models\Lieuvote;
 use App\Repositories\ArrondissementRepository;
 use App\Repositories\CentrevoteRepository;
 use App\Repositories\CommuneRepository;
+use App\Repositories\DepartementRepository;
 use App\Repositories\LieuvoteRepository;
+use App\Repositories\RegionRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,13 +22,18 @@ class LieuvoteController extends Controller
     protected $centrevoteRepository;
     protected $communeRepository;
     protected $arrondissementRepository;
+    protected $departementRepository;
+    protected $regionRepository;
 
     public function __construct(LieuvoteRepository $lieuvoteRepository, CentrevoteRepository $centrevoteRepository,
-    CommuneRepository $communeRepository,ArrondissementRepository $arrondissementRepository){
+    CommuneRepository $communeRepository,ArrondissementRepository $arrondissementRepository,DepartementRepository $departementRepository,
+    RegionRepository $regionRepository){
         $this->lieuvoteRepository =$lieuvoteRepository;
         $this->centrevoteRepository = $centrevoteRepository;
         $this->communeRepository = $communeRepository;
         $this->arrondissementRepository = $arrondissementRepository;
+        $this->departementRepository = $departementRepository;
+        $this->regionRepository = $regionRepository;
     }
 
     /**
@@ -224,6 +231,29 @@ class LieuvoteController extends Controller
  
     }
 
+    public function getAllAndEtat()
+    {
+        $user = Auth::user();
+        $commune_id             = "";
+        $centrevote_id          = "";
+        $lieuvote_id            = "";
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+        $arrondissement_id      = "";
+        $arrondissements =[];
+        $departement_id      = "";
+        $departements =[];
+        $region_id      = "";
+        $regions = $this->regionRepository->getAllOnLy();
+        $etat = null;
+        $temoin = null;
+        $lieuvotess =[];//$this->lieuvoteRepository->getByDepartement(Auth::user()->departement_id);  
+        return view("lieuvote.bynational",compact("arrondissements","arrondissement_id","commune_id","centrevote_id",
+        "lieuvote_id","communes","centreVotes","lieuVotes","lieuvotess","departement_id","departements","region_id","regions","etat","temoin"));
+ 
+    }
+
     public function search(Request $request)
     {
         $req = $this->lieuvoteRepository->search();
@@ -263,5 +293,82 @@ class LieuvoteController extends Controller
         return view("lieuvote.bydepartement",compact("arrondissements","arrondissement_id","commune_id","centrevote_id",
         "lieuvote_id","communes","centreVotes","lieuVotes","lieuvotess"));
 
+    }
+
+    public function searchNational(Request $request)
+    {
+        $req = $this->lieuvoteRepository->searchNational();
+        $user = Auth::user();
+        $commune_id             = $request->commune_id;
+        $centrevote_id          = $request->centrevote_id;
+        $lieuvote_id            = $request->lieuvote_id;
+        $arrondissement_id      = $request->arrondissement_id;
+        $departement_id         = $request->departement_id;
+        $temoin                 = $request->temoin;
+        $region_id              = $request->region_id;
+        $communes = [];
+        $centreVotes =[];
+        $lieuVotes  =[];
+        $departements =[];
+        $etat      = $request->etat;
+        $regions = $this->regionRepository->getAllOnLy();
+       
+        $arrondissements =[];
+
+        //dd($region_id);
+        if($request->region_id)
+        {
+            $departements = $this->departementRepository->getByRegion($region_id);
+            
+            $req = $req->where("departements.region_id",$request->region_id);
+        }
+        if($request->departement_id)
+        {
+            $arrondissements = $this->arrondissementRepository->getByDepartement($departement_id);
+               
+            $req = $req->where("communes.departement_id",$request->departement_id);
+        }
+        if($request->arrondissement_id)
+        {
+            $communes = $this->communeRepository->getByArrondissement($arrondissement_id);
+            
+            $req = $req->where("communes.arrondissement_id",$request->arrondissement_id);
+        }
+        if($request->commune_id)
+        {
+            $centreVotes = $this->centrevoteRepository->getByCommune($commune_id);
+               
+            $req = $req->where("communes.id",$request->commune_id);
+        }
+        if($request->centrevote_id)
+        {
+            $lieuVotes = $this->lieuvoteRepository->getByCentreVote($centrevote_id);
+            $req = $req->where("centrevotes.id",$request->centrevote_id);
+        }
+        if($request->lieuvote_id)
+        {
+          
+            $req = $req->where("lieuvotes.id",$request->lieuvote_id);
+        }
+        if($request->etat)
+        {
+          
+            $req = $req->where("lieuvotes.etat",$request->etat);
+        }
+        if($request->temoin)
+        {
+          
+            $req = $req->where("lieuvotes.temoin",$request->temoin);
+        }
+        $lieuvotess = $req->get();
+        return view("lieuvote.bynational",compact("arrondissements","arrondissement_id","commune_id","centrevote_id",
+        "lieuvote_id","communes","centreVotes","lieuVotes","lieuvotess","departements","departement_id","region_id","regions","etat","temoin"));
+
+    }
+
+    public function mettreBureauTemoin($id)
+    {
+        $this->lieuvoteRepository->mettreBureauTemoin($id);
+        return redirect("bureau/by/national")->with('success', 'Opération avec succés.');
     }
 }

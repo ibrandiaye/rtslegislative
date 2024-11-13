@@ -94,6 +94,9 @@ Route::resource('/sondage',SondageController::class);
 Route::get('/departement/by/region/{region}',[DepartementController::class,'getByRegion'])->name("departement.by.region");
 Route::get('/commune/by/departement/{departement}',[CommuneController::class,'getByDepartement']);
 Route::get('/centrevote/by/commune/{commune}',[CentrevoteController::class,'getBycommune']);
+Route::get('/centrevote/by/temoin/commune/{commune}',[CentrevoteController::class,'getByCommuneAndTemoin']);
+
+
 Route::get('/lieuvote/by/centrevote/{centrevote}',[LieuvoteController::class,'getByCentreVote']);
 Route::get('/lieuvote/temoin/by/centrevote/{centrevote}',[LieuvoteController::class,'getTemoinByCentreVote']);
 Route::get('/lieuvote/temoin/participation/by/centrevote/{centrevote}',[LieuvoteController::class,'getByLieuvoteTemoinParticipation']);
@@ -198,4 +201,12 @@ Route::post('/search/multi',[LieuvoteController::class,'search'])->name('search.
 Route::get('/impression/rts/departement/{departement}/{type}',[RtslieuController::class,'rtsDepartementImpression'])->name('impression.rts.departement')->middleware("auth");
 
 Route::get('/impression/rts/national/{type}',[RtslieuController::class,'rtsByCandidatImpression'])->name('impression.rts.national')->middleware("auth");
+
+
+
+Route::get('/bureau/by/national',[LieuvoteController::class,'getAllAndEtat'])->name('bureau.by.national')->middleware("auth");
+Route::post('/search/national',[LieuvoteController::class,'searchNational'])->name('search.national')->middleware("auth");
+Route::get('/mettre/bureau/temoin/{id}',[LieuvoteController::class,'mettreBureauTemoin'])->name('mettre.en.temoin')->middleware("auth");
+
+Route::post('/search/participation',[ParticipationController::class,'search'])->name('search.participation')->middleware("auth");
 

@@ -32,6 +32,16 @@ class CentrevoteRepository extends RessourceRepository{
         ->orderBy("nom","asc")
         ->get();
 }
+
+public function getByCommuneAndTemoin($commune){
+    return DB::table("centrevotes")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->join("lieuvotes","centrevotes.id","=","lieuvotes.centrevote_id")
+    ->select("centrevotes.*")
+    ->where([["commune_id",$commune],["lieuvotes.temoin",true]])
+    ->orderBy("nom","asc")
+    ->get();
+}
 public function getAllOnly(){
     return DB::table("centrevotes")->get();
 }

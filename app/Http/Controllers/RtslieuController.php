@@ -130,6 +130,7 @@ protected $participationRepository;
     {
 
       $rts = $request["nbvote"];
+     // dd($request["nbvote"]);
       $candidats = $request["candidat_id"];
       //VERIER si les resulats ne depasse pas le nombre de perssone inscrit
       $totalRts = 0;
@@ -316,10 +317,84 @@ protected $participationRepository;
 
     public function updatePerso(Request $request)
     {
+      $rts = $request["nbvote"];
+      $nbvoteold = $request["nbvoteold"];
+     // dd($request["nbvote"]);
+      $candidats = $request["candidat_id"];
+      //VERIER si les resulats ne depasse pas le nombre de perssone inscrit
+      $totalRts = 0;
+      for ($i= 0; $i < count($rts); $i++) {
+        $totalRts = $rts[$i] + $totalRts;
 
-        $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
+      }
+       /* if($totalRts > $request->nb_electeur)
+      {
+        return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);
+
+      }
+      else
+      {*/
+      $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
+
+        $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
+
+        for ($i= 0; $i < count($rts); $i++) {
+          $rtslieu = new Rtslieu();
+          $rtslieu->candidat_id = $candidats[$i];
+          $rtslieu->nbvote =(int)$rts[$i];
+          $rtslieu->lieuvote_id = $request["lieuvote_id"];
+          $rtslieu->departement_id = $request["departement_id"];
+          $rtslieu->save();
+        }
+        $rtslieu->votant = $request["votant"];
+
+        $this->lieuvoteRepository->updateEtat($request["lieuvote_id"],$request["votant"], $request["bulnull"],$request["hs"]);
+        if($centreVote->niveau==false){
+          $rtsCentres = $this->rtsCentrevoteRepository->getByCentre($centreVote->id);
+
+          if(count($rtsCentres) ==0){
+            for ($i= 0; $i < count($rts); $i++) {
+              $rtscentre = new Rtscentre();
+              $rtscentre->candidat_id = $candidats[$i];
+              $rtscentre->nbvote =(int)$rts[$i];
+              $rtscentre->centrevote_id = $request["centrevote_id"];
+              $rtscentre->save();
+            }
+          }else
+          {
+            for ($i= 0; $i < count($rts); $i++) {
+              $rtscentre = $this->rtsCentrevoteRepository->getByCentreAndCandidat($request["centrevote_id"],$candidats[$i]);
+             // dd($rtscentre);
+              $rtscentre->nbvote =(int)$rts[$i] - (int)$nbvoteold[$i] + $rtscentre->nbvote ;
+              $this->rtsCentrevoteRepository->updateResulat($rtscentre->id,$rtscentre->nbvote);
+            }
+          }
+        }
+        $user = Auth::user();
+        $candidats = $this->candidatRepository->getAll();
+        if($user->role=="admin")
+       {
+        return redirect("bureau/by/national")->with( "success","Modification avec succès");
+       }
+       else if($user->role=="prefet")
+       {
+        return redirect("bureau/by/departement")->with( "success","Modification avec succès");
+       }
+      /* else if($user->role=="sous_prefet")
+       {
+       
+       }*/
+
+
+
+      //  $rtslieus = $this->rtslieuRepository->store($request->all());
+      //  return redirect('rtslieu');
+      return redirect()->back()->with( "success","enregistrement avec succès");
+
+
+       // $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
        // $this->rtslieuRepository->update($id, $request->all());
-        return $this->store($request);
+      //  return $this->store($request);
         //return redirect('rtslieu');
     }
 
@@ -333,10 +408,86 @@ protected $participationRepository;
      */
     public function update(Request $request, $id)
     {
+      $rts = $request["nbvote"];
+      $nbvoteold = $request["nbvoteold"];
+     // dd($request["nbvote"]);
+      $candidats = $request["candidat_id"];
+      //VERIER si les resulats ne depasse pas le nombre de perssone inscrit
+      $totalRts = 0;
+      for ($i= 0; $i < count($rts); $i++) {
+        $totalRts = $rts[$i] + $totalRts;
 
-        $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
+      }
+       /* if($totalRts > $request->nb_electeur)
+      {
+        return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);
+
+      }
+      else
+      {*/
+      $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
+
+        $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
+
+        for ($i= 0; $i < count($rts); $i++) {
+          $rtslieu = new Rtslieu();
+          $rtslieu->candidat_id = $candidats[$i];
+          $rtslieu->nbvote =(int)$rts[$i];
+          $rtslieu->lieuvote_id = $request["lieuvote_id"];
+          $rtslieu->departement_id = $request["departement_id"];
+          $rtslieu->save();
+        }
+        $rtslieu->votant = $request["votant"];
+
+        $this->lieuvoteRepository->updateEtat($request["lieuvote_id"],$request["votant"], $request["bulnull"],$request["hs"]);
+        if($centreVote->niveau==false){
+          $rtsCentres = $this->rtsCentrevoteRepository->getByCentre($centreVote->id);
+
+          if(count($rtsCentres) ==0){
+            for ($i= 0; $i < count($rts); $i++) {
+              $rtscentre = new Rtscentre();
+              $rtscentre->candidat_id = $candidats[$i];
+              $rtscentre->nbvote =(int)$rts[$i];
+              $rtscentre->centrevote_id = $request["centrevote_id"];
+              $rtscentre->save();
+            }
+          }else
+          {
+            for ($i= 0; $i < count($rts); $i++) {
+              $rtscentre = $this->rtsCentrevoteRepository->getByCentreAndCandidat($request["centrevote_id"],$candidats[$i]);
+             // dd($rtscentre);
+              $rtscentre->nbvote =(int)$rts[$i] - (int)$nbvoteold[$i] + $rtscentre->nbvote ;
+              $this->rtsCentrevoteRepository->updateResulat($rtscentre->id,$rtscentre->nbvote);
+            }
+          }
+        }
+        $user = Auth::user();
+        $candidats = $this->candidatRepository->getAll();
+        if($user->role=="admin")
+       {
+        return redirect("")->with( "success","Modification avec succès");
+       }
+       else if($user->role=="prefet")
+       {
+        return redirect("")->with( "success","Modification avec succès");
+       }
+      /* else if($user->role=="sous_prefet")
+       {
+       
+       }*/
+
+
+
+      //  $rtslieus = $this->rtslieuRepository->store($request->all());
+      //  return redirect('rtslieu');
+      return redirect()->back()->with( "success","enregistrement avec succès");
+
+     // }
+
+        //$this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
+        
        // $this->rtslieuRepository->update($id, $request->all());
-        return $this->store($request);
+        //return $this->store($request);
         //return redirect('rtslieu');
     }
 
@@ -372,9 +523,9 @@ protected $participationRepository;
 
         $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(1,$departement_id) ?? 0;
         $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(0,$departement_id) ?? 0;
-      
+     // dd($rts);
         return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
-        "bullnull","hs","votant","inscrit","departement","depouillement"));
+        "bullnull","hs","votant","inscrit","departement","depouillement","rts"));
         // dd($rts,$departement);
     }
 
@@ -428,7 +579,7 @@ protected $participationRepository;
       
       
         return view("rtslieu.rtsdepartementtemoin",compact("region_id","departement_id","departements","regions","rts",
-        "bullnull","hs","votant","inscrit","departement","tauxDeParticipations","depouillement"));
+        "bullnull","hs","votant","inscrit","departement","tauxDeParticipations","depouillement","rts"));
         // dd($rts,$departement);
     }
 
@@ -455,7 +606,8 @@ protected $participationRepository;
         $depouillement[] = $this->lieuvoteRepository->nbLieuVoteTemoinByEtatAndDepartement(0,$user->departement_id) ?? 0;
        //// $nbElecteursTemoin = $this->lieuvoteRepository->nbElecteursTemoinByDepartement($user->departement_id);
        // dd($inscrit,$tauxDeParticipations);
-        return view("rtslieu.rtsdepartementtemoin",compact("rts","bullnull","hs","votant","inscrit","tauxDeParticipations","departement","depouillement"));
+        return view("rtslieu.rtsdepartementtemoin",compact("rts","bullnull","hs","votant","inscrit",
+        "tauxDeParticipations","departement","depouillement","rts"));
         // dd($rts,$departement);
     }
 
@@ -531,19 +683,20 @@ protected $participationRepository;
 
     // Calcul
     $resultats = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
-    //dd($rts);
+   // dd($rts);
 
     foreach ($rts as $key => $rt) {
         $resultats[$rt->coalition]["nb"] = $rt->nb;
         $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
+       // $resultats[$rt->coalition]["photo"] = $rt->photo;
     }
     //dd(10%14);
     $depouillement= [];
 
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(1) ?? 0;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(0) ?? 0;
-
-    return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","depouillement"));
+   // dd($resultats);
+    return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","depouillement","rts"));
 
   }
 
@@ -692,7 +845,8 @@ public function rtsByBureatTemoin()
 
 
   
-    return view("rtslieu.rtsnationaltemoin",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant","depouillement"));
+    return view("rtslieu.rtsnationaltemoin",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit"
+    ,"quotiant","depouillement","rts"));
 
   }
 
@@ -829,22 +983,23 @@ public function rtsByBureatTemoin()
 // dd(round($quotiant,0));
 
 
-$totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
-$bulletinnull = $this->lieuvoteRepository->nbBulletinNullTemoin();
-$hs = $this->lieuvoteRepository->nbHsTemoin();
-$votant = $this->lieuvoteRepository->nbVotantTemoin();
-$inscrit = $this->lieuvoteRepository->nbElecteursTemoin();
-//dd($bulletinnull);
+  $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+  $bulletinnull = $this->lieuvoteRepository->nbBulletinNullTemoin();
+  $hs = $this->lieuvoteRepository->nbHsTemoin();
+  $votant = $this->lieuvoteRepository->nbVotantTemoin();
+  $inscrit = $this->lieuvoteRepository->nbElecteursTemoin();
+  //dd($bulletinnull);
 
-// Calcul
-$resultats = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
-//dd($rts);
+  // Calcul
+  $resultats = $this->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+  //dd($rts);
 
-foreach ($rts as $key => $rt) {
-    $resultats[$rt->coalition]["nb"] = $rt->nb;
-    $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
-}
-//dd(10%14);
+  foreach ($rts as $key => $rt) 
+  {
+      $resultats[$rt->coalition]["nb"] = $rt->nb;
+      $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
+  }
+  //dd($resultats);
   }
   
     return view("rtslieu.impnational",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant"));
