@@ -95,9 +95,24 @@
                 <br>
                 @endif
                 <div class="row">
-                    @if($departement)
-                    <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>2]) }}" class="btn btn-success" >Imprimer</a>
-<br>@endif
+                    <div class="col-10">
+                        @if($departement)
+                            <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>2]) }}" class="btn btn-success" >Imprimer</a>
+                        @endif
+                    </div>
+                    @if (count($rts) > 0)
+                    <div class="col-2">
+                        <img class="rounded-circle" src="{{ asset('photo/'.$rts[0]->photo) }}" alt="Card image cap" style="height: 100px;">
+
+                    </div>
+  
+                          @endif
+                          @php
+                          $nb = 0;
+                          $taux = 0;
+                         
+                      @endphp
+                    
                     <div class="col-12">
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
@@ -117,8 +132,18 @@
                                     <td>@if($votant>0){{ round(($rt->nb *100)/$votant,2)}} @endif</td>
 
                                 </tr>
+                                @php
+                                    $nb =   $rt->nb + $nb;
+                                    $taux = round(($rt->nb *100)/$votant,2,1) + $taux;
+                              
+                                 @endphp
                                 @endforeach
-
+                                <tr>
+                                    <td>Total </td>
+                                    <td>@php echo $nb; @endphp </td>
+                                    <td>@php echo intval($taux); @endphp </td>
+                                   
+                                </tr>
                             </tbody>
                         </table>
 

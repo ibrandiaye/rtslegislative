@@ -39,11 +39,27 @@
                                     </div>
                                 @endif
                                 @if ($message = Session::get('success'))
-                                    <div class="alert alert-success">
-                                        <p>{{ $message }}</p>
-                                    </div>
-                                @endif
+                                <div class="alert alert-success">
+                                    <p>{{ $message }}</p>
+                                </div>
+                            @endif
+                            @if ($message = Session::get('error'))
+                                <div class="alert alert-danger">
+                                    <p>{{ $message }}</p>
+                                </div>
+                            @endif
                                 <div class="row">
+                                    
+                                    <div class="col-3">
+                                        <label>Heure</label>
+                                        <select class="form-control" id="heure_id" name="heure_id" required="">
+                                            <option value="">Selectionner</option>
+                                            @foreach ($heures as $heure)
+                                            <option value="{{$heure->id}}">{{$heure->designation}}</option>
+                                                @endforeach
+
+                                        </select>
+                                    </div>
                                     <div class="col-3">
                                         <label>Région</label>
                                         <select class="form-control" id="region_id" name="region_id" required="">
@@ -97,17 +113,6 @@
                                             </select>
                                         </div>
 
-
-                                <div class="col-3">
-                                    <label>Heure</label>
-                                    <select class="form-control" id="heure_id" name="heure_id" required="">
-                                        <option value="">Selectionner</option>
-                                        @foreach ($heures as $heure)
-                                        <option value="{{$heure->id}}">{{$heure->designation}}</option>
-                                            @endforeach
-
-                                    </select>
-                                </div>
                                 <div class="col-3">
                                     <div class="form-group">
                                         <label> Nombre de votes</label>
@@ -218,7 +223,7 @@
                 $("#lieuvote_id").empty();
                 $.ajax({
                     type:'GET',
-                    url:url_app+'/centrevote/by/commune/'+commune_id,
+                    url:url_app+'/centrevote/by/temoin/commune/'+commune_id,
 
                     data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {

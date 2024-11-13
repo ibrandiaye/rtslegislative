@@ -51,4 +51,19 @@ class ParticipationRepository extends RessourceRepository{
     ->where("departement_id",$id)
     ->get();
   } 
+
+  public function getByHeure($id)
+  {
+    return Participation::with(["departement","lieuvote","lieuvote.centrevote"])
+    ->where("heure_id",$id)
+    ->get();
+  } 
+
+  public function getByHeureAndDepartement($heure,$departement)
+  {
+    return Participation::with(["departement","lieuvote","lieuvote.centrevote"])
+    ->where("heure_id",$heure)
+    ->where("departement_id",$departement)
+    ->get();
+  } 
 }

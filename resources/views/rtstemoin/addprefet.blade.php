@@ -235,7 +235,7 @@
                 $("#lieuvote_id").empty();
                 $.ajax({
                     type:'GET',
-                    url:url_app+'/centrevote/by/commune/'+commune_id,
+                    url:url_app+'/centrevote/by/temoin/commune/'+commune_id,
                
                     data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {

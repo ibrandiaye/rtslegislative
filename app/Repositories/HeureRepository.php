@@ -9,5 +9,10 @@ class HeureRepository extends RessourceRepository{
     public function __construct(Heure $heure){
         $this->model = $heure;
     }
+
+    public function getAlls()
+    {
+        return DB::table("heures")->get();
+    }
    
 }

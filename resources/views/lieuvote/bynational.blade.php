@@ -1,5 +1,5 @@
 @extends('welcome')
-@section('title', '| participation')
+@section('title', '| lieuvote')
 
 
 @section('content')
@@ -11,7 +11,7 @@
 
                                 <ol class="breadcrumb hide-phone p-0 m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('home') }}" >ACCUEIL</a></li>
-                                <li class="breadcrumb-item active"><a href="{{ route('participation.create') }}" >Liste des participations</a></li>
+                                <li class="breadcrumb-item active"><a href="{{ route('lieuvote.create') }}" >Liste des lieuvotes</a></li>
                                 </ol>
                             </div>
                             <h4 class="page-title">Starter</h4>
@@ -29,120 +29,139 @@
             <p>{{ $message }}</p>
         </div>
     @endif
+    <div class="col-12">
+
+        <form method="POST" action="{{ route('search.national') }}">
+            @csrf
+            <div class="row">
+                <div class="col-3">
+                    <label>Région</label>
+                    <select class="form-control" id="region_id" name="region_id" required="">
+                        <option value="">Selectionner</option>
+                        @foreach ($regions as $region)
+                        <option value="{{$region->id}}" {{ $region_id==$region->id ? 'selected' : '' }}>{{$region->nom}}</option>
+                            @endforeach
+
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label>Département</label>
+                    <select class="form-control" id="departement_id" name="departement_id" >
+                        <option value="">Selectionner</option>
+
+                        @foreach ($departements as $departement)
+                            <option value="{{$departement->id}}" {{ $departement_id==$departement->id ? 'selected' : '' }}>{{$departement->nom}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-3">
+                    <label>Arrondissement</label>
+                    <select class="form-control" id="arrondissement_id" name="arrondissement_id">
+                        <option value="">Veuillez selectionner </option>
+                        @foreach ($arrondissements as $arrondissement)
+                        <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
+                            @endforeach
+                    </select>
+                </div>
+                      <div class="col-2">
+                        <label>Commune</label>
+                        <select class="form-control" id="commune_id" name="commune_id" >
+                            <option value="">Veuillez selectionner </option>
+
+                            @foreach ($communes as $commune)
+                            <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                        <div class="col-3">
+                            <label>centrevote</label>
+                            <select class="form-control" name="centrevote_id" id="centrevote_id" >
+                                <option value="">Veuillez selectionner </option>
+
+                                @foreach ($centreVotes as $centreVote)
+                                <option value="{{$centreVote->id}}" {{ $centrevote_id==$centreVote->id ? 'selected' : '' }}>{{$centreVote->nom}}</option>
+                                    @endforeach
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>Bureau  de vote</label>
+                            <select class="form-control" name="lieuvote_id" id="lieuvote_id" >
+                                <option value="">Veuillez selectionner </option>
+
+                                @foreach ($lieuVotes as $lieuVote)
+                                <option value="{{$lieuVote->id}}" {{ $lieuvote_id==$lieuVote->id ? 'selected' : '' }}>{{$lieuVote->nom}}</option>
+                                    @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-2">
+                            <label>Etat</label>
+                            <select class="form-control" name="etat" id="etat" >
+                                <option value="">Veuillez selectionner </option>
+                                <option value="1" {{$etat==1 ? 'selected' : ''}}>Renseigné </option>
+                                <option value="0" {{$etat==0 ? 'selected' : ''}}>Non Renseigné </option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-2">
+                            <label>Type Bureau</label>
+                            <select class="form-control" name="temoin" id="temoin" >
+                                <option value="">Veuillez selectionner </option>
+                                <option value="1" {{$temoin==1 ? 'selected' : ''}}>temoin </option>
+                                <option value="0" {{$temoin==0 ? 'selected' : ''}}>autres </option>
+                                
+                            </select>
+                        </div>
+
+                <div class="col-lg-2">
+                    <input type="submit" value="Valider" class="btn btn-primary" style="margin-top: 30px;">
+                </div>
+            </div>
+
+        </form>
+    </div>
+
 
 <div class="col-12">
     <div class="card ">
-        <div class="card-header  text-center">LISTE D'ENREGISTREMENT DES participations</div>
+        <div class="card-header  text-center">LISTE D'ENREGISTREMENT DES Bureaux de votes</div>
             <div class="card-body">
-                <form method="POST" action="{{ route('search.participation') }}">
-                    @csrf
-                    <div class="row">
-                        <div class="col-lg-2">
-                            <label>Heure</label>
-                            <select class="form-control" id="heure_id" name="heure_id" required="">
-                                <option value="">Selectionner</option>
-                                @foreach ($heures as $heure)
-                                <option value="{{$heure->id}}"  {{$heure_id==$heure->id ? 'selected' : ''}}>{{$heure->designation}}</option>
-                                    @endforeach
-
-                            </select>
-                        </div>
-                        {{--<div class="col-3">
-                            <label>Département</label>
-                            <select class="form-control" id="departement_id" name="departement_id" >
-                                <option value="">Selectionner</option>
-        
-                                @foreach ($departements as $departement)
-                                    <option value="{{$departement->id}}" {{ $departement_id==$departement->id ? 'selected' : '' }}>{{$departement->nom}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label>Arrondissement</label>
-                            <select class="form-control" id="arrondissement_id" name="arrondissement_id">
-                                <option value="">Veuillez selectionner </option>
-                                @foreach ($arrondissements as $arrondissement)
-                                <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
-                                    @endforeach
-                            </select>
-                        </div>
-                              <div class="col-2">
-                                <label>Commune</label>
-                                <select class="form-control" id="commune_id" name="commune_id" >
-                                    <option value="">Veuillez selectionner </option>
-        
-                                    @foreach ($communes as $commune)
-                                    <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
-                                        @endforeach
-                                </select>
-                            </div>
-                                <div class="col-3">
-                                    <label>centrevote</label>
-                                    <select class="form-control" name="centrevote_id" id="centrevote_id" >
-                                        <option value="">Veuillez selectionner </option>
-        
-                                        @foreach ($centreVotes as $centreVote)
-                                        <option value="{{$centreVote->id}}" {{ $centrevote_id==$centreVote->id ? 'selected' : '' }}>{{$centreVote->nom}}</option>
-                                            @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-2">
-                                    <label>Bureau  de vote</label>
-                                    <select class="form-control" name="lieuvote_id" id="lieuvote_id" >
-                                        <option value="">Veuillez selectionner </option>
-        
-                                        @foreach ($lieuVotes as $lieuVote)
-                                        <option value="{{$lieuVote->id}}" {{ $lieuvote_id==$lieuVote->id ? 'selected' : '' }}>{{$lieuVote->nom}}</option>
-                                            @endforeach
-                                    </select>
-                                </div> --}}
-        
-    
-                        <div class="col-lg-2">
-                            <input type="submit" value="Valider" class="btn btn-primary" style="margin-top: 30px;">
-                        </div>
-                    </div>
-
-                </form>
-                <table id="datatable-buttons" class="table table-bordered table-responsive-md table-striped text-center">
+                
+                <table  id="datatable-buttons" class="table table-bordered table-responsive-md table-striped text-center datatable-buttons">
                     <thead>
                         <tr>
-                            <th>#</th>
-                          {{--   <th>Region</th> --}}
-                            <th>Departement</th>
-                            <th>Heure</th>
-                            <th>nombre de votes</th>
+                            {{-- <th>#</th>
+                            <th>Numéro Bureau de Vote</th>
                             <th>Centre de vote</th>
-                            <th>Bureau  de vote</th>
-                            
-{{--                              <th>nombre de vote valide</th>
-  --}}                            <th>Actions</th>
+                            <th>Commune</th>
+                            <th>Temoin</th>
+                            <th>Actions</th> --}}
+                            <th>Commune</th>
+                            <th>Centre de vote</th>
+                            <th>Bureau</th>
+                            <th>Electeurs</th>
+                            <th>etat</th>
+                            <th>Type Bureau</th>
+                            <th>Actions</th> 
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($participations as $participation)
-                        <tr>
-                            <td>{{ $participation->id }}</td>
-                         {{--    <td>{{ $participation->region->nom }}</td> --}}
-                            
-                            <td> @if ($participation->departement)
+                    @foreach ($lieuvotess as $lieuvote)
+                            <tr>
+                                <td>{{ $lieuvote->commune }}</td>
+                                <td>{{ $lieuvote->centre }}</td>
+                                <td>{{ $lieuvote->bureau }}</td>
+                                <td>{{ $lieuvote->nb }}</td>
+                                <td> @if($lieuvote->etat==1) <span class='badge badge-success'>deja renseigne</span> @else <span class='badge badge-danger'>pas encore renseigne</span> @endif </td>
                                 
-                               {{ $participation->departement->nom }} @endif</td>
-                            <td>{{ $participation->heure->designation }}</td>
-                            
-                            <td>{{ $participation->resultat }}</td>
-                            <td>{{ $participation->lieuvote->centrevote->nom }}</td>
-                            <td>{{ $participation->lieuvote->nom }}</td>
-                             <td>
-                               {{--  <a href="{{ route('participation.edit', $participation->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a> --}}
-                                {!! Form::open(['method' => 'DELETE', 'route'=>['participation.destroy', $participation->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}
-                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                {!! Form::close() !!}
+                                <td> @if($lieuvote->temoin==1) <span class='badge badge-success'>Bureau Temoin</span> @else <span class='badge badge-warning'>Non Temoin</span> @endif </td>
+                                
+                                <td>
+                                <a href="{{ route('editer.rtslieu', ['centrevoteId'=>$lieuvote->centrevote_id,'lieuvoteId'=>$lieuvote->lieuvote_id,'communeId'=>$lieuvote->commune_id]) }}" role="button" title="Modifier les résultats" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('show.rtslieu.by.lieu',$lieuvote->lieuvote_id)}}" role="button" class="btn btn-info" title="Voir les résultats"><i class="fas fa-eye"></i></a>
+                                <a href="{{ route('mettre.en.temoin',$lieuvote->lieuvote_id)}}" onclick="if(!confirm('Vous vous le mettre en bureau temoin ?')) { return false; }" role="button" class="btn btn-warning" title="mettre en bureau temoin"><i class="fas fa-database"></i></a>
 
-
-
-                            </td>
-
+                               </td>
                         </tr>
                         @endforeach
 
@@ -156,12 +175,14 @@
     </div>
 </div>
 
+
+
 @endsection
 @section('script')
 <script>
 
     url_app = '{{ config('app.url') }}';
- /* $("#region_id").change(function () {
+  $("#region_id").change(function () {
     var region_id =  $("#region_id").children("option:selected").val();
     $(".region").val(region_id);
     $(".departement").val("");
@@ -186,7 +207,7 @@
                 $("#departement_id").append(departement);
             }
         });
-    });*/
+    });
     $("#departement_id").change(function () {
         var departement_id =  $("#departement_id").children("option:selected").val();
         $(".departement").val(departement_id);
