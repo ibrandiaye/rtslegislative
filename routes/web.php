@@ -40,6 +40,8 @@ use App\Http\Controllers\SondageController;
 |
 */
 
+
+Route::get('/resultat/par/centre',[HomeController::class,'indexCentre'])->name("index.centre")->middleware("auth");
 Route::get('/',[HomeController::class,'index'])->name("home")->middleware("auth");
 Route::resource('region', RegionController::class)->middleware("auth");
 Route::resource('departement', DepartementController::class)->middleware("auth");
