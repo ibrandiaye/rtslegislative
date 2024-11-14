@@ -300,6 +300,7 @@
                                     <li><a href="{{ route('heure.index') }}">Lister</a></li>
                                 </ul>
                             </li>
+                            
                             @endif
                            @if (Auth::user()->role=='superviseur')
                            <li>

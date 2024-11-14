@@ -424,17 +424,17 @@ class ParticipationController extends Controller
     //dd($request->heure_id);
                 if($request->heure_id==1)
                 {
-                    $query = $query->whereNull("lieuvotes.heure1");
+                    $query = $query->where("lieuvotes.heure1",0);
 
                 }
                 else if($request->heure_id==2)
                 {
-                    $query = $query->whereNull("lieuvotes.heure1");
+                    $query = $query->where("lieuvotes.heure1",0);
 
                 }
                 else if($request->heure_id==3)
                 {
-                   $query = $query->whereNull("lieuvotes.heure3");
+                   $query = $query->where("lieuvotes.heure3",0);
  
                 }
                 else if($request->heure_id==4)
