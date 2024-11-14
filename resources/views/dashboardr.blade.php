@@ -116,7 +116,7 @@
         </div><!--end card-->
     </div><!--end col-->
     </div>  --}}
-    <h4>National : {{ $electeurs }} inscrits</h4>
+    <h4>National : {{ $electeurs }} inscrits /     {{$depouille }} Bureaux de vote depouillés  sur  {{$totalLieuvote }}</h4>
 <div class="row">
 
     <div class="col">
@@ -416,7 +416,7 @@
 
 </div>
 <div class="row">
-    <div class="col-lg-4">
+       {{--  <div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-row">
@@ -442,7 +442,7 @@
 
 
 
-    <div class="col-lg-4">
+<div class="col-lg-4">
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-row">
@@ -467,7 +467,7 @@
     <div class="col-lg-3">
         <canvas id="myChart"></canvas>
     </div>
-</div>
+</div> --}}
 
 
 
