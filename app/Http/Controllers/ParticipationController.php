@@ -154,7 +154,8 @@ class ParticipationController extends Controller
     {
         
         $participation = DB::table("participations")->where(["lieuvote_id"=>$request->lieuvote_id,"heure_id"=>$request->heure_id])->first();
-        if(empty($participation))
+       // dd($participation);
+        if(!empty($participation))
         {
             //return redirect()->back()->withErrors(["erreur"=>"Bureau déja saisi"]);
             $departement_id         = $request["departement_id"];
@@ -409,6 +410,7 @@ class ParticipationController extends Controller
         {
            
            // $participations = $this->participationRepository->getByHeure($request->heure_id);
+           $participations = [];
            if(($request->heure_id && empty($request->etat)) or ($request->heure_id && $request->etat=="reseigner"))
             {
               //  dd("ok");
