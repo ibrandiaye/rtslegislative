@@ -123,7 +123,7 @@ CommuneRepository $communeRepository){
            // return redirect()->route("centre.by.arrondissement");
 
           // $rts = $this->rtslieuRepository->rtsByCandidat();
-        
+
             $departements = $this->departementRepository->getAllOnLy();
             $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
             $siegesParCirconscription = array();
@@ -155,15 +155,15 @@ CommuneRepository $communeRepository){
                 $circonscriptions[$value->nom] = $resultat;
             }
 
-        
+
             $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
           // dd($circonscriptions);
           $tauxDepouillementElecteurs = round(($totalVotants/$electeurs)*100,2);
 
-        
+
             $resultats = $this->rtslieuRepository->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
            // dd($resultats);
-        
+
            return view("dashboardr",compact("totalLieuvote","depouille","electeurs",
            "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
            "nCentreVote","tauxDeParticipations","totalVotants",
@@ -175,7 +175,7 @@ CommuneRepository $communeRepository){
         //$departements= $this->departementRepository->getAll();
         $departement = DB::table("departements")->where("id",$user->departement_id)->first();
         $departement_id = $user->departement_id;
-      
+
         $votant  = $this->rtslieuRepository->nbVoixByDepartement($departement_id);
         $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
         $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
@@ -185,8 +185,8 @@ CommuneRepository $communeRepository){
 
         $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(1,$departement_id) ?? 0;
         $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(0,$departement_id) ?? 0;
-      
-        
+
+
         return view("rtslieu.rtsdepartement",compact("rts",
         "bullnull","hs","votant","inscrit","departement","depouillement"));
         }
@@ -259,5 +259,100 @@ CommuneRepository $communeRepository){
             "nbCentreVote"=>$nCentreVote,
         );
         return response()->json($data);
+    }
+
+    public function indexCentre(){
+        $user = Auth::user();
+        if($user->role=="admin" || $user->role=="superviseur" )
+        {
+
+           $totalLieuvote = $this->lieuvoteRepository->nbLieuVote();
+           $depouille = $this->lieuvoteRepository->nbLieuVoteByEtat(true);
+           $tauxDepouillement = round(($depouille/$totalLieuvote)*100,2);
+           $electeurs = $this->lieuvoteRepository->nbElecteurs();
+
+         $rtsParCandidats = $this->rtscentreRepository->rtsByCandidat();
+
+          $candidats = $this->candidatRepository->getAll();
+
+          $nCentreVote = $this->centrevoteeRepository->nbCentrevotee();
+
+          //Taux de particippation
+
+          $tauxDeParticipations = $this->participationRepository->getParticipationGroupByHeure();
+          $nbElecteursTemoin = $this->lieuvoteRepository->nbElecteursTemoin();
+          $rtsTemoins = $this->rtsTemoinRepository->rtsByCandidat();
+          $nbVotantTemoin = $this->rtsTemoinRepository->nbVotants();
+          //dd($rtsTemoins);
+
+         $nullNational = $this->lieuvoteRepository->nbBulletinNull();
+
+            $departements = $this->departementRepository->getAllOnLy();
+            $rtsByDepartements = $this->rtscentreRepository->rtsGroupByDepartementandCandidat();
+            $siegesParCirconscription = array();
+            //recuperer les departement et les nombre de partement par deputé
+            foreach ($departements as $key => $value) {
+                $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
+            }
+            //dd($rtsParCandidats);
+            $votantVal = 0;
+            $votesProportionnels = array();
+            foreach ($rtsParCandidats as $key => $rt) {
+            $votantVal = $votantVal + $rt->nb;
+            $votesProportionnels[$rt->coalition]  = intval($rt->nb);
+            }
+            //dd($votesProportionnels);
+            $quotiant = round( $votantVal/53,0);
+
+            $circonscriptions = array();
+
+            foreach ($departements as $key => $value) {
+                $resultat = array();
+                foreach ($rtsByDepartements as $key => $rtsByDepartement) {
+                    if($value->nom == $rtsByDepartement->departement)
+                    {
+                        $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
+                    }
+
+                }
+                $circonscriptions[$value->nom] = $resultat;
+            }
+
+
+            $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+          // dd($circonscriptions);
+          $tauxDepouillementElecteurs = round(($totalVotants/$electeurs)*100,2);
+
+
+            $resultats = $this->rtslieuRepository->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+           // dd($resultats);
+
+           return view("dashboardr",compact("totalLieuvote","depouille","electeurs",
+           "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
+           "nCentreVote","tauxDeParticipations","totalVotants",
+           "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats"));
+        }
+        else
+        {
+            $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartement($user->departement_id);
+        //$departements= $this->departementRepository->getAll();
+        $departement = DB::table("departements")->where("id",$user->departement_id)->first();
+        $departement_id = $user->departement_id;
+
+        $votant  = $this->rtslieuRepository->nbVoixByDepartement($departement_id);
+        $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
+        $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
+        $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
+        // dd($rts,$departement);
+        $depouillement= [];
+
+        $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(1,$departement_id) ?? 0;
+        $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(0,$departement_id) ?? 0;
+
+
+        return view("rtslieu.rtsdepartement",compact("rts",
+        "bullnull","hs","votant","inscrit","departement","depouillement"));
+        }
+
     }
 }

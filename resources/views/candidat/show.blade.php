@@ -37,7 +37,7 @@
                     </div>
                     <img class="rounded-circle" src="{{ asset('photo/'.$candidat->photo) }}" alt="Card image cap" style="height: 250px;">
                     <div class="card-body">
-                       <h4> <p class="card-text text-center">{{round(($rts/$nbvotant)*100,2) }}%</p></h4>
+                       <h4> <p class="card-text text-center"> @if($nbvotant > 0){{round(($rts/$nbvotant )*100,2) }}% @endif</p></h4>
 
                     </div>
                 </div>

@@ -78,9 +78,9 @@ class CandidatController extends Controller
     public function show($id)
     {
         $candidat = $this->candidatRepository->getById($id);
-        $resultats = $this->rtscentreRepository->rtsGroupByCentreByCandidat($id);
-        $nbvotant = $this->rtscentreRepository->nbVotants();
-        $rts = $this->rtscentreRepository->rtsByOneCandidat($id);
+        $resultats = $this->rtslieuRepository->rtsGroupByCentreByCandidat($id);
+        $nbvotant = $this->rtslieuRepository->nbVotants();
+        $rts = $this->rtslieuRepository->rtsByOneCandidat($id);
         //dd($resultats);
         $resultatRegions = $this->rtslieuRepository->rtsGroupByRegionByCandidat($id);
         $resultatDepartements = $this->rtslieuRepository->rtsGroupByDepartementByCandidat($id);

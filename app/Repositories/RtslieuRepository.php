@@ -192,4 +192,19 @@ public function getByCandidatAndLieuvote($lieuvote)
   ->select("candidats.*","rtslieus.nbvote")
   ->where("lieuvote_id",$lieuvote)->get();
 }
+
+public function  rtsGroupByCentreByCandidat($id){
+
+    return DB::table("rtslieus")
+    ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+    ->join('centrevotes','lieuvotes.centrevote_id','=','centrevotes.id')
+  ->join('communes','centrevotes.commune_id','=','communes.id')
+  ->join('departements','communes.departement_id','=','departements.id')
+  ->join('regions','departements.region_id','=','regions.id')
+  ->select('centrevotes.nom','communes.nom as commune','departements.nom as departement','regions.nom as region'   ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->groupBy('centrevotes.nom','communes.nom','departements.nom','regions.nom')
+  ->where("rtslieus.candidat_id",$id)
+->get();
+
+}
 }
