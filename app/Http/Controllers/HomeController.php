@@ -170,7 +170,7 @@ CommuneRepository $communeRepository){
            return view("dashboardr",compact("totalLieuvote","depouille","electeurs",
            "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
            "nCentreVote","tauxDeParticipations","totalVotants","nbBureauTemoin","nbBureauTemoinByEtat",
-           "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats"));
+           "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats","nbBureauTemoin","nbBureauTemoinByEtat"));
         }
         else
         {

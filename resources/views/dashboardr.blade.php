@@ -512,7 +512,7 @@
                         <h4>
                             <p class="card-text text-center text-danger">@if ((int)$rtsParCandidat->nb > 0 && $totalVotants > 0)
                                {{--    {{round(((int)$rtsParCandidat->nb/($votants+$nbVotantDiaspora))*100,2) }}%  --}}
-                               {{$resultats[$rtsParCandidat->coalition]['total']}} Députés <br>  {{round(((int)$rtsParCandidat->nb/$totalVotants)*100,2) }}% 
+                               {{$resultats[$rtsParCandidat->coalition]['total']}} Députés <br>  {{round(((int)$rtsParCandidat->nb/$totalVotants)*100,2) }}%
                             <br>{{$rtsParCandidat->nb}} voix</p>
 
                             @endif
@@ -527,7 +527,7 @@
         @endif
      @endforeach
 </div>
- <h4 class="text-center">Resultat Bureau Temoin</h4>
+ <h4 class="text-center">Resultat Bureau Temoin /     {{$nbBureauTemoinByEtat }} Bureaux de vote depouillés  sur  {{$nbBureauTemoin }}</h4>
 
 <div class="row">
     @foreach ($rtsTemoins as $rtsTemoin)
@@ -758,7 +758,7 @@
         <script>
 $(document).ready(function(){
     const ctx = document.getElementById('myChart');
-    
+
     var myChart =new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -770,7 +770,7 @@ $(document).ready(function(){
         label: 'Etat depouillement',
         data: [{{$depouille}},{{$totalLieuvote-$depouille}}],
         backgroundColor: [
-         
+
           'rgb(54, 162, 235)',
           'rgb(255, 99, 132)',
         ],
@@ -785,10 +785,10 @@ $(document).ready(function(){
           }
         }
       });
-    
+
     });
     </script>
-        
+
 @endsection
 {{-- @section("script")
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
