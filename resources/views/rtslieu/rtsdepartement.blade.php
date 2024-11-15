@@ -32,7 +32,7 @@
 <div class="row">
 <div class="col-8">
     <div class="card ">
-        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif</div>
+        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif / {{$depouillement[0]}} dépouillé sur {{$depouillement[1]}}</div>
             <div class="card-body">
                 @if (Auth::user()->role=="admin")
                 <form method="POST" action="{{ route('rts.by.departement') }}">
@@ -67,15 +67,15 @@
                 <br>
                 @endif
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-5">
                         @if($departement)
                         <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}" class="btn btn-success" >Imprimer</a>
                         @endif
                     </div>
                     @if (count($rts) > 0)
-                    <div class="col-2">
+                    <div class="col-5 text-right">
                         <img class="rounded-circle" src="{{ asset('photo/'.$rts[0]->photo) }}" alt="Card image cap" style="height: 100px;">
-
+                       <h6> {{$rts[0]->candidat}}</h6>
                     </div>
                     @endif
   

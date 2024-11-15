@@ -388,4 +388,13 @@ public function mettreBureauTemoin($id)
 {
     return DB::table("lieuvotes")->where("id",$id)->update(["temoin"=>1]);
 }
+
+    public function nbBureauTemoinByEtat($etat)
+    {
+        return DB::table("lieuvotes")->where("temoin",1)->where("etat",$etat)->count();
+    }
+    public function nbBureauTemoin()
+    {
+        return DB::table("lieuvotes")->where("temoin",1)->count();
+    }
 }

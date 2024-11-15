@@ -164,9 +164,12 @@ CommuneRepository $communeRepository){
             $resultats = $this->rtslieuRepository->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
            // dd($resultats);
 
+           $nbBureauTemoin = $this->lieuvoteRepository->nbBureauTemoin();
+           $nbBureauTemoinByEtat = $this->lieuvoteRepository->nbBureauTemoinByEtat(1);
+
            return view("dashboardr",compact("totalLieuvote","depouille","electeurs",
            "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
-           "nCentreVote","tauxDeParticipations","totalVotants",
+           "nCentreVote","tauxDeParticipations","totalVotants","nbBureauTemoin","nbBureauTemoinByEtat",
            "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats"));
         }
         else

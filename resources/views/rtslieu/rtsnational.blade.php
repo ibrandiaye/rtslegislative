@@ -32,18 +32,18 @@
 <div class="row">
 <div class="col-8">
     <div class="card ">
-        <div class="card-header  text-center">RESULTAT Nationnal</div>
+        <div class="card-header  text-center">RESULTAT Nationnal / {{$depouillement[0]}} dépouillé sur {{$depouillement[1]}}</div>
             <div class="card-body">
 
                 <div class="row">
-                    <div class="col-10">
+                    <div class="col-5">
                         <a href="{{ route('impression.rts.national', ['type'=>1]) }}" class="btn btn-success" >Imprimer</a>
 
                     </div>
                     @if (count($rts) > 0)
-                    <div class="col-2">
+                    <div class="col-5 text-right">
                         <img class="rounded-circle" src="{{ asset('photo/'.$rts[0]->photo) }}" alt="Card image cap" style="height: 100px;">
-
+                       <h6> {{$rts[0]->coalition}}</h6>
                     </div>
   
                           @endif
