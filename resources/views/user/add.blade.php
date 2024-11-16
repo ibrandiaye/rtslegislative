@@ -93,10 +93,11 @@
                                             <select class="form-control" name="role" required="">
                                                 <option value="">Selectionner</option>
                                                 <option value="admin">Admin</option>
-                                                <option value="sous_prefet">Sous prefet</option> 
+                                                {{-- <option value="sous_prefet">Sous prefet</option>  --}}
                                                 <option value="prefet">prefet</option> 
                                                 <option value="gouverneur">Gouverneur</option> 
                                                 <option value="superviseur">Superviseur</option> 
+                                                <option value="controlleur">controlleur</option> 
                                             </select>
                                         </div>
                                 </div>

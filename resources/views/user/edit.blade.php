@@ -68,6 +68,7 @@
                                             <option value="prefet"  {{$user->role=="prefet" ? 'selected' : ''}}>Prefet</option> 
                                             <option value="gouverneur"  {{$user->role=="gouverneur" ? 'selected' : ''}}>Gouverneur</option> 
                                             <option value="superviseur" {{$user->role=="superviseur" ? 'selected' : ''}}>Superviseur</option> 
+                                            <option value="controlleur" {{$user->role=="controlleur" ? 'selected' : ''}}>controlleur</option> 
                                         </select>
                                     </div>
                                 </div>

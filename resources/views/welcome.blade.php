@@ -415,6 +415,30 @@
                             </li>
                              @endif
 
+                             @if (Auth::user()->role=='controlleur')
+                             <li>
+                                <a href="{{ route('home') }}">
+                                    <i class="mdi mdi-airplay"></i> NATIONAL
+                                </a>
+                            </li>
+                             <li>
+                                <a href="{{ route('rts.national') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National</span></a>
+
+                            </li>
+                            <li>
+                                <a href="{{ route('rts.national.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National Temoin</span></a>
+
+                            </li>
+                            <li>
+                                <a href="{{ route('voir.par.departement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat départemental </span></a>
+
+                            </li>
+                            <li>
+                                <a href="{{ route('voir.par.departement.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Departement Temoin</span></a>
+
+                            </li>
+                             @endif
+
                         </ul>
                     </div>
                     <div class="clearfix"></div>

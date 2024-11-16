@@ -327,13 +327,13 @@ protected $participationRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
-       /* if($totalRts > $request->nb_electeur)
+        if($totalRts > $request->nb_electeur)
       {
         return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);
 
       }
       else
-      {*/
+      {
       $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
 
         $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
@@ -391,7 +391,7 @@ protected $participationRepository;
       //  return redirect('rtslieu');
       return redirect()->back()->with( "success","enregistrement avec succès");
 
-
+      }
        // $this->rtslieuRepository->deleteByBureau($request->lieuvote_id);
        // $this->rtslieuRepository->update($id, $request->all());
       //  return $this->store($request);

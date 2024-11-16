@@ -16,7 +16,7 @@
     </div>
     <div class="clearfix"></div>
 </div>
-@if (Auth::user()->role=="admin" || Auth::user()->role=="superviseur" )
+@if (Auth::user()->role=="admin" || Auth::user()->role=="superviseur" || Auth::user()->role=="controlleur" )
 {{-- <h4>Diaspora : {{ $electeursDiaspora }} inscrits</h4>
 <div class="row">
 
