@@ -160,6 +160,7 @@
                                 <a href="{{ route('editer.rtslieu', ['centrevoteId'=>$lieuvote->centrevote_id,'lieuvoteId'=>$lieuvote->lieuvote_id,'communeId'=>$lieuvote->commune_id]) }}" role="button" title="Modifier les résultats" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                 <a href="{{ route('show.rtslieu.by.lieu',$lieuvote->lieuvote_id)}}" role="button" class="btn btn-info" title="Voir les résultats"><i class="fas fa-eye"></i></a>
                                 <a href="{{ route('mettre.en.temoin',$lieuvote->lieuvote_id)}}" onclick="if(!confirm('Vous vous le mettre en bureau temoin ?')) { return false; }" role="button" class="btn btn-warning" title="mettre en bureau temoin"><i class="fas fa-database"></i></a>
+                                <a href="{{ route('enlever.en.temoin',$lieuvote->lieuvote_id)}}" onclick="if(!confirm('Vous vous l\'enlever comme  bureau temoin ?')) { return false; }" role="button" class="btn btn-danger" title="mettre en bureau temoin"><i class="fas fa-ban"></i></a>
 
                                </td>
                         </tr>

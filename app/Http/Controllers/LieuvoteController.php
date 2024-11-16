@@ -371,4 +371,9 @@ class LieuvoteController extends Controller
         $this->lieuvoteRepository->mettreBureauTemoin($id);
         return redirect("bureau/by/national")->with('success', 'Opération avec succés.');
     }
+    public function enleverBureauTemoin($id)
+    {
+        $this->lieuvoteRepository->enleverBureauTemoin($id);
+        return redirect("bureau/by/national")->with('success', 'Opération avec succés.');
+    }
 }

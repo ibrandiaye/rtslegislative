@@ -228,6 +228,11 @@ class ParticipationController extends Controller
                     DB::table("lieuvotes")->where("id",$request["lieuvote_id"])->update(['heure4'=>1]);
 
                 }
+                else if($request["heure_id"]==5)
+                {
+                    DB::table("lieuvotes")->where("id",$request["lieuvote_id"])->update(['heure5'=>1]);
+
+                }
                 if($user->role=='admin')
                 {
                     $region_id              = $request["region_id"];
@@ -485,6 +490,12 @@ class ParticipationController extends Controller
                 {
                    // dd("ok");
                     $query = $query->where("lieuvotes.heure4",0 );
+
+                }
+                else if($request->heure_id==5)
+                {
+                   // dd("ok");
+                    $query = $query->where("lieuvotes.heure5",0 );
 
                 }
             }

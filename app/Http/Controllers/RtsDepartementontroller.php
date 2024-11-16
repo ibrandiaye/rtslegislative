@@ -269,6 +269,29 @@ class RtsDepartementontroller extends Controller
 
   }
 
+  public function resultatParDepartement()
+  {
+      $region_id = "";
+      $departement_id = "";
+      $departements = [];
+      $departement = null;
+      $rts = [];
+      $inscrit = null;
+      $votant = null;
+      $bullnull = null;
+      $hs = null;
+      $candidat = null;
+      $regions  = $this->regionRepository->getAll();
+      $depouillement= [];
+
+      $depouillement[] =  0;
+      $depouillement[] =  0;
+
+      return view("rtsdepartement.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+          "bullnull","hs","votant","inscrit","departement","depouillement"));
+}
+
+
   public function rtsDepartement(Request $request)
   {
       $rts = $this->rtsdepartementRepository->rtsGroupByCandidatByDepartement($request->departement_id);
@@ -289,7 +312,7 @@ class RtsDepartementontroller extends Controller
       $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(1,$departement_id) ?? 0;
       $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(0,$departement_id) ?? 0;
    // dd($rts);
-      return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+      return view("rtsdepartement.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
       "bullnull","hs","votant","inscrit","departement","depouillement","rts"));
       // dd($rts,$departement);
   }

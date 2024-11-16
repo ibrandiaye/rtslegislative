@@ -304,7 +304,9 @@
                                 <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Departement </span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="{{ route('rtsdepartement.create') }}"> Ajouter</a></li>
-                                    <li><a href="{{ route('rtsdepartement.index') }}">Lister</a></li>
+                                    <li><a href="{{ route('rts.national.departement') }}">Résultat National</a></li>
+                                    <li><a href="{{ route('voir.rts.departement.departement') }}">Résultat Par Département</a></li>
+                                   {{--  <li><a href="{{ route('rtsdepartement.index') }}">Lister</a></li>--}}
                                 </ul>
                             </li>
                             @endif

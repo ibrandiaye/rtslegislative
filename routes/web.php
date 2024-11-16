@@ -209,7 +209,14 @@ Route::get('/impression/rts/national/{type}',[RtslieuController::class,'rtsByCan
 Route::get('/bureau/by/national',[LieuvoteController::class,'getAllAndEtat'])->name('bureau.by.national')->middleware("auth");
 Route::post('/search/national',[LieuvoteController::class,'searchNational'])->name('search.national')->middleware("auth");
 Route::get('/mettre/bureau/temoin/{id}',[LieuvoteController::class,'mettreBureauTemoin'])->name('mettre.en.temoin')->middleware("auth");
+Route::get('/enlever/bureau/temoin/{id}',[LieuvoteController::class,'enleverBureauTemoin'])->name('enlever.en.temoin')->middleware("auth");
+
 
 Route::post('/search/participation',[ParticipationController::class,'search'])->name('search.participation')->middleware("auth");
 
 Route::get('/resultat/national/departement',[RtsDepartementontroller::class,'rtsByCandidat'])->name('rts.national.departement')->middleware("auth");
+
+Route::get('/voir/resultat/departement/departement',[RtsDepartementontroller::class,'resultatParDepartement'])->name('voir.rts.departement.departement')->middleware("auth");
+
+
+Route::post('/search/resultat/departement/departement',[RtsDepartementontroller::class,'rtsDepartement'])->name('search.rts.departement.departement')->middleware("auth");
