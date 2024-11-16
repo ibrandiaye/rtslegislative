@@ -212,3 +212,4 @@ Route::get('/mettre/bureau/temoin/{id}',[LieuvoteController::class,'mettreBureau
 
 Route::post('/search/participation',[ParticipationController::class,'search'])->name('search.participation')->middleware("auth");
 
+Route::get('/resultat/national/departement',[RtsDepartementontroller::class,'rtsByCandidat'])->name('rts.national.departement')->middleware("auth");

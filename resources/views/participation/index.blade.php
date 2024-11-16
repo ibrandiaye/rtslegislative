@@ -47,6 +47,7 @@
 
                             </select>
                         </div>
+                        @if(Auth::user()->role=='admin')
                        <div class="col-3">
                             <label>Département</label>
                             <select class="form-control" id="departement_id" name="departement_id" >
@@ -57,8 +58,9 @@
                                 @endforeach
                             </select>
                         </div>
+                        @endif
                         <div class="col-lg-3">
-                            <label>Heure</label>
+                            <label>Etat</label>
                             <select class="form-control" id="etat" name="etat"  >
                                 <option value="">Selectionner</option>
                                 <option value="reseigner" {{$etat=="reseigner" ? 'selected' : ''}}>Renseigner</option>
@@ -102,7 +104,7 @@
                             <td>{{ $participation->centrevote }}</td>
                             <td>{{ $participation->lieuvote  }}</td>
                              <td>
-                               {{--  <a href="{{ route('participation.edit', $participation->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a> --}}
+                                <a href="{{ route('participation.edit', $participation->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a> 
                                @if (!empty($participation->id)) {!! Form::open(['method' => 'DELETE', 'route'=>['participation.destroy', $participation->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                 {!! Form::close() !!} @endif

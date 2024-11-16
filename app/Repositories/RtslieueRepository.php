@@ -79,6 +79,9 @@ public function  rtsGroupByJuridictionByCandidat($id){
 ->get();
 
 }
-
+public function deleteByBureau($id)
+{
+  return DB::table("rtslieues")->where("lieuvote_id",$id)->delete();
+}
 
 }

@@ -96,7 +96,7 @@ protected $rtscentreevoteeRepository;
           $rtslieue->lieuvotee_id = $request["lieuvotee_id"];
           $rtslieue->save();
         }
-        $this->lieuvoteeRepository->updateEtat($request["lieuvotee_id"]);
+        $this->lieuvoteeRepository->updateEtat($request["lieuvotee_id"],$request["votant"], $request["bulnull"],$request["hs"]);
         if($centrevotee->niveau==false){
           $rtscentrees = $this->rtscentreevoteeRepository->getByCentre($centrevotee->id);
          
@@ -200,9 +200,9 @@ protected $rtscentreevoteeRepository;
      */
     public function update(Request $request, $id)
     {
-
-        $this->rtslieueRepository->update($id, $request->all());
-        return redirect('rtslieue');
+        $this->rtslieueRepository->deleteByBureau($request->lieuvotee_id);
+        return $this->store($request);
+      
     }
 
     /**

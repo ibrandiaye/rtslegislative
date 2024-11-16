@@ -300,15 +300,59 @@
                                     <li><a href="{{ route('heure.index') }}">Lister</a></li>
                                 </ul>
                             </li>
-                            
+                            <li class="has_sub">
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Departement </span></a>
+                                <ul class="list-unstyled">
+                                    <li><a href="{{ route('rtsdepartement.create') }}"> Ajouter</a></li>
+                                    <li><a href="{{ route('rtsdepartement.index') }}">Lister</a></li>
+                                </ul>
+                            </li>
                             @endif
                            @if (Auth::user()->role=='superviseur')
+                           <li class="has_sub">
+                            <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Taux de Participation </span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="{{ route('participation.create') }}"> Ajouter</a></li>
+                                <li><a href="{{ route('participation.index') }}">Lister</a></li>
+                            </ul>
+                        </li>
+                        <li class="has_sub">
+                            <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-map-marker-multiple"></i><span>Resultat Bureau de vote Temoin </span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="{{ route('rtstemoin.create') }}"> Ajouter</a></li>
+                                <li><a href="{{ route('rtstemoin.index') }}">Lister</a></li>
+                            </ul>
+                        </li>
                            <li>
-                            <a href="{{ route('centre.by.arrondissement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau  de vote </span></a>
+                            <a href="{{ route('bureau.by.national') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau  de vote </span></a>
 
                         </li>
+                        <li>
+                            <a href="{{ route('voir.par.departement') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat départemental </span></a>
+
+                        </li>
+                        <li>
+                            <a href="{{ route('rts.national') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National</span></a>
+
+                        </li>
+                        <li>
+                            <a href="{{ route('rts.national.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat National Temoin</span></a>
+
+                        </li>
+                        <li>
+                            <a href="{{ route('voir.par.departement.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Departement Temoin</span></a>
+
+                        </li>
+                        <li class="has_sub">
+                            <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Bureau de vote </span></a>
+                            <ul class="list-unstyled">
+                                <li><a href="{{ route('rtslieu.create') }}"> Ajouter</a></li>
+                                <li><a href="{{ route('rtslieu.index') }}">Lister</a></li>
+                            </ul>
+                        </li>
+                      
                            @endif
-                            @if( Auth::user()->role=='prefet' || Auth::user()->role=='sous_prefet' || Auth::user()->role=='gouverneur')
+                            @if( Auth::user()->role=='prefet' )
                              <li>
                                 <a href="{{ route('home') }}">
                                 <i class="mdi mdi-clock"></i> Resultat Departement
@@ -341,7 +385,7 @@
                             
                             @endif
 
-                            @if( Auth::user()->role=='prefet' || Auth::user()->role=='sous_prefet' || Auth::user()->role=='gouverneur')
+                            @if( Auth::user()->role=='prefet' )
                             {{--  <li class="has_sub">
                                  <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Bureau </span></a>
                                  <ul class="list-unstyled">
@@ -358,6 +402,17 @@
                                 modifier Mot de passe
                             </button></li>
 
+                             @endif
+                             @if (Auth::user()->role=='gouverneur')
+                             <li>
+                                <a href="{{ route('home') }}">
+                                <i class="mdi mdi-clock"></i> Resultat Departement
+                                </a>
+                            </li> 
+                            <li>
+                                <a href="{{ route('voir.par.departement.temoin') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Résultat Departement Temoin</span></a>
+
+                            </li>
                              @endif
 
                         </ul>

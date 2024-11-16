@@ -175,5 +175,32 @@ public function  rtsGroupByRegionAndCandidat(){
 public function updateEtat($id){
     return DB::table("departements")->where("id",$id)->update(["etat"=>true]);
 }
+public function  rtsGroupByDepartementandCandidat(){
+
+    return   DB::table('rtsdepartements')
+  ->join('departements','rtsdepartements.departement_id','=','departements.id')
+  ->join('candidats','rtsdepartements.candidat_id','=','candidats.id')
+  ->select('departements.nom as departement',"candidats.coalition as coalition","candidats.photo"   ,DB::raw('sum(rtsdepartements.nbvote) as nb'))
+  ->groupBy('departements.nom','candidats.coalition',"candidats.photo")
+  ->orderBy("nb","desc")
+  ->get();
+  
+  }
+
+  public function  rtsGroupByCandidatByDepartement($departement){
+
+    return   DB::table('rtsdepartements')
+  ->join('candidats','rtsdepartements.candidat_id','=','candidats.id')
+  ->select("candidats.nom as candidat" ,"candidats.photo"  ,DB::raw('sum(rtsdepartements.nbvote) as nb'))
+  ->groupBy('candidats.nom',"candidats.photo")
+  ->orderBy("nb","desc")
+  ->where("rtsdepartements.departement_id",$departement)
+  ->get();
+
+  }
+
+ 
+
+
 
 }

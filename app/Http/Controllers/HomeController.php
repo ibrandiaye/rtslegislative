@@ -172,7 +172,7 @@ CommuneRepository $communeRepository){
            "nCentreVote","tauxDeParticipations","totalVotants","nbBureauTemoin","nbBureauTemoinByEtat",
            "nbElecteursTemoin",'rtsTemoins','nbVotantTemoin',"nullNational","resultats","nbBureauTemoin","nbBureauTemoinByEtat"));
         }
-        else
+        else if($user->role=="prefet")
         {
             $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartement($user->departement_id);
         //$departements= $this->departementRepository->getAll();
@@ -192,6 +192,27 @@ CommuneRepository $communeRepository){
 
         return view("rtslieu.rtsdepartement",compact("rts",
         "bullnull","hs","votant","inscrit","departement","depouillement"));
+        }
+        else  if($user->role=="gouverneur")
+        {
+
+            $rts =[];
+        //$departements= $this->departementRepository->getAll();
+        $departements = DB::table("departements")->where("region_id",$user->region_id)->get();
+        $departement_id ="";
+        $departement = null;
+
+        $votant  = 0;
+        $bullnull  = 0;
+        $hs  = 0;
+        $inscrit = 0;
+        // dd($rts,$departement);
+        $depouillement= [];
+
+        $depouillement[]=0 ;
+        $depouillement[]=0 ;
+        return view("rtslieu.rtsdepartement",compact("rts","departement",
+        "bullnull","hs","votant","inscrit","departements","depouillement","departement_id"));
         }
 
     }

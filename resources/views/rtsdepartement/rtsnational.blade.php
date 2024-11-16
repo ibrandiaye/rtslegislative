@@ -11,7 +11,7 @@
 
                                 <ol class="breadcrumb hide-phone p-0 m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('home') }}" >ACCUEIL</a></li>
-                                <li class="breadcrumb-item active"><a href="{{ route('rtslieu.create') }}" >RESULTAT Nationnal Bureau Temoin</a></li>
+                                <li class="breadcrumb-item active"><a href="{{ route('rtslieu.create') }}" >Liste des rtslieus</a></li>
                                 </ol>
                             </div>
                             <h4 class="page-title">DGE</h4>
@@ -30,14 +30,14 @@
         </div>
     @endif
 <div class="row">
-    <div class="col-8">
+<div class="col-8">
     <div class="card ">
-        <div class="card-header  text-center">RESULTAT Nationnal Bureau Temoin / {{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0) {{round($depouillement[0]/$depouillement[1]+$depouillement[0],2)}}% @endif</div>
+        <div class="card-header  text-center">RESULTAT Nationnal  {{--{{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0) {{round($depouillement[0]/$depouillement[1]+$depouillement[0],2)}}% @endif --}}</div>
             <div class="card-body">
 
                 <div class="row">
                     <div class="col-5">
-                        <a href="{{ route('impression.rts.national', ['type'=>2]) }}" class="btn btn-success" >Imprimer</a>
+                        <a href="{{ route('impression.rts.national', ['type'=>1]) }}" class="btn btn-success" >Imprimer</a>
 
                     </div>
                     @if (count($rts) > 0)
@@ -47,7 +47,10 @@
                     </div>
   
                           @endif
-                          @php
+                   
+                    
+                    <div class="col-12">
+                      @php
                           $nb = 0;
                           $taux = 0;
                           $proportionnel = 0;
@@ -55,7 +58,6 @@
                           $total = 0;
                           $restant = 0;
                       @endphp
-                    <div class="col-12">
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>
@@ -104,12 +106,13 @@
                                     <td>@php echo $total; @endphp </td>
                                     <td>@php echo $restant; @endphp </td>
                                 </tr>
+
                             </tbody>
                         </table>
 
 
                     </div>
-                  
+                   
                 </div>
 
 
@@ -122,12 +125,12 @@
     <div class="card mb-4">
         <div class="card-body">
             <h5 class="card-title">Informations Générales</h5>
-            <h6  class="badge badge-success" style="font-size: 17px ! important;">Inscrits : {{$inscrit}}</h6><br>
-            <h6  class="badge badge-success" style="font-size: 17px ! important;">Votant : {{$votant}}</h6><br>
-            <h6  class="badge badge-success" style="font-size: 17px ! important;">Nuls : {{$bulletinnull}}</h6><br>
-            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$votant - $bulletinnull}}</h6><br>
-            <h6  class="badge badge-success" style="font-size: 17px ! important;">Taux de participation : @if($inscrit>0){{ round(($votant*100)/$inscrit,2)}}% @endif</h6><br>
-            <h6 class="badge badge-success" style="font-size: 17px ! important;">Qutotient  : {{ $quotiant }}</h6>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Inscrits : {{$inscrit}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Votant : {{$totalVotants + $bulletinnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Nuls : {{$bulletinnull}}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Exprimés : {{$totalVotants }}</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Taux de participation : @if($inscrit>0){{ round(($totalVotants*100)/$inscrit,2)}}% @endif</h6><br>
+            <h6 class="badge badge-success" style="font-size: 17px ! important;">Qutotient  : {{ $quotiant }}</h6><br>
         </div>
     </div>
     <div>
@@ -135,9 +138,8 @@
       </div>
 </div>
 </div>
-
 @endsection
-@section('script')
+{{-- @section('script')
  <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.js" integrity="sha512-CAv0l04Voko2LIdaPmkvGjH3jLsH+pmTXKFoyh5TIimAME93KjejeP9j7wSeSRXqXForv73KUZGJMn8/P98Ifg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function(){
@@ -173,4 +175,4 @@ var myChart =new Chart(ctx, {
 
 });
   </script>
-@endsection
+@endsection --}}

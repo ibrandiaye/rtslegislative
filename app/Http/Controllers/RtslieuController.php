@@ -71,7 +71,7 @@ protected $participationRepository;
        $candidats = $this->candidatRepository->getAll();
        $user = Auth::user();
 
-       if($user->role=="admin")
+       if($user->role=="admin" || $user->role=="superviseur")
        {
         $region_id              ="";
         $departement_id         = "";
@@ -138,13 +138,13 @@ protected $participationRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
-       /* if($totalRts > $request->nb_electeur)
+       if($totalRts > $request->nb_electeur)
       {
         return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);
 
       }
       else
-      {*/
+      {
 
         $centreVote = $this->centrevoteRepository->getById($request->centrevote_id);
 
@@ -231,7 +231,7 @@ protected $participationRepository;
       //  return redirect('rtslieu');
       return redirect()->back()->with( "success","enregistrement avec succès");
 
-     // }
+      }
 
     }
     public function storeApi(Request $request)
@@ -629,6 +629,11 @@ protected $participationRepository;
 
         $depouillement[] =  0;
         $depouillement[] =  0;
+        $user = Auth::user();
+        if($user->region_id)
+        {
+          $departements = DB::table("departements")->where("region_id",$user->region_id)->get();
+        }
 
 
         return view("rtslieu.rtsdepartementtemoin",compact("region_id","departement_id","departements","regions","rts",

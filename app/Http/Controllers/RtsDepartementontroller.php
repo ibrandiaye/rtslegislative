@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Rtsdepartement;
 use App\Repositories\CandidatRepository;
 use App\Repositories\DepartementRepository;
+use App\Repositories\LieuvoteRepository;
 use App\Repositories\RegionRepository;
 use App\Repositories\RtsdepartementRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RtsDepartementontroller extends Controller
 {
@@ -15,13 +17,15 @@ class RtsDepartementontroller extends Controller
     protected $departementRepository;
     protected $candidatRepository;
     protected $regionRepository;
+    protected $lieuvoteRepository;
 
     public function __construct(RtsdepartementRepository $rtsdepartementRepository, DepartementRepository $departementRepository,
-    CandidatRepository $candidatRepository,RegionRepository $regionRepository){
+    CandidatRepository $candidatRepository,RegionRepository $regionRepository,LieuvoteRepository $lieuvoteRepository){
         $this->rtsdepartementRepository =$rtsdepartementRepository;
         $this->departementRepository = $departementRepository;
         $this->candidatRepository = $candidatRepository;
         $this->regionRepository = $regionRepository;
+        $this->lieuvoteRepository = $lieuvoteRepository;
     }
 
     /**
@@ -45,7 +49,10 @@ class RtsDepartementontroller extends Controller
        // $departements = $this->departementRepository->getAll();
         $candidats = $this->candidatRepository->getAll();
         $regions = $this->regionRepository->getAll();
-        return view('rtsdepartement.add',compact('candidats',"regions"));
+        $region_id = "";
+        $departements = [];
+        $departement_id = "";
+        return view('rtsdepartement.add',compact('candidats',"regions","region_id","departements","departement_id"));
     }
 
     /**
@@ -84,7 +91,7 @@ class RtsDepartementontroller extends Controller
         $rtsdepartement->departement_id = $request["departement_id"];
         $rtsdepartement->save();
       }
-         $this->departementRepository->updateEtat($request["departement_id"]);
+         $this->departementRepository->updateEtat($request["departement_id"],$request["votant"],$request["bulnull"],$request["hs"]);
          return redirect('rtsdepartement');
 
       }
@@ -200,4 +207,91 @@ class RtsDepartementontroller extends Controller
     //dd($results);
      
   }
+
+  public function rtsByCandidat()
+  {
+        $rts = $this->rtsdepartementRepository->rtsByCandidat();
+
+        $departements = $this->departementRepository->getAllOnLy();
+        $rtsByDepartements = $this->rtsdepartementRepository->rtsGroupByDepartementandCandidat();
+        $siegesParCirconscription = array();
+        //recuperer les departement et les nombre de partement par deputé
+        foreach ($departements as $key => $value) {
+            $siegesParCirconscription[$value->nom]  = intval($value->nbcandidat);
+        }
+    //dd($siegesParCirconscription);
+        $votantVal = 0;
+        $votesProportionnels = array();
+        foreach ($rts as $key => $rt) {
+        $votantVal = $votantVal + $rt->nb;
+        $votesProportionnels[$rt->coalition]  = intval($rt->nb);
+        }
+        //dd($votesProportionnels);
+        $quotiant = round( $votantVal/53,0);
+
+        $circonscriptions = array();
+
+        foreach ($departements as $key => $value) {
+            $resultat = array();
+            foreach ($rtsByDepartements as $key => $rtsByDepartement) {
+                if($value->nom == $rtsByDepartement->departement)
+                {
+                    $resultat[$rtsByDepartement->coalition] = intval($rtsByDepartement->nb);
+                }
+
+            }
+            $circonscriptions[$value->nom] = $resultat;
+        }
+
+    //dd($circonscriptions);
+    // dd(round($quotiant,0));
+
+    //dd($rts);
+    $totalVotants = array_sum($votesProportionnels);  // Calcul du total de votants
+    $bulletinnull = $this->departementRepository->nbBulletinNull();
+    $hs = $this->departementRepository->nbHs();
+    //$votant = $this->lieuvoteRepository->nbVotant();
+    $inscrit = $this->lieuvoteRepository->nbElecteurs();
+   // dd($votant);
+
+    // Calcul
+    $resultats = $this->rtsdepartementRepository->calculerSieges($circonscriptions, $siegesParCirconscription, $votesProportionnels, $totalVotants);
+   // dd($rts);
+
+    foreach ($rts as $key => $rt) {
+        $resultats[$rt->coalition]["nb"] = $rt->nb;
+        $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
+       // $resultats[$rt->coalition]["photo"] = $rt->photo;
+    }
+   
+   // dd($resultats);
+    return view("rtsdepartement.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","rts"));
+
+  }
+
+  public function rtsDepartement(Request $request)
+  {
+      $rts = $this->rtsdepartementRepository->rtsGroupByCandidatByDepartement($request->departement_id);
+      //$departements= $this->departementRepository->getAll();
+      $departement = DB::table("departements")->where("id",$request->departement_id)->first();
+      $departement_id = $request->departement_id;
+      $region_id = $request->region_id;
+      $regions  = $this->regionRepository->getAll();
+      $departements = $this->departementRepository->getByRegion($request->region_id);
+      $candidat = DB::table("candidats")->first();
+      $votant  = $departement->total;
+      $bullnull  = $departement->null;
+      $hs  =  $departement->hb;
+      $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
+      // dd($rts,$departement);
+      $depouillement= [];
+
+      $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(1,$departement_id) ?? 0;
+      $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtatAndDepartement(0,$departement_id) ?? 0;
+   // dd($rts);
+      return view("rtslieu.rtsdepartement",compact("region_id","departement_id","departements","regions","rts",
+      "bullnull","hs","votant","inscrit","departement","depouillement","rts"));
+      // dd($rts,$departement);
+  }
+
     }

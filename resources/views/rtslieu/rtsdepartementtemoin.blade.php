@@ -60,7 +60,7 @@
     <div class="row">
 <div class="col-8">
     <div class="card ">
-        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif /  {{$depouillement[0]}} dépouillé sur {{$depouillement[1]}}</div>
+        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif /  {{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0) {{round($depouillement[0]/$depouillement[1]+$depouillement[0],2)}}% @endif </div>
             <div class="card-body">
                 @if (Auth::user()->role=="admin")
                 <form method="POST" action="{{ route('rts.by.departement.temoin') }}">
@@ -76,6 +76,29 @@
 
                             </select>
                         </div>
+                        <div class="col-lg-2">
+                            <label>Département</label>
+                            <select class="form-control" id="departement_id" name="departement_id" >
+                                <option value=""> Veuillez choisir</option>
+                                @foreach ($departements as $item)
+                                <option value="{{$item->id}}" {{$departement_id==$item->id ? 'selected' : ''}}>{{$item->nom}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <input type="submit" value="Valider" class="btn btn-primary" style="margin-top: 30px;">
+                        </div>
+                    </div>
+
+                </form>
+                <br>
+                @endif
+                @if (Auth::user()->role=="gouverneur")
+                <form method="POST" action="{{ route('rts.by.departement.temoin') }}">
+                    @csrf
+                    <div class="row">
+                        <input type="hidden" value="{{Auth::user()->region_id}}" name="region_id">
                         <div class="col-lg-2">
                             <label>Département</label>
                             <select class="form-control" id="departement_id" name="departement_id" >

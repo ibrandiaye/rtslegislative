@@ -374,6 +374,7 @@ class ParticipationController extends Controller
         $departements = $this->departementRepository->getAllOnLy();
         $departement_id = $request->departement_id;
         $etat = $request->etat;
+        $participations = [];
 
         $query =  DB::table('participations');
         
@@ -389,7 +390,7 @@ class ParticipationController extends Controller
                 ->join('centrevotes', 'lieuvotes.centrevote_id', '=', 'centrevotes.id');
             }
             else
-            {
+            {   
                 
                 $query =  DB::table('lieuvotes')
                 ->join('centrevotes', 'lieuvotes.centrevote_id', '=', 'centrevotes.id')
@@ -454,10 +455,38 @@ class ParticipationController extends Controller
         }
         elseif($user->role=="prefet")
         {
-            $query = $query->where("participations.departement_id",$user->departement_id);
-            if($request->heure_id)
+            if($request->heure_id && $request->etat=="reseigner")
             {
+                $query = $query->where("participations.departement_id",$user->departement_id);
+
                 $query = $query->where("participations.heure_id",$request->heure_id);
+            }
+            if($request->heure_id && $request->etat=="nonrenseigner")
+           {
+    //dd($request->heure_id);
+    $query = $query->where("communes.departement_id",$user->departement_id);
+
+                if($request->heure_id==1)
+                {
+                    $query = $query->where("lieuvotes.heure1",0);
+
+                }
+                else if($request->heure_id==2)
+                {
+                    $query = $query->where("lieuvotes.heure1",0);
+
+                }
+                else if($request->heure_id==3)
+                {
+                   $query = $query->where("lieuvotes.heure3",0);
+ 
+                }
+                else if($request->heure_id==4)
+                {
+                   // dd("ok");
+                    $query = $query->where("lieuvotes.heure4",0 );
+
+                }
             }
           //  $participations = $this->participationRepository->getByHeureAndDepartement($request->heure_id,$user->departement_id);
         }

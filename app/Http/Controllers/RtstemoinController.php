@@ -83,7 +83,7 @@ protected $arrondissementRepository;
         $communes = [];
         $centreVotes =[];
         $lieuVotes  =[];
-        if($user->role=='admin')
+        if($user->role=='admin' || $user->role=='superviseur')
         {
           $departements = [];
           $regions = $this->regionRepository->getRegionAsc();

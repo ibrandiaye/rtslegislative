@@ -39,9 +39,10 @@ class LieuvoteeRepository extends RessourceRepository{
         ->orderBy("nom","asc")
         ->get();
 }
-public function updateEtat($id){
-    return DB::table("lieuvotees")->where("id",$id)->update(["etat"=>1]);
+public function updateEtat($id, $votant,$bulnull,$hs){
+    return DB::table("lieuvotees")->where("id",$id)->update(["etat"=>1,"votant"=>$votant,"bulnull"=>$bulnull,"hs"=>$hs]);
 }
+
 public function getAllOnly(){
     return DB::table("lieuvotees")->get();
 }

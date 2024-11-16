@@ -65,5 +65,23 @@ public function sumNullByRegion($id){
     ->where("departements.region_id",$id)
     ->sum("null");
 }
+public function  nbBulletinNull(){
+    return   DB::table('departements')
+   ->sum('null');;
+
+}
+
+public function  nbHs(){
+    return  DB::table('departements')
+
+  ->sum('hb');
+
+}
+public function  nbVotant(){
+    return  DB::table('departements')
+
+  ->sum('total');
+
+}
 
 }
