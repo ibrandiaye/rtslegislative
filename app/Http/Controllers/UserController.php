@@ -124,7 +124,7 @@ class UserController extends Controller
         if(Auth::user()->role=="admin")
             return redirect('user');
         else
-            return redirect()->back()->with('success', 'Candidat modifier avec succès.'); 
+            return redirect()->back()->with('success', ' modifier avec succès.'); 
     }
 
     /**
@@ -161,7 +161,7 @@ class UserController extends Controller
         else 
         {
             User::where("id",Auth::user()->id)->update(["password"=>Hash::make($request['password'])]);
-            return redirect()->back()->with('success', 'Candidat modifier avec succès.'); 
+            return redirect()->back()->with('success', ' modifier avec succès.'); 
         }
 
 
