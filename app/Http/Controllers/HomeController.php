@@ -222,7 +222,9 @@ CommuneRepository $communeRepository){
 
         $depouillement[]=0 ;
         $depouillement[]=0 ;
-        $participations = $this->participationRepository->participationParHeureParcandidatByRegion($user->region_id);
+       // $participations = $this->participationRepository->participationParHeureParcandidatByRegion($user->region_id);
+    //  $nbElecteursTemoinByRegion = $this->lieuvoteRepository->nbElecteursTemoinByRegion($user->region_id);
+       // dd($participations);
         return view("rtslieu.rtsdepartement",compact("rts","departement",
         "bullnull","hs","votant","inscrit","departements","depouillement","departement_id"));
         }

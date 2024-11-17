@@ -135,10 +135,9 @@
                                     <input type="hidden" id="nb_electeur" name="nb_electeur">
 
                                     <br>
-                                    <div>
-                                   {{--    <center>
+                                      <center>
                                         <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
-                                    </center>  --}}
+                                    </center>  
                                 </div>
                             </div>
 

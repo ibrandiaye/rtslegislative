@@ -68,7 +68,15 @@ class LieuvoteRepository extends RessourceRepository{
         return   Lieuvote::where("temoin",true)->sum('nb');
 
     }
-    
+    public function nbElecteursTemoinByRegion($region){
+        return  DB::table("lieuvotes")
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->join("departements","communes.departement_id","=","departements.id")
+    ->where([["temoin",true],["departements.region_id",$region]])
+    ->sum('nb');
+
+    }
 
     public function nbElecteursTemoinByDepartement($departement){
         return  DB::table("lieuvotes")
