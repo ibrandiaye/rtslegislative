@@ -83,4 +83,42 @@ class ParticipationRepository extends RessourceRepository{
 ->get();
 
 }
+
+public function  participationParHeureParcandidatParDepartement($id){
+
+  return   DB::table('participations')
+  ->join("heures","participations.heure_id","=","heures.id")
+
+->select('heures.designation' ,DB::raw('count(participations.id) as bureau'))
+->groupBy('heures.designation')
+->orderBy("bureau","desc")
+->where("departement_id",$id)
+->get();
+
+}
+
+public function  participationParHeureParcandidatGoubernerer($id){
+
+  return   DB::table('participations')
+  ->join("heures","participations.heure_id","=","heures.id")
+  ->join("departements","departements.departement_id","=","departements.id")
+
+->select('heures.designation',"departements.region_id" ,DB::raw('count(participations.id) as bureau'))
+->groupBy('heures.designation',"departements.region_id")
+->where("departements.region_id","id")
+->get();
+
+}
+
+public function  participationParHeureParcandidatByRegion($id){
+
+  return   DB::table('participations')
+  ->join("heures","participations.heure_id","=","heures.id")
+  ->join("departements","participations.departement_id","=","departements.id")
+->select('heures.designation' ,"departements.region_id",DB::raw('count(participations.id) as bureau'))
+->groupBy('heures.designation','departements.region_id')
+->where("departements.region_id",$id)
+->get();
+
+}
 }

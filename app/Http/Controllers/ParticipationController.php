@@ -153,6 +153,12 @@ class ParticipationController extends Controller
     public function store(Request $request)
     {
         
+        if($request->nb_electeur < $request->resultat)
+        {
+          return redirect("participation/create")->withErrors(["erreur"=>"Nombre Saisi supérieur au nombre d'inscrit"]);
+  
+        }
+        
         $participation = DB::table("participations")->where(["lieuvote_id"=>$request->lieuvote_id,"heure_id"=>$request->heure_id])->first();
        // dd($participation);
         if(!empty($participation))

@@ -636,6 +636,7 @@ protected $participationRepository;
         $depouillement[] =  0;
         $depouillement[] =  0;
         $user = Auth::user();
+        
         if($user->region_id)
         {
           $departements = DB::table("departements")->where("region_id",$user->region_id)->get();
