@@ -57,10 +57,10 @@
                             <td>{{ $rtslieu->nbvote }}</td>
 {{--                              <td>{{ $rtslieu->nbvv }}</td>
   --}}                            <td>
-                                <a href="{{ route('rtslieu.edit', $rtslieu->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                              {{--   <a href="{{ route('rtslieu.edit', $rtslieu->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                 {!! Form::open(['method' => 'DELETE', 'route'=>['rtslieu.destroy', $rtslieu->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                {!! Form::close() !!}
+                                {!! Form::close() !!} --}}
 
 
 
