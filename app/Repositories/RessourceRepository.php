@@ -190,8 +190,12 @@ class RessourceRepository {
             // Calculer les restes pour chaque parti
             $restes = [];
             foreach ($votesProportionnels as $parti => $votes) {
-                $reste = $votes % $quotientElectoral;
-                $restes[$parti] = $reste;
+                if($quotientElectoral > 0)
+                {
+                    $reste = $votes % $quotientElectoral;
+                    $restes[$parti] = $reste;
+                }
+               
             }
 
             // Trier les partis par ordre décroissant des restes
