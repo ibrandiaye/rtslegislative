@@ -301,7 +301,7 @@
                                 </ul>
                             </li>
                             <li class="has_sub">
-                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Departement </span></a>
+                                <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collect par Departement(CRD) </span></a>
                                 <ul class="list-unstyled">
                                     <li><a href="{{ route('rtsdepartement.create') }}"> Ajouter</a></li>
                                     <li><a href="{{ route('rts.national.departement') }}">Résultat National</a></li>
