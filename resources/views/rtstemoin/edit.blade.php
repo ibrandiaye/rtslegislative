@@ -39,7 +39,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <label>Région</label>
-                                        <select class="form-control" id="region_id" name="region_id" required="">
+                                        <select class="form-control" id="region_id" name="region_id" required="" @readonly(true)>
                                             <option value="">Selectionner</option>
                                             @foreach ($regions as $region)
                                             <option value="{{$region->id}}" {{ $region->id==$rtstemoin->lieuvote->centrevote->commune->departement->region_id ? 'selected' : ''}}>{{$region->nom}}</option>
@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="col">
                                         <label>Département</label>
-                                        <select class="form-control" id="departement_id" name="departement_id" required>
+                                        <select class="form-control" id="departement_id" name="departement_id" required @readonly(true)>
                                             <option value="">Selectionner</option>
                                             @foreach ($departements as $departement)
                                             <option value="{{$departement->id}}" {{ $departement->id==$rtstemoin->lieuvote->centrevote->commune->departement_id ? 'selected' : ''}}>{{$departement->nom}}</option>
@@ -60,7 +60,7 @@
                             
                                             <div class="col">
                                                 <label>Commune</label>
-                                                <select class="form-control" id="commune_id" name="commune_id" required>
+                                                <select class="form-control" id="commune_id" name="commune_id" required @readonly(true)>
                                                     <option value="">Selectionner</option>
                                                     @foreach ($communes as $commune)
                                                     <option value="{{$commune->id}}" {{ $commune->id==$rtstemoin->lieuvote->centrevote->commune_id ? 'selected' : ''}}>{{$commune->nom}}</option>
@@ -70,7 +70,7 @@
                                     </div>
                                         <div class="col">
                                             <label>Lieu de vote</label>
-                                            <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
+                                            <select class="form-control" name="centrevote_id" id="centrevote_id" required="" @readonly(true)>
                                                 <option value="">Selectionner</option>
                                                 @foreach ($centrevotes as $centrevote)
                                                 <option value="{{$centrevote->id}}"  {{ $centrevote->id==$rtstemoin->lieuvote->centrevote->id ? 'selected' : ''}}>{{$centrevote->nom}}</option>
@@ -80,7 +80,7 @@
                                         </div>
                                         <div class="col">
                                             <label>Bureau  de vote  </label>
-                                            <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
+                                            <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="" @readonly(true)>
                                                 <option value="">Selectionner</option>
                                                 <option value="{{$lieuvote->id}}" {{ $lieuvote->id==$rtstemoin->lieuvote_id ? 'selected' : ''}}>{{$lieuvote->nom}} </option>
     

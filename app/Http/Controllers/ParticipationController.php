@@ -212,7 +212,7 @@ class ParticipationController extends Controller
             $user = Auth::user();
             $participation = DB::table("participations")->where("lieuvote_id",$request["lieuvote_id"])->orderBy("id","desc")->first();
 
-            if( empty($participation) || $participation->resultat <= $request["resultat"])
+            if( empty($participation) /*|| $participation->resultat <= $request["resultat"]*/  )
             {
                 $participations = $this->participationRepository->store($request->all());
                 if($request["heure_id"]==1)
