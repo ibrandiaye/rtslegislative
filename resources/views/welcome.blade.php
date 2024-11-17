@@ -360,10 +360,10 @@
                                 <i class="mdi mdi-clock"></i> Resultat Departement
                                 </a>
                             </li> 
-                            <li>
+                         {{--    <li>
                                 <a href="{{ route('rtslieu.create') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collecte par Bureau de vote </span></a>
 
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="{{ route('rtstemoin.create') }}" class="waves-effect"><i class="mdi mdi-account-circle"></i><span>Collecte par Bureau temoin </span></a>
 
