@@ -58,7 +58,7 @@ protected $arrondissementRepository;
      */
     public function index()
     {
-        $rtstemoins = $this->rtstemoinRepository->getAll();
+        $rtstemoins = $this->rtstemoinRepository->getPaginate(500);
         return view('rtstemoin.index',compact('rtstemoins'));
     }
 
