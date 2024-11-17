@@ -105,9 +105,9 @@
                             <td>{{ $participation->lieuvote  }}</td>
                              <td>
                              @if($etat=="reseigner")   <a href="{{ route('participation.edit', $participation->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a> @endif
-                               @if (!empty($participation->id)) {!! Form::open(['method' => 'DELETE', 'route'=>['participation.destroy', $participation->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}
+                             {{--   @if (!empty($participation->id)) {!! Form::open(['method' => 'DELETE', 'route'=>['participation.destroy', $participation->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                {!! Form::close() !!} @endif
+                                {!! Form::close() !!} @endif --}}
 
 
 
