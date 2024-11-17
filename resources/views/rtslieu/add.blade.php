@@ -100,7 +100,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Votant </label>
-                                                        <input type="number" name="votant" id="votant"  value="{{ old('votant') }}" class="form-control"  required>
+                                                        <input type="number" data-parsley-min="0" name="votant" id="votant"  value="{{ old('votant') }}" class="form-control"  required>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">

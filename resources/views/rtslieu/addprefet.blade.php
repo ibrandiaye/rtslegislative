@@ -84,13 +84,13 @@
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Votant </label>
-                                                        <input type="number" name="votant" id="votant"  value="{{ old('votant') }}" class="form-control"  required>
+                                                        <input type="number" name="votant" id="votant" data-parsley-min="0"  value="{{ old('votant') }}" class="form-control"  required>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Nuls </label>
-                                                        <input type="number" name="bulnull" id="bulnull"  value="{{ old('bulnull') }}" class="form-control"  required>
+                                                        <input type="number" name="bulnull" id="bulnull"   value="{{ old('bulnull') }}" class="form-control" data-parsley-min="0"  required>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">

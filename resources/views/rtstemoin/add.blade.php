@@ -100,7 +100,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Votant </label>
-                                                        <input type="number" name="votant" id="votant"  value="{{ old('votant') }}" class="form-control"  required>
+                                                        <input type="number" data-parsley-min="0" name="votant" id="votant"  value="{{ old('votant') }}" class="form-control"  required>
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -137,7 +137,7 @@
                                                     <td>
                                                         <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
                                                     </td>
-                                                    <td><input type="number" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="0" class="form-control"  required>
+                                                    <td><input type="number" name="nbvote[]"  data-parsley-type="number"  value="0" class="form-control"  required>
                                                         <input type="hidden" name="candidat_id[]" value="{{ $candidat->id }}">
                                                     </td>
                                                 </tr>
