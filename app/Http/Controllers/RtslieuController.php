@@ -55,7 +55,7 @@ protected $participationRepository;
      */
     public function index()
     {
-        $rtslieus = $this->rtslieuRepository->getAll();
+        $rtslieus = $this->rtslieuRepository->getPaginate(500);
         return view('rtslieu.index',compact('rtslieus'));
     }
 
