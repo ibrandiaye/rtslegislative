@@ -138,6 +138,7 @@ protected $participationRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
+      dd($totalRts);
       if($totalRts <1)
       {
         return redirect()->back()->withErrors(["erreur"=>"Saisir les resultats"]);

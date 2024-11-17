@@ -123,6 +123,12 @@ protected $arrondissementRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
+     // dd($totalRts,$totalRts <1);
+      if($totalRts <1)
+      {
+        return redirect()->back()->withErrors(["erreur"=>"Toutes résultats ne doivent pas egale à zéro"]);
+
+      }
         if($totalRts > $request->nb_electeur)
       {
         return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);

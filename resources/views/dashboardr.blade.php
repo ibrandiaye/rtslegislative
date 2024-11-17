@@ -132,7 +132,7 @@
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10 ">
                             <h5 class="mt-0">{{ $totalVotants + $nullNational}}</h5>
-                          <a href="{{ route('nbVoteStat') }}">  <p class="mb-0 text-muted">Nombre de votants</p></a>
+                          <a href="#">  <p class="mb-0 text-muted">Nombre de votants</p></a>
                         </div>
                     </div>
                 </div>
@@ -402,7 +402,7 @@
                     <div class="col-9 align-self-center text-right">
                         <div class="m-l-10">
                             <h5 class="mt-0">{{round(((int)$tauxDeParticipation->nb/$nbElecteursTemoin)*100,2) }}%</h5>
-                            <p class="mb-0 text-muted"><a href="{{ route('participation.heure', ['heure'=>$tauxDeParticipation->designation]) }}"> Taux de Participation à {{$tauxDeParticipation->designation}} </a><span class="badge bg-soft-success"></span></p>
+                            <p class="mb-0 text-muted"><a href="#"> Taux de Participation à {{$tauxDeParticipation->designation}} : {{$tauxDeParticipation->nbBureau}} sur {{$nbBureauTemoin}} </a><span class="badge bg-soft-success"></span></p>
                         </div>
                     </div>
                 </div>

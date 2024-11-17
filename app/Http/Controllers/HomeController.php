@@ -103,7 +103,18 @@ CommuneRepository $communeRepository){
           $nbElecteursTemoin = $this->lieuvoteRepository->nbElecteursTemoin();
           $rtsTemoins = $this->rtsTemoinRepository->rtsByCandidat();
           $nbVotantTemoin = $this->rtsTemoinRepository->nbVotants();
-          //dd($rtsTemoins);
+          $participationParHeureParcandidat = $this->participationRepository->participationParHeureParcandidat();
+           // dd($participationParHeureParcandidat);
+            foreach ($tauxDeParticipations as $key => $value) {
+                foreach ($participationParHeureParcandidat as $key1 => $value1) {
+                    if($value->designation==$value1->designation )
+                    {
+                           //$tauxDeParticipations[$key] == new \stdClass();
+                           $tauxDeParticipations[$key]->nbBureau = $value1->bureau;
+                    }
+                }
+            }
+         // dd($tauxDeParticipations);
         //  $nbVotantDiaspora = $this->rtsPayrrepository->nbVotants();
          // $nullNational = $this->departementRepository->nbNull();
          $nullNational = $this->lieuvoteRepository->nbBulletinNull();
@@ -166,7 +177,7 @@ CommuneRepository $communeRepository){
 
            $nbBureauTemoin = $this->lieuvoteRepository->nbBureauTemoin();
            $nbBureauTemoinByEtat = $this->lieuvoteRepository->nbBureauTemoinByEtat(1);
-
+           
            return view("dashboardr",compact("totalLieuvote","depouille","electeurs",
            "tauxDepouillement","tauxDepouillementElecteurs","rtsParCandidats",
            "nCentreVote","tauxDeParticipations","totalVotants","nbBureauTemoin","nbBureauTemoinByEtat",

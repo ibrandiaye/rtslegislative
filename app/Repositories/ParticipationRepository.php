@@ -66,4 +66,21 @@ class ParticipationRepository extends RessourceRepository{
     ->where("departement_id",$departement)
     ->get();
   } 
+
+  public function getByHeureParBureau($id)
+  {
+    return DB::table("participations")->sum("resultat");
+  } 
+
+  public function  participationParHeureParcandidat(){
+
+    return   DB::table('participations')
+    ->join("heures","participations.heure_id","=","heures.id")
+
+  ->select('heures.designation' ,DB::raw('count(participations.id) as bureau'))
+  ->groupBy('heures.designation')
+  ->orderBy("bureau","desc")
+->get();
+
+}
 }
