@@ -138,7 +138,7 @@ protected $participationRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
-      dd($totalRts);
+      //dd($totalRts);
       if($totalRts <1)
       {
         return redirect()->back()->withErrors(["erreur"=>"Saisir les resultats"]);
@@ -636,7 +636,7 @@ protected $participationRepository;
         $depouillement[] =  0;
         $depouillement[] =  0;
         $user = Auth::user();
-        
+
         if($user->region_id)
         {
           $departements = DB::table("departements")->where("region_id",$user->region_id)->get();
