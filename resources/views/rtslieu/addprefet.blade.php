@@ -249,7 +249,13 @@
                    bulnull = $("#bulnull").val();
                    $("#suffval").val(votant - bulnull);
                 });
-
+                $(document).ready(function() { 
+    $('#enregistrer').click(function() { 
+        $.blockUI(/*{ message: $('#loginForm') }*/); 
+ 
+        setTimeout($.unblockUI, 2000); 
+    }); 
+}); 
 
 </script>
 @endsection

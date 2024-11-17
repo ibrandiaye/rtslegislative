@@ -599,16 +599,18 @@
         <script src="{{asset('js/app.js') }}"></script>
         <script src="{{asset('plugins/parsleyjs/parsley.min.js') }}"></script>
         <script src="{{asset('plugins/parsleyjs/fr.js') }}"></script>
+        <script src="{{asset('js/jquery.blockUI.js') }}"></script>
+
          {{-- Chart JS 
          <script src="{{asset('plugins/chart.js/chart.min.js') }}"></script>
          <script src="{{asset('pages/chartjs.init.js') }}"></script> --}}
  
 
         <script type="text/javascript">
-          /*  $(document).ready(function() {
+           $(document).ready(function() {
                 $('form').parsley();
-                window.Parsley.setLocale("fr");
-            });*/
+              //  window.Parsley.setLocale("fr");
+            });
 
         </script>
 

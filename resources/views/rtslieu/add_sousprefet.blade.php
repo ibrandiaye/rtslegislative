@@ -134,7 +134,7 @@
 
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                        <button id="enregistrer" type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
                                     </center>
                                 </div>
                             </div>
@@ -223,6 +223,7 @@
                    $("#suffval").val(votant - bulnull);
                 });
 
-
+              
+      
 </script>
 @endsection
