@@ -32,7 +32,7 @@
 <div class="row">
     <div class="col-8">
     <div class="card ">
-        <div class="card-header  text-center">RESULTAT Nationnal Bureau Temoin / {{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0)  {{round($depouillement[0]/($depouillement[1]+$depouillement[0]),2)}}% @endif</div>
+        <div class="card-header  text-center">RESULTAT Nationnal Bureau Temoin / {{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0)  {{round($depouillement[0]/($depouillement[1]+$depouillement[0]),2) * 100}}% @endif</div>
             <div class="card-body">
 
                 <div class="row">
