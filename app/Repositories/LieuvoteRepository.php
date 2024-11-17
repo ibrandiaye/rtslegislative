@@ -93,7 +93,7 @@ class LieuvoteRepository extends RessourceRepository{
     }
     public function getByCentre($centre){
         return DB::table("lieuvotes")
-        ->where([["centrevote_id",$centre],["etat",false]])
+        ->where([["centrevote_id",$centre],["etat",false],["temoin",false]])
         ->orderBy("nom","asc")
         ->get();
 }
