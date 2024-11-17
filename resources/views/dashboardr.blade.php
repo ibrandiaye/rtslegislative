@@ -542,7 +542,8 @@
                 <div class="col-10">
                     <a href="{{ route('candidat.show', ['candidat'=>$rtsTemoin->id]) }}"  > <p style="font-weight: 700;font-size: small;text-align: center!important;margin-right: 5px;margin-top: 5px;">{{ $rtsTemoin->nom }}</p></a>
                     <h4>
-                        <p class="card-text text-center text-danger">{{round(((int)$rtsTemoin->nb/$nbVotantTemoin)*100,2) }}%</p>
+                        <p class="card-text text-center text-danger">{{round(((int)$rtsTemoin->nb/$nbVotantTemoin)*100,2) }}%
+                        <br>{{$rtsTemoin->nb}} voix</p>
                     </h4>
                 </div>
             </div>
