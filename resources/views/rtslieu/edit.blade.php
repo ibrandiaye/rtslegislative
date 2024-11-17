@@ -50,7 +50,7 @@
                                            <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}">
                                            <div class="col-12">
                                             <label>Arrondissement</label>
-                                            <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
+                                            <select class="form-control" id="arrondissement_id" name="arrondissement_id" required @readonly(true)>
                                             
                                                 <option value="{{$arrondissement->id}}" >{{$arrondissement->nom}}</option>
                                                    
@@ -58,21 +58,21 @@
                                         </div>
                                           <div class="col-12">
                                             <label>Commune</label>
-                                            <select class="form-control" id="commune_id" name="commune_id" required>
+                                            <select class="form-control" id="commune_id" name="commune_id" required @readonly(true)>
                                               <option value="{{$commune->id}}" >{{$commune->nom}}</option>
                                                    
                                             </select>
                                         </div>
                                             <div class="col-12">
                                                 <label>Lieu de vote</label>
-                                                <select class="form-control" name="centrevote_id" id="centrevote_id" required="">
+                                                <select class="form-control" name="centrevote_id" id="centrevote_id" required="" @readonly(true)>
                                                   
                                                     <option value="{{$centreVote->id}}" >{{$centreVote->nom}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-12">
                                                 <label>Bureau  de vote</label>
-                                                <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="">
+                                                <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="" @readonly(true)>
                                                     
                                                     <option value="{{$lieuVote->id}}" >{{$lieuVote->nom}}</option>
                                          
@@ -81,25 +81,25 @@
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Votant </label>
-                                                        <input type="number" name="votant" id="votant"  value="{{ $lieuVote->votant }}" class="form-control"  required>
+                                                        <input type="number" name="votant" id="votant"  value="{{ $lieuVote->votant }}" class="form-control"  required >
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Nuls </label>
-                                                        <input type="number" name="bulnull" id="bulnull"  value="{{ $lieuVote->bulnull }}" class="form-control"  required>
+                                                        <input type="number" name="bulnull" id="bulnull"  value="{{ $lieuVote->bulnull }}" class="form-control"  required >
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Hors Bureau </label>
-                                                        <input type="number" name="hs"  value="{{ $lieuVote->hs }}" class="form-control"  required>
+                                                        <input type="number" name="hs"  value="{{ $lieuVote->hs }}" class="form-control"  required >
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Suffrage valablement Exprimé </label>
-                                                        <input type="number" name="suffval" id="suffval"  value="{{ $lieuVote->votant - $lieuVote->bulnull}}" class="form-control"  required>
+                                                        <input type="number" name="suffval" id="suffval"  value="{{ $lieuVote->votant - $lieuVote->bulnull}}" class="form-control"  required @readonly(true)>
                                                     </div>
                                                 </div>
 
@@ -115,7 +115,7 @@
                                             <tbody>
                                                 @foreach ($rtslieus as $candidat )
                                                 <tr>
-                                                    <td>
+                                                    <td> 
                                                         <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
                                                     </td>
                                                     <td><input type="text" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="{{$candidat->nbvote}}" class="form-control"  required>

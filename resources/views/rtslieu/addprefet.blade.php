@@ -102,7 +102,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Suffrage valablement Exprimé </label>
-                                                        <input type="number" name="suffval" id="suffval"  value="{{ old('suffval') }}" class="form-control"  required>
+                                                        <input type="number" name="suffval" id="suffval"  value="{{ old('suffval') }}" class="form-control"  required @readonly(true)>
                                                     </div>
                                                 </div>
 
