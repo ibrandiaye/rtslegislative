@@ -138,6 +138,11 @@ protected $participationRepository;
         $totalRts = $rts[$i] + $totalRts;
 
       }
+      if($totalRts <1)
+      {
+        return redirect()->back()->withErrors(["erreur"=>"Saisir les resultats"]);
+
+      }
       if($totalRts > $request->nb_electeur)
       {
         return redirect()->back()->withErrors(["erreur"=>"Les resutat ne peuvent être superieur au nombre d'inscrit"]);

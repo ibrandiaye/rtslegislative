@@ -175,11 +175,7 @@ class RessourceRepository {
 
         // Distribution des sièges proportionnels en fonction du quotient électoral
         foreach ($votesProportionnels as $parti => $votes) {
-            if( $votes> 0 &&  $quotientElectoral > 0)
-            {
-                $siegesProportionnels[$parti] = intdiv($votes, $quotientElectoral);
-            }
-         
+            $siegesProportionnels[$parti] = intdiv($votes, $quotientElectoral);
         }
 
         // Attribution des sièges restants par la méthode des plus forts restes
@@ -190,12 +186,8 @@ class RessourceRepository {
             // Calculer les restes pour chaque parti
             $restes = [];
             foreach ($votesProportionnels as $parti => $votes) {
-                if($quotientElectoral > 0)
-                {
-                    $reste = $votes % $quotientElectoral;
-                    $restes[$parti] = $reste;
-                }
-               
+                $reste = $votes % $quotientElectoral;
+                $restes[$parti] = $reste;
             }
 
             // Trier les partis par ordre décroissant des restes
