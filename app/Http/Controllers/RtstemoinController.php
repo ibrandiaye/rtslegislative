@@ -126,7 +126,7 @@ protected $arrondissementRepository;
      // dd($totalRts,$totalRts <1);
       if($totalRts <1)
       {
-        return redirect()->back()->withErrors(["erreur"=>"Toutes résultats ne doivent pas egale à zéro"]);
+        return redirect()->back()->withErrors(["erreur"=>"Toutes les résultats ne doivent pas egale à zéro"]);
 
       }
         if($totalRts > $request->nb_electeur)

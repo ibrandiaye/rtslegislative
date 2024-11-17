@@ -141,7 +141,7 @@ protected $participationRepository;
       //dd($totalRts);
       if($totalRts <1)
       {
-        return redirect()->back()->withErrors(["erreur"=>"Saisir les resultats"]);
+        return redirect()->back()->withErrors(["erreur"=>"Toutes les résultats ne peuvent être egale à zéro"]);
 
       }
       if($totalRts > $request->nb_electeur)
@@ -636,6 +636,9 @@ protected $participationRepository;
         $depouillement[] =  0;
         $depouillement[] =  0;
         $user = Auth::user();
+
+        $tauxDeParticipations = $this->participationRepository->participationParHeureParcandidatByRegion($user->region_id);
+        $inscrit = $this->lieuvoteRepository->nbElecteursTemoinByRegion($user->region_id);
 
         if($user->region_id)
         {

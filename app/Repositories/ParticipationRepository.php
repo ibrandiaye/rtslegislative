@@ -115,7 +115,7 @@ public function  participationParHeureParcandidatByRegion($id){
   return   DB::table('participations')
   ->join("heures","participations.heure_id","=","heures.id")
   ->join("departements","participations.departement_id","=","departements.id")
-->select('heures.designation' ,"departements.region_id",DB::raw('sum(participations.resultat) as resultat'))
+->select('heures.designation' ,"departements.region_id",DB::raw('sum(participations.resultat) as nb'))
 ->groupBy('heures.designation','departements.region_id')
 ->where("departements.region_id",$id)
 ->get();
