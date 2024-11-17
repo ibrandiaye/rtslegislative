@@ -58,7 +58,7 @@ class ParticipationController extends Controller
         $departement_id         = "";
        // $region_id              = "";
         $etat      = "";
-        if($user->role=="admin")
+        if($user->role=="admin" || $user->role=="superviseur")
         {
            $participations = DB::table('participations')
            ->join('lieuvotes', 'participations.lieuvote_id', '=', 'lieuvotes.id')
