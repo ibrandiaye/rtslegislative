@@ -60,7 +60,7 @@
     <div class="row">
 <div class="col-8">
     <div class="card ">
-        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif /  {{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0) @endif </div>
+        <div class="card-header  text-center">RESULTAT DEPARTEMENT : @if(!empty($departement)) {{$departement->nom}} @endif /  {{$depouillement[0]}} dépouillé sur {{$depouillement[1] + $depouillement[0]}} : @if($depouillement[1]+$depouillement[0] > 0) {{round($depouillement[0]/($depouillement[1]+$depouillement[0]),2)}}%  @endif </div>
             <div class="card-body">
                 @if (Auth::user()->role=="admin" || Auth::user()->role=="controlleur")
                 <form method="POST" action="{{ route('rts.by.departement.temoin') }}">
