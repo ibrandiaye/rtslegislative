@@ -1140,7 +1140,7 @@ public function rtsByBureatTemoin()
     }
 
 
-      return  Excel::download(new RtsDepartemmentExport($rts),'gggg.xlsx');
+      return  Excel::download(new RtsDepartemmentExport($rts),$departement->nom.'.xlsx');
       ;
 
   }
