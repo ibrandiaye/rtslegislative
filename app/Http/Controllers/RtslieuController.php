@@ -924,7 +924,10 @@ public function rtsByBureatTemoin()
     }
     //dd(10%14);
 
-
+    uasort($resultats, function ($a, $b) {
+        // Comparaison en tant qu'entiers, car 'nb' est une chaîne de caractères
+        return (int)$b['nb'] - (int)$a['nb'];
+    });
 
     return view("rtslieu.rtsnationaltemoin",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit"
     ,"quotiant","depouillement","rts"));
@@ -1081,6 +1084,10 @@ public function rtsByBureatTemoin()
       $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
   }
   //dd($resultats);
+  uasort($resultats, function ($a, $b) {
+    // Comparaison en tant qu'entiers, car 'nb' est une chaîne de caractères
+    return (int)$b['nb'] - (int)$a['nb'];
+});
   }
 
     return view("rtslieu.impnational",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant"));
