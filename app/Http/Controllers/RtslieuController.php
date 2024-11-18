@@ -1107,10 +1107,10 @@ public function rtsByBureatTemoin()
       $departement = DB::table("departements")->where("id",$departement_id)->first();
 
 
-      $votant  = $this->lieuvoteRepository->nbVotantByDepartement($departement_id);
-      $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
-      $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
-      $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
+      $votant  = $this->rtslieuRepository->nbVoixByDepartement($departement_id);
+        $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
+        $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
+        $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
       foreach ($rts as $key => $value) {
         $rts[$key]->taux = round(($rts[$key]->nb*100)/$votant,2);
         $rts[$key]->taux =   $rts[$key]->taux.'%';
