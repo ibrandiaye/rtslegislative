@@ -93,9 +93,9 @@
                     <div class="col-5">
                         @if($departement)
                         <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}" class="btn btn-success" >Imprimer</a>
-                        <a  target="_blank" title="Exporter en Excel" class="btn btn-success " href="{{ route('excel.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}">
+                      {{--   <a  target="_blank" title="Exporter en Excel" class="btn btn-success " href="{{ route('excel.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}">
                             <i class="fas fa-file-excel-o"></i> Exporter en Excel
-                        </a>
+                        </a> --}}
                         @endif
                     </div>
                     @if (count($rts) > 0)
