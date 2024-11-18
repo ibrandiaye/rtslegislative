@@ -138,6 +138,20 @@ public function  rtsGroupByCandidatByDepartement($departement){
   ->get();
 
   }
+
+  public function  rtsGroupByCandidatByDepartementExcel($departement){
+
+    return   DB::table('rtslieus')
+  ->join('candidats','rtslieus.candidat_id','=','candidats.id')
+  ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+
+  ->select("candidats.nom as candidat" ,DB::raw('sum(rtslieus.nbvote) as nb'))
+  ->where("rtslieus.departement_id",$departement)
+  ->groupBy('candidats.nom')
+  ->orderBy("nb", "desc")
+  ->get();
+
+  }
 public function  rtsGroupByRegionByCandidat($id){
 
     return   DB::table('rtslieus')

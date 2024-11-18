@@ -93,6 +93,9 @@
                     <div class="col-5">
                         @if($departement)
                         <a href="{{ route('impression.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}" class="btn btn-success" >Imprimer</a>
+                        <a  target="_blank" title="Exporter en Excel" class="btn btn-success " href="{{ route('excel.rts.departement', ['departement'=>$departement->id,'type'=>1]) }}">
+                            <i class="fas fa-file-excel-o"></i> Exporter en Excel
+                        </a>
                         @endif
                     </div>
                     @if (count($rts) > 0)
@@ -101,21 +104,21 @@
                        <h6> {{$rts[0]->candidat}}</h6>
                     </div>
                     @endif
-  
+
                     <div class="col-12">
                         @php
                         $nb = 0;
                         $taux = 0;
-                       
+
                     @endphp
                         <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
                             <thead>
                                 <tr>
-        
+
                                     <th> Ont OBTENU</th>
                                     <th>Voix</th>
                                     <th>% des voix</th>
-        
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,30 +127,30 @@
                                     <td>{{ $rt->candidat }}</td>
                                     <td>{{ $rt->nb }}</td>
                                     <td>@if($votant>0){{ round(($rt->nb *100)/$votant,1)}} @endif</td>
-        
+
                                 </tr>
                                 @php
                                 $nb =   $rt->nb+ $nb;
                                 $taux =  round(($rt->nb *100)/$votant,1) + $taux;
-                              
+
                             @endphp
                                 @endforeach
                                 <tr>
                                     <td>Total </td>
                                     <td>@php echo $nb; @endphp </td>
                                     <td>@php echo intval($taux); @endphp </td>
-                                   
+
                                 </tr>
-        
+
                             </tbody>
                         </table>
-        
-        
+
+
                     </div>
-                   
+
                 </div>
 
-             
+
 
             </div>
 
@@ -216,7 +219,7 @@ var myChart =new Chart(ctx, {
     label: 'Etat depouillement',
     data: [{{$depouillement[0]}},{{$depouillement[1]}}],
     backgroundColor: [
-     
+
       'rgb(54, 162, 235)',
       'rgb(255, 99, 132)',
     ],

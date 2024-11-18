@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RtsDepartemmentExport;
 use App\Models\Rtscentre;
 use App\Models\Rtslieu;
 use App\Repositories\ArrondissementRepository;
@@ -17,6 +18,8 @@ use App\Repositories\RtslieuRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Excel;
+
 
 class RtslieuController extends Controller
 {
@@ -1094,5 +1097,53 @@ public function rtsByBureatTemoin()
     return view("rtslieu.impnational",compact("resultats","totalVotants","hs","votant","bulletinnull","inscrit","quotiant"));
 
   }
+
+  public function rtsDepartementExcel($departement_id,$type )
+  {
+    if($type=='1')
+    {
+      $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartementExcel($departement_id);
+      //$departements= $this->departementRepository->getAll();
+      $departement = DB::table("departements")->where("id",$departement_id)->first();
+
+
+      $votant  = $this->lieuvoteRepository->nbVotantByDepartement($departement_id);
+      $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartement($departement_id);
+      $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
+      $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
+      foreach ($rts as $key => $value) {
+        $rts[$key]->taux = round(($value->nb*100)/$votant,2);
+        $rts[$key]->taux =   $rts[$key]->taux.'%';
+      }
+      //dd($rts,$votant);
+      $rts[0]->inscrit =  $inscrit;
+      $rts[0]->votant =  $votant + +$bullnull;
+      $rts[0]->bullnull = $bullnull;
+      $rts[0]->exprime = $votant;
+      $rts[0]->participation  =  round(($votant*100)/($inscrit ? $inscrit : 1) ,2);
+      $rts[0]->siege = $departement->nbcandidat;
+
+
+    }
+    else if($type==2)
+    {
+      $rts = $this->rtslieuRepository->rtsGroupByCandidatByDepartementExcel($departement_id);
+
+         $departement = DB::table("departements")->where("id",$departement_id)->first();
+
+         $votant  = $this->lieuvoteRepository->nbVotantByDepartementTemoin($departement_id);
+       // dd($votant);
+         $bullnull  = $this->lieuvoteRepository->nbBulletinNullByDepartementTemoin($departement_id);
+         $hs  = $this->lieuvoteRepository->nbHsByDepartementTemoin($departement_id);
+         $inscrit = $this->lieuvoteRepository->sumByDepartementsTemoin($departement_id);
+       //  dd($rts);
+    }
+
+
+      return  Excel::download(new RtsDepartemmentExport($rts),'gggg.xlsx');
+      ;
+
+  }
+
 
 }

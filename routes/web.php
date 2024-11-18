@@ -204,6 +204,7 @@ Route::get('/impression/rts/departement/{departement}/{type}',[RtslieuController
 
 Route::get('/impression/rts/national/{type}',[RtslieuController::class,'rtsByCandidatImpression'])->name('impression.rts.national')->middleware("auth");
 
+Route::get('/excel/rts/departement/{departement}/{type}',[RtslieuController::class,'rtsDepartementExcel'])->name('excel.rts.departement')->middleware("auth");
 
 
 Route::get('/bureau/by/national',[LieuvoteController::class,'getAllAndEtat'])->name('bureau.by.national')->middleware("auth");
