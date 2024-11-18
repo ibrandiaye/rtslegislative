@@ -653,7 +653,7 @@ protected $participationRepository;
   public function rtsByCandidat()
   {
         $rts = $this->rtslieuRepository->rtsByCandidat();
-
+    //dd($rts);
         $departements = $this->departementRepository->getAllOnLy();
         $rtsByDepartements = $this->rtslieuRepository->rtsGroupByDepartementandCandidat();
         $siegesParCirconscription = array();
@@ -710,7 +710,11 @@ protected $participationRepository;
 
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(1) ?? 0;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(0) ?? 0;
-   // dd($resultats);
+    //dd($resultats);
+    uasort($resultats, function ($a, $b) {
+        // Comparaison en tant qu'entiers, car 'nb' est une chaîne de caractères
+        return (int)$b['nb'] - (int)$a['nb'];
+    });
     return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","depouillement","rts"));
 
   }
