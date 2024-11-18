@@ -1112,7 +1112,7 @@ public function rtsByBureatTemoin()
       $hs  = $this->lieuvoteRepository->nbHsByDepartement($departement_id);
       $inscrit = $this->lieuvoteRepository->sumByDepartements($departement_id);
       foreach ($rts as $key => $value) {
-        $rts[$key]->taux = round(($$rts[$key]->nb*100)/$votant,2);
+        $rts[$key]->taux = round(($rts[$key]->nb*100)/$votant,2);
         $rts[$key]->taux =   $rts[$key]->taux.'%';
       }
       //dd($rts,$votant);
