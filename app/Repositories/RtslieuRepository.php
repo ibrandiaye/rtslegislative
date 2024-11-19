@@ -63,12 +63,38 @@ return   DB::table('rtslieus')
 ->join('centrevotes','lieuvotes.centrevote_id','=','centrevotes.id')
 ->join('communes','centrevotes.commune_id','=','communes.id')
 
-->select("communes.id","communes.nom",DB::raw('sum(lieuvotes.nb) as nb'))
+->select("communes.id","communes.nom",DB::raw('sum(rtslieus.nbvote) as nb'))
     ->where("communes.departement_id",$departement)
     ->groupBy("communes.id","communes.nom")
     ->get();
 
 }
+
+public function  nbBullNullByDepartementGroupByCommune($departement){
+  return   DB::table('lieuvotes')
+  ->join('centrevotes','lieuvotes.centrevote_id','=','centrevotes.id')
+  ->join('communes','centrevotes.commune_id','=','communes.id')
+  
+  ->select("communes.id","communes.nom",DB::raw('sum(lieuvotes.bulnull) as nb'))
+      ->where("communes.departement_id",$departement)
+      ->groupBy("communes.id","communes.nom")
+      ->get();
+  
+  }
+public function  nbVoixByDepartementGroupByCommuneAndCandidat($departement){
+  return   DB::table('rtslieus')
+  ->join('candidats','rtslieus.candidat_id','=','candidats.id')
+
+  ->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+  ->join('centrevotes','lieuvotes.centrevote_id','=','centrevotes.id')
+  ->join('communes','centrevotes.commune_id','=','communes.id')
+  
+  ->select("communes.id","communes.nom","candidats.coalition as candidat",DB::raw('sum(rtslieus.nbvote) as nb'))
+      ->where("communes.departement_id",$departement)
+      ->groupBy("communes.id","communes.nom","candidats.coalition")
+      ->get();
+  
+  }
 public function  rtsGroupByLieuvVoteByCandidat($id){
 
     return   DB::table('rtslieus')

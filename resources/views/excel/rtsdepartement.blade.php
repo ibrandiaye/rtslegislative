@@ -1,32 +1,37 @@
 
 
-                    <div>
 
-                        <table /*id="datatable-buttons"*/ class="table table-bordered table-responsive-md table-striped text-center">
+                        <table  >
                             <thead>
                                 <tr>
 
-                                    <th> Ont OBTENU</th>
-                                    <th>Voix</th>
-                                    <th>% des voix</th>
+                                    <th>Commune</th>
+                                    <th>Inscrit</th>
+                                    <th>Votant</th>
+                                    <th>Null</th>
+                                    <th>Exprimes</th>
+                                    @foreach ($candidats as $item)
+                                    <th>{{$item->coalition}}</th>
+                                    @endforeach
 
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach ($rts as $rt)
-                                <tr>
-                                    <td>{{ $rt->candidat }}</td>
-                                    <td>{{ $rt->nb }}</td>
-                                    <td>@if($votant>0){{ round(($rt->nb *100)/$votant,1)}} @endif</td>
-
-                                </tr>
-
+                           @foreach ($resultat as  $key => $item)
+                               <tr>
+                                <td>{{$key}}</td>
+                                <td>{{$item->inscrit}}</td>
+                                <td>{{$item->votant}}</td>
+                                <td>{{$item->bulnull}}</td>
+                                <td>{{$item->valable}}</td>
+                                @foreach ($item->rts as  $key1 => $rt)
+                                <td>{{$rt}}</td>
                                 @endforeach
-
+                               </tr>
+                           @endforeach
 
                             </tbody>
                         </table>
 
-</div>
 
 

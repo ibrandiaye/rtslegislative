@@ -191,7 +191,7 @@ Route::get('/resultat/par/departement/temoin',[RtslieuController::class,'resulta
 
 Route::get('/resultat/par/departement/temoin/prefet',[RtslieuController::class,'rtsDepartementTemoinPrefet'])->name('voir.par.departement.temoin.prefet')->middleware("auth");
 
-Route::get('/resultat/excel/par/departement',[RtslieuController::class,'rtsDepartementExcelBycommune'])->name('excel.by.commune')->middleware("auth");
+Route::get('/resultat/excel/par/departement/{departement_id}',[RtslieuController::class,'rtsDepartementExcelBycommune'])->name('excel.by.commune')->middleware("auth");
 
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\RtsDepartemmentExport;
+use App\Exports\RtsExport;
 use App\Models\Rtscentre;
 use App\Models\Rtslieu;
 use App\Repositories\ArrondissementRepository;
@@ -1152,7 +1153,55 @@ public function rtsByBureatTemoin()
     $communes = $this->communeRepository->getByDepartement($departement_id);
     $inscrits = $this->lieuvoteRepository->nbElecteursTemoinByDepartementGroupByCommune($departement_id);
     $votants = $this->rtslieuRepository->nbVoixByDepartementGroupByCommune($departement_id);
-   // $inscrit = 
+    $rtsByCandidat = $this->rtslieuRepository->nbVoixByDepartementGroupByCommuneAndCandidat($departement_id);
+    $bulnulss  = $this->rtslieuRepository->nbBullNullByDepartementGroupByCommune($departement_id);
+    $candidats = DB::table("candidats")->get();
+  //dd($rtsByCandidat);
+  $rtsCandidat = array();
+ 
+ // dd($rtsCandidat);
+    $resultat=array();
+    foreach ($communes as $key => $commune) {
+      $resultat[ $commune->nom] = new \stdClass();
+      $resultat[ $commune->nom]->votant = null;
+      $resultat[ $commune->nom]->bulnull = null;
+      $resultat[ $commune->nom]->valable = null;
+     foreach ($inscrits as $key1 => $inscrit) {
+       if($inscrit->id==$commune->id)
+       {
+        $resultat[ $commune->nom]->inscrit = $inscrit->nb ;
+       }
+     }
+     foreach ($votants as $key2 => $votant) {
+      if($votant->id==$commune->id)
+      {
+       $resultat[ $commune->nom]->valable = $votant->nb ;
+      }
+    }
+    foreach ($bulnulss as $key3 => $bulnuls) {
+      if($bulnuls->id==$commune->id)
+      {
+       $resultat[ $commune->nom]->bulnull = $bulnuls->nb ;
+      }
+    }
+    $resultat[ $commune->nom]->votant = $resultat[ $commune->nom]->bulnull + $resultat[ $commune->nom]->votant;
+    foreach ($candidats as $key => $value) {
+      $rtsCandidat[$value->coalition] = 0;
+    }
+    foreach ($rtsByCandidat as $key4 => $rts) {
+      if($rts->id==$commune->id)
+      {
+        $rtsCandidat[$rts->candidat] = $rts->nb ;
+       
+      }
+    }
+    $resultat[ $commune->nom]->rts= $rtsCandidat;
+    }
+   //dd($resultat);
+    
+    return Excel::download(new RtsExport($resultat,$candidats), 'example.xlsx');//view("excel.rtsdepartement",compact("resultat","candidats"));
+   
+  // dd($resultat);
   }
 
   public function importExcel(Request $request)
