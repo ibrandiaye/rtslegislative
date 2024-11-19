@@ -715,10 +715,10 @@ protected $participationRepository;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(1) ?? 0;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(0) ?? 0;
     //dd($resultats);
-   /* uasort($resultats, function ($a, $b) {
+   uasort($resultats, function ($a, $b) {
         // Comparaison en tant qu'entiers, car 'nb' est une chaîne de caractères
         return (int)$b['nb'] - (int)$a['nb'];
-    });*/
+    });
     return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","depouillement","rts"));
 
   }
