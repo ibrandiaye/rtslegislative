@@ -77,6 +77,8 @@ Route::post('/update/password',[UserController::class,'updatePassword'])->name("
 
 Route::post('/importer/region',[RegionController::class,'importExcel'])->name("importer.region")->middleware("auth");
 Route::resource('collecteur', CollecteurControlleur::class)->middleware("auth");
+Route::post('/importer/rtslieu',[RtslieuController::class,'importExcel'])->name("importer.rtslieu")->middleware("auth");
+
 
 Auth::routes();
 
@@ -188,6 +190,9 @@ Route::post('/rts/departement/temoin',[RtslieuController::class,'rtsDepartementT
 Route::get('/resultat/par/departement/temoin',[RtslieuController::class,'resultatParDepartementTemoin'])->name('voir.par.departement.temoin')->middleware("auth");
 
 Route::get('/resultat/par/departement/temoin/prefet',[RtslieuController::class,'rtsDepartementTemoinPrefet'])->name('voir.par.departement.temoin.prefet')->middleware("auth");
+
+Route::get('/resultat/excel/par/departement',[RtslieuController::class,'rtsDepartementExcelBycommune'])->name('excel.by.commune')->middleware("auth");
+
 
 
 Route::get('/bureau/by/departement',[LieuvoteController::class,'getByDepartement'])->name('bureau.by.departement')->middleware("auth");

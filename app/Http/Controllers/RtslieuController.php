@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Excel;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 
 class RtslieuController extends Controller
@@ -1144,6 +1145,67 @@ public function rtsByBureatTemoin()
       ;
 
   }
+
+  public function rtsDepartementExcelBycommune($departement_id )
+  {
+   // $user = Auth::user();
+    $communes = $this->communeRepository->getByDepartement($departement_id);
+    $inscrits = $this->lieuvoteRepository->nbElecteursTemoinByDepartementGroupByCommune($departement_id);
+    $votants = $this->rtslieuRepository->nbVoixByDepartementGroupByCommune($departement_id);
+   // $inscrit = 
+  }
+
+  public function importExcel(Request $request)
+  {
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', '3600');
+  
+     /*   $data =  Excel::import(new RegionImport,$request['file']);
+   //   dd($data);
+  
+      return redirect()->back()->with('success', 'Données importées avec succès.'); */
+      $this->validate($request, [
+          'file' => 'bail|required|file|mimes:xlsx'
+      ]);
+  
+      // 2. On déplace le fichier uploadé vers le dossier "public" pour le lire
+      $fichier = $request->file->move(public_path(), $request->file->hashName());
+  
+      // 3. $reader : L'instance Spatie\SimpleExcel\SimpleExcelReader
+      $reader = SimpleExcelReader::create($fichier);
+  
+      // On récupère le contenu (les lignes) du fichier
+      $rows = $reader->getRows();
+  
+      // $rows est une Illuminate\Support\LazyCollection
+  
+      // 4. On insère toutes les lignes dans la base de données
+    //  $rows->toArray());
+      //$status = Rtslieu::insert($rows->toArray());
+      foreach ($rows as $key => $rtslieu) {
+    
+                Rtslieu::create([
+                    "nbvote"=>$rtslieu['nbvote'],
+                    "lieuvote_id"=>$rtslieu['lieuvote_id'],
+                    "candidat_id"=>$rtslieu['candidat_id'],
+                    "departement_id"=>$rtslieu['departement_id'],
+                   
+                ]);
+    }
+  
+      // Si toutes les lignes sont insérées
+    
+          // 5. On supprime le fichier uploadé
+          $reader->close(); // On ferme le $reader
+         // unlink($fichier);
+  
+          // 6. Retour vers le formulaire avec un message $msg
+          return back()->withMsg("Importation réussie !");
+  
+    
+  }
+  
+  
 
 
 }

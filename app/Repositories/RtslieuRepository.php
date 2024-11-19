@@ -57,8 +57,18 @@ public function  nbVoixByDepartement($id){
   ->sum('nbvote');
 
 }
+public function  nbVoixByDepartementGroupByCommune($departement){
+return   DB::table('rtslieus')
+->join('lieuvotes','rtslieus.lieuvote_id','=','lieuvotes.id')
+->join('centrevotes','lieuvotes.centrevote_id','=','centrevotes.id')
+->join('communes','centrevotes.commune_id','=','communes.id')
 
+->select("communes.id","communes.nom",DB::raw('sum(lieuvotes.nb) as nb'))
+    ->where("communes.departement_id",$departement)
+    ->groupBy("communes.id","communes.nom")
+    ->get();
 
+}
 public function  rtsGroupByLieuvVoteByCandidat($id){
 
     return   DB::table('rtslieus')

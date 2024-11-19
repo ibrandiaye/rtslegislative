@@ -411,4 +411,15 @@ public function enleverBureauTemoin($id)
     {
         return DB::table("lieuvotes")->where("temoin",1)->count();
     }
+
+    public function nbElecteursTemoinByDepartementGroupByCommune($departement){
+        return  DB::table("lieuvotes")
+    ->join("centrevotes","lieuvotes.centrevote_id","=","centrevotes.id")
+    ->join("communes","centrevotes.commune_id","=","communes.id")
+    ->select("communes.id","communes.nom",DB::raw('sum(lieuvotes.nb) as nb'))
+    ->where("communes.departement_id",$departement)
+    ->groupBy("communes.id","communes.nom")
+    ->get();
+
+    }
 }
