@@ -715,10 +715,10 @@ protected $participationRepository;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(1) ?? 0;
     $depouillement[] = $this->lieuvoteRepository->nbLieuVoteByEtat(0) ?? 0;
     //dd($resultats);
-    uasort($resultats, function ($a, $b) {
+   /* uasort($resultats, function ($a, $b) {
         // Comparaison en tant qu'entiers, car 'nb' est une chaîne de caractères
         return (int)$b['nb'] - (int)$a['nb'];
-    });
+    });*/
     return view("rtslieu.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","depouillement","rts"));
 
   }
@@ -1183,14 +1183,23 @@ public function rtsByBureatTemoin()
     //  $rows->toArray());
       //$status = Rtslieu::insert($rows->toArray());
       foreach ($rows as $key => $rtslieu) {
+      $departement = $rtslieu['departement_id'];
     
-                Rtslieu::create([
+                /*Rtslieu::create([
                     "nbvote"=>$rtslieu['nbvote'],
                     "lieuvote_id"=>$rtslieu['lieuvote_id'],
                     "candidat_id"=>$rtslieu['candidat_id'],
-                    "departement_id"=>$rtslieu['departement_id'],
+                    "departement_id"=>intval($departement),
                    
-                ]);
+                ]);*/
+                $rtslieus = new Rtslieu();
+
+                $rtslieus->nbvote = $rtslieu['nbvote'];
+                $rtslieus->lieuvote_id = $rtslieu['lieuvote_id'];
+                $rtslieus->candidat_id  = $rtslieu['candidat_id'];
+                $rtslieus->departement_id = $departement;
+                $rtslieus->save();
+
     }
   
       // Si toutes les lignes sont insérées
