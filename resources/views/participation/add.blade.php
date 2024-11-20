@@ -49,7 +49,7 @@
                                 </div>
                             @endif
                                 <div class="row">
-                                    
+
                                     <div class="col-3">
                                         <label>Heure</label>
                                         <select class="form-control" id="heure_id" name="heure_id" required="">
@@ -84,7 +84,7 @@
                                         <select class="form-control" id="arrondissement_id" name="arrondissement_id" required>
                                             @foreach ($arrondissements as $arrondissement)
                                             <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
-                                                @endforeach 
+                                                @endforeach
                                         </select>
                                     </div>
                                       <div class="col-3">
@@ -92,7 +92,7 @@
                                         <select class="form-control" id="commune_id" name="commune_id" required>
                                              @foreach ($communes as $commune)
                                             <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
-                                                @endforeach 
+                                                @endforeach
                                         </select>
                                     </div>
                                         <div class="col-3">
@@ -126,7 +126,8 @@
 
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>

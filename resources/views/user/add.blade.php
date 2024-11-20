@@ -16,7 +16,7 @@
                         </ol>
                     </div>
                     DGE
-                      
+
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -68,16 +68,16 @@
                                             @foreach ($regions as $region)
                                             <option value="{{$region->id}}">{{$region->nom}}</option>
                                                 @endforeach
-    
+
                                         </select>
                                     </div>
                                     <div class="col-lg-6">
                                         <label>Département</label>
                                         <select class="form-control" id="departement_id" name="departement_id" >
-    
+
                                         </select>
                                     </div>
-                                   
+
                                         <div class="col-lg-6">
                                             <label>Arrondissement</label>
                                             <select class="form-control" name="arrondissement_id" id="arrondissement_id">
@@ -85,7 +85,7 @@
                                                 @foreach ($arrondissements as $arrondissement)
                                                 <option value="{{$arrondissement->id}}">{{$arrondissement->nom}}</option>
                                                     @endforeach --}}
-    
+
                                             </select>
                                         </div>
                                         <div class="col-lg-6">
@@ -94,18 +94,19 @@
                                                 <option value="">Selectionner</option>
                                                 <option value="admin">Admin</option>
                                                 {{-- <option value="sous_prefet">Sous prefet</option>  --}}
-                                                <option value="prefet">prefet</option> 
-                                                <option value="gouverneur">Gouverneur</option> 
-                                                <option value="superviseur">Superviseur</option> 
-                                                <option value="controlleur">controlleur</option> 
+                                                <option value="prefet">prefet</option>
+                                                <option value="gouverneur">Gouverneur</option>
+                                                <option value="superviseur">Superviseur</option>
+                                                <option value="controlleur">controlleur</option>
                                             </select>
                                         </div>
                                 </div>
-                                
+
 
                                 <div>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>
@@ -139,7 +140,7 @@
                     departement +="<option value="+row.id+">"+row.nom+"</option>";
 
                 });
-               
+
                 $("#departement_id").append(departement);
             }
         });
@@ -161,13 +162,13 @@
                         arrondissement +="<option value="+row.id+">"+row.nom+"</option>";
 
                     });
-                   
+
                     $("#arrondissement_id").append(arrondissement);
                 }
             });
         });
-         
-              
+
+
 
 
 </script>

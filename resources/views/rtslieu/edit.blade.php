@@ -51,31 +51,31 @@
                                            <div class="col-12">
                                             <label>Arrondissement</label>
                                             <select class="form-control" id="arrondissement_id" name="arrondissement_id" required @readonly(true)>
-                                            
+
                                                 <option value="{{$arrondissement->id}}" >{{$arrondissement->nom}}</option>
-                                                   
+
                                             </select>
                                         </div>
                                           <div class="col-12">
                                             <label>Commune</label>
                                             <select class="form-control" id="commune_id" name="commune_id" required @readonly(true)>
                                               <option value="{{$commune->id}}" >{{$commune->nom}}</option>
-                                                   
+
                                             </select>
                                         </div>
                                             <div class="col-12">
                                                 <label>Lieu de vote</label>
                                                 <select class="form-control" name="centrevote_id" id="centrevote_id" required="" @readonly(true)>
-                                                  
+
                                                     <option value="{{$centreVote->id}}" >{{$centreVote->nom}}</option>
                                                 </select>
                                             </div>
                                             <div class="col-12">
                                                 <label>Bureau  de vote</label>
                                                 <select class="form-control" name="lieuvote_id" id="lieuvote_id" required="" @readonly(true)>
-                                                    
+
                                                     <option value="{{$lieuVote->id}}" >{{$lieuVote->nom}}</option>
-                                         
+
                                                 </select>
                                             </div>
                                                 <div class="col-12">
@@ -115,7 +115,7 @@
                                             <tbody>
                                                 @foreach ($rtslieus as $candidat )
                                                 <tr>
-                                                    <td> 
+                                                    <td>
                                                         <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
                                                     </td>
                                                     <td><input type="text" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="{{$candidat->nbvote}}" class="form-control"  required>
@@ -135,7 +135,8 @@
 
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>

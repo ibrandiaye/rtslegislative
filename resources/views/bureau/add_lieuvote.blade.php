@@ -68,7 +68,7 @@
                                             <input type="number" name="tel"  value="{{ old('tel') }}" class="form-control"  required>
                                         </div>
                                     </div>
-                                  
+
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Fonction </label>
@@ -93,7 +93,8 @@
                                 <input type="hidden" id="nb_electeur" name="nb_electeur">
                                 <div>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>

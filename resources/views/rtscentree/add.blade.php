@@ -21,11 +21,11 @@
             </div>
             <div class="clearfix"></div>
         </div>
-       
+
         <form action="{{ route('rtscentree.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div id="electeur">
-                
+
             </div>
             <div class="row">
 
@@ -50,26 +50,26 @@
                                             @foreach ($juridictions as $juridiction)
                                             <option value="{{$juridiction->id}}">{{$juridiction->nom}}</option>
                                                 @endforeach
-    
+
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label>Pays</label>
                                         <select class="form-control" id="pays_id" name="pays_id" required>
-    
+
                                         </select>
                                     </div>
-    
+
                                       <div class="col">
                                         <label>Localite</label>
                                         <select class="form-control" id="localite_id" name="localite_id" required>
-    
+
                                         </select>
                                     </div>
                                         <div class="col">
                                             <label>centrevotee</label>
                                             <select class="form-control" name="centrevotee_id" id="centrevotee_id" required="">
-                                            
+
                                             </select>
                                         </div>
                                     </div>
@@ -97,7 +97,8 @@
 
                                     <div>
                                         <center>
-                                            <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                                   <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                         </center>
                                     </div>
                                 </div>
@@ -126,7 +127,7 @@
         $.ajax({
             type:'GET',
             url:'/pays/by/juridiction/'+juridiction_id,
-       
+
             data:'_token = <?php echo csrf_token() ?>',
             success:function(data) {
                 //alert(data);
@@ -192,15 +193,15 @@
                         success:function(data) {
                            // alert(data)
                             $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data+"</h4>") 
-                           $('#nb_electeur').val(data)             
-          
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data+"</h4>")
+                           $('#nb_electeur').val(data)
+
                         }
                     });
                 });
 
 
-            
+
 
 
 </script>

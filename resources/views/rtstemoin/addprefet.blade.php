@@ -135,8 +135,9 @@
 
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
-                                    </center>  
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
+                                    </center>
                                 </div>
                             </div>
 
@@ -165,7 +166,7 @@
         $.ajax({
             type:'GET',
             url:url_app+'/departement/by/region/'+region_id,
- 
+
             data:'_token = <?php echo csrf_token() ?>',
             success:function(data) {
 
@@ -236,7 +237,7 @@
                 $.ajax({
                     type:'GET',
                     url:url_app+'/centrevote/by/temoin/commune/'+commune_id,
-               
+
                     data:'_token = <?php echo csrf_token() ?>',
                     success:function(data) {
 

@@ -60,7 +60,7 @@
                                              {{--     @foreach ($lieuvotes as $lieuvote)
                                                 <option value="{{$lieuvote->id}}">{{$lieuvote->nom}}</option>
                                                     @endforeach  --}}
-    
+
                                             </select>
                                         </div>
                                     <div class="col-lg-4">
@@ -81,7 +81,7 @@
                                             <input type="number" name="tel"  value="{{ old('tel') }}" class="form-control"  required>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Fonction </label>
@@ -90,7 +90,7 @@
                                                 <option value="president" {{old('fonction')=='president' ? 'selected' : ''}}>Président</option>
                                                 <option value="asceseur" {{old('fonction')=='asceseur' ? 'selected' : ''}}>Asceseur</option>
                                                 <option value="secretaire" {{old('fonction')=='secretaire' ? 'selected' : ''}}>Secretaire </option>
-                                                  
+
                                             </select>
                                         </div>
                                     </div>
@@ -100,12 +100,13 @@
                                             <input type="text" name="profession"  value="{{ old('profession') }}" class="form-control"  >
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                                 <input type="hidden" id="nb_electeur" name="nb_electeur">
                                 <div>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>
@@ -172,11 +173,11 @@
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
-                           
+
                             $('#electeur').empty()
-                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>") 
-                           $('#nb_electeur').val(data.nb)             
-            
+                           $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>")
+                           $('#nb_electeur').val(data.nb)
+
                         }
                     });
                 });

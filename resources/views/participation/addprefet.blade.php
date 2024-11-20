@@ -44,7 +44,7 @@
                                     </div>
                                 @endif
                                 <div class="row">
-                                   
+
                                 <div class="col-3">
                                     <label>Heure</label>
                                     <select class="form-control" id="heure_id" name="heure_id" required="">
@@ -55,7 +55,7 @@
 
                                     </select>
                                 </div>
-                                  
+
                                     <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}">
                                     <div class="col-3">
                                         <label>Arrondissement</label>
@@ -63,16 +63,16 @@
                                             <option value="">Selectionnez</option>
                                             @foreach ($arrondissements as $arrondissement)
                                             <option value="{{$arrondissement->id}}" {{ $arrondissement_id==$arrondissement->id ? 'selected' : '' }}>{{$arrondissement->nom}}</option>
-                                                @endforeach 
+                                                @endforeach
                                         </select>
                                     </div>
                                       <div class="col-3">
                                         <label>Commune</label>
                                         <select class="form-control" id="commune_id" name="commune_id" required>
-                                         
+
                                             @foreach ($communes as $commune)
                                             <option value="{{$commune->id}}" {{ $commune_id==$commune->id ? 'selected' : '' }}>{{$commune->nom}}</option>
-                                                @endforeach 
+                                                @endforeach
                                         </select>
                                     </div>
                                         <div class="col-3">
@@ -107,7 +107,8 @@
 
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>
@@ -123,8 +124,8 @@
 @section('script')
 <script>
     url_app = '{{ config('app.url') }}';
-   
-   
+
+
     $("#arrondissement_id").change(function () {
         var arrondissement_id =  $("#arrondissement_id").children("option:selected").val();
         $(".commune").val("");

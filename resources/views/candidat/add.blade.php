@@ -54,7 +54,8 @@
                                 </div>
                                 <div>
 
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
 
                                 </div>
                             </div>

@@ -47,22 +47,22 @@
                                             @foreach ($juridictions as $juridiction)
                                             <option value="{{$juridiction->id}}">{{$juridiction->nom}}</option>
                                                 @endforeach
-    
+
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label>Pays</label>
                                         <select class="form-control" id="pays_id" name="pays_id">
                                         <select class="form-control" id="pays_id" name="pays_id" required>
-    
+
                                         </select>
                                     </div>
-    
+
                                       <div class="col">
                                         <label>Localite</label>
                                         <select class="form-control" id="localite_id" name="localite_id" >
                                         <select class="form-control" id="localite_id" name="localite_id" required>
-    
+
                                         </select>
                                     </div>
                                         <div class="col">
@@ -80,7 +80,7 @@
                                              {{--     @foreach ($lieuvotees as $lieuvotee)
                                                 <option value="{{$lieuvotee->id}}">{{$lieuvotee->nom}}</option>
                                                     @endforeach  --}}
-    
+
                                             </select>
                                         </div>
                                         <div class="col-12">
@@ -130,7 +130,7 @@
                               {{--     @foreach ($candidats as $candidat )
 
                                 <input type="hidden" name="candidat_id[]" value="{{ $candidat->id }}">
-                               
+
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label> {{ $candidat->nom }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
@@ -150,7 +150,7 @@
                                         <input type="number" name="nbvv"  value="{{ old('nbvv') }}" class="form-control"  required>
                                     </div>
                                 </div>  --}}
-                              
+
                                    {{--   <div class="col-lg-6">
                                         <label>Candidat</label>
                                         <select class="form-control" name="candidat_id" required="">
@@ -168,7 +168,8 @@
                                 <div>
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                     </center>
                                 </div>
                             </div>
@@ -192,7 +193,7 @@
         $.ajax({
             type:'GET',
             url:'/pays/by/juridiction/'+juridiction_id,
-       
+
             data:'_token = <?php echo csrf_token() ?>',
             success:function(data) {
                 //alert(data);
@@ -248,7 +249,7 @@
                 });
             });
 
-          
+
             $("#centrevotee_id").change(function () {
                 var centrevotee_id =  $("#centrevotee_id").children("option:selected").val();
                     var lieuvotee = "<option value=''>Veuillez selectionner</option>";
@@ -280,16 +281,16 @@
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                          //   alert(data)
-                           
+
                             $('#electeur').empty()
                            $('#electeur').append("<h4> Nombre Electeurs : "+data.nb+"</h4>");
-                           $('#nb_electeur').val(data.nb)             
+                           $('#nb_electeur').val(data.nb)
                         }
                     });
                 });
 
-               
-                $("#votant").keyup(function(){ 
+
+                $("#votant").keyup(function(){
                    votant = $("#votant").val();
                    bulnull = $("#bulnull").val();
                    $("#suffval").val(votant - bulnull);

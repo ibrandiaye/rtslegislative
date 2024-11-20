@@ -136,8 +136,9 @@
 
                                     <br>
                                       <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
-                                    </center>  
+                                                                               <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
+                                    </center>
                                 </div>
                             </div>
 
@@ -249,13 +250,13 @@
                    bulnull = $("#bulnull").val();
                    $("#suffval").val(votant - bulnull);
                 });
-                $(document).ready(function() { 
-    $('#enregistrer').click(function() { 
-        $.blockUI(/*{ message: $('#loginForm') }*/); 
- 
-        setTimeout($.unblockUI, 2000); 
-    }); 
-}); 
+                $(document).ready(function() {
+    $('#enregistrer').click(function() {
+        $.blockUI(/*{ message: $('#loginForm') }*/);
+
+        setTimeout($.unblockUI, 2000);
+    });
+});
 
 </script>
 @endsection

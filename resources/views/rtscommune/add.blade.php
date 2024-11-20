@@ -24,7 +24,7 @@
         <form action="{{ route('rtscommune.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div id="electeur">
-                
+
             </div>
             <div class="row">
 
@@ -49,23 +49,23 @@
                                             @foreach ($regions as $region)
                                             <option value="{{$region->id}}">{{$region->nom}}</option>
                                                 @endforeach
-    
+
                                         </select>
                                     </div>
                                     <div class="col">
                                         <label>Département</label>
                                         <select class="form-control" id="departement_id" name="departement_id" required>
-    
+
                                         </select>
                                     </div>
-    
+
                                       <div class="col">
                                         <label>Commune</label>
                                         <select class="form-control" id="commune_id" name="commune_id" required>
-    
+
                                         </select>
                                     </div>
-                                      
+
                                     </div>
                                     <br>
                                 <div class="row">
@@ -86,13 +86,14 @@
                                         <input type="number" name="nbvv"  value="{{ old('nbvv') }}" class="form-control"  required>
                                     </div>
                                 </div>  --}}
-                                
+
                                 <br>
                                 <input type="hidden" id="nb_electeur" name="nb_electeur" value="">
 
                                     <div>
                                         <center>
-                                            <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                                                                   <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
+
                                         </center>
                                     </div>
                                 </div>
@@ -167,17 +168,17 @@
                 $.ajax({
                         type:'GET',
                         url:'/somme/electeur/by/commune/'+commune_id,
-        
+
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                             $('#electeur').empty()
                            $('#electeur').append("<h4> Nombre Electeurs : "+data+"</h4>") ;
-                           $('#nb_electeur').val(data)             
-                
+                           $('#nb_electeur').val(data)
+
                         }
                     });
             });
-           
+
 
 
 </script>
