@@ -265,6 +265,13 @@ class RtsDepartementontroller extends Controller
         $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
        // $resultats[$rt->coalition]["photo"] = $rt->photo;
     }
+    $resultats[""]["nb"]=0;
+   //dd($resultats);
+    uasort($resultats, function ($a, $b) {
+        // Comparaison en tant qu'entiers, car 'nb' est une chaîne de caractères
+
+        return (int)$b['nb'] - (int)$a['nb'];
+    });
 
    // dd($resultats);
     return view("rtsdepartement.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","rts"));
