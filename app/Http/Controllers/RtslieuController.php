@@ -1163,9 +1163,11 @@ public function rtsByBureatTemoin()
     $resultat=array();
     foreach ($communes as $key => $commune) {
       $resultat[ $commune->nom] = new \stdClass();
-      $resultat[ $commune->nom]->votant = null;
-      $resultat[ $commune->nom]->bulnull = null;
-      $resultat[ $commune->nom]->valable = null;
+      $resultat[ $commune->nom]->votant = 0;
+      $resultat[ $commune->nom]->bulnull = 0;
+      $resultat[ $commune->nom]->valable = 0;
+      $vot = 0;
+      $bulnull = 0;
      foreach ($inscrits as $key1 => $inscrit) {
        if($inscrit->id==$commune->id)
        {
@@ -1176,15 +1178,18 @@ public function rtsByBureatTemoin()
       if($votant->id==$commune->id)
       {
        $resultat[ $commune->nom]->valable = $votant->nb ;
+       $vot = $votant->nb ;
       }
     }
     foreach ($bulnulss as $key3 => $bulnuls) {
       if($bulnuls->id==$commune->id)
       {
        $resultat[ $commune->nom]->bulnull = $bulnuls->nb ;
+       $bulnull = $bulnuls->nb ;
       }
     }
-    $resultat[ $commune->nom]->votant = $resultat[ $commune->nom]->bulnull + $resultat[ $commune->nom]->votant;
+   
+    $resultat[ $commune->nom]->votant = $bulnull + $vot; 
     foreach ($candidats as $key => $value) {
       $rtsCandidat[$value->coalition] = 0;
     }
