@@ -1158,7 +1158,7 @@ public function rtsByBureatTemoin()
     $candidats = DB::table("candidats")->get();
   //dd($rtsByCandidat);
   $rtsCandidat = array();
- 
+
  // dd($rtsCandidat);
     $resultat=array();
     foreach ($communes as $key => $commune) {
@@ -1188,8 +1188,8 @@ public function rtsByBureatTemoin()
        $bulnull = $bulnuls->nb ;
       }
     }
-   
-    $resultat[ $commune->nom]->votant = $bulnull + $vot; 
+
+    $resultat[ $commune->nom]->votant = $bulnull + $vot;
     foreach ($candidats as $key => $value) {
       $rtsCandidat[$value->coalition] = 0;
     }
@@ -1197,15 +1197,16 @@ public function rtsByBureatTemoin()
       if($rts->id==$commune->id)
       {
         $rtsCandidat[$rts->candidat] = $rts->nb ;
-       
+
       }
     }
     $resultat[ $commune->nom]->rts= $rtsCandidat;
     }
    //dd($resultat);
-    
-    return Excel::download(new RtsExport($resultat,$candidats), 'example.xlsx');//view("excel.rtsdepartement",compact("resultat","candidats"));
-   
+   $departement = $this->departementRepository->getById($departement_id);
+
+    return Excel::download(new RtsExport($resultat,$candidats), $departement->nom.'.xlsx');//view("excel.rtsdepartement",compact("resultat","candidats"));
+
   // dd($resultat);
   }
 
@@ -1213,38 +1214,38 @@ public function rtsByBureatTemoin()
   {
     ini_set('memory_limit', '-1');
     ini_set('max_execution_time', '3600');
-  
+
      /*   $data =  Excel::import(new RegionImport,$request['file']);
    //   dd($data);
-  
+
       return redirect()->back()->with('success', 'Données importées avec succès.'); */
       $this->validate($request, [
           'file' => 'bail|required|file|mimes:xlsx'
       ]);
-  
+
       // 2. On déplace le fichier uploadé vers le dossier "public" pour le lire
       $fichier = $request->file->move(public_path(), $request->file->hashName());
-  
+
       // 3. $reader : L'instance Spatie\SimpleExcel\SimpleExcelReader
       $reader = SimpleExcelReader::create($fichier);
-  
+
       // On récupère le contenu (les lignes) du fichier
       $rows = $reader->getRows();
-  
+
       // $rows est une Illuminate\Support\LazyCollection
-  
+
       // 4. On insère toutes les lignes dans la base de données
     //  $rows->toArray());
       //$status = Rtslieu::insert($rows->toArray());
       foreach ($rows as $key => $rtslieu) {
       $departement = $rtslieu['departement_id'];
-    
+
                 /*Rtslieu::create([
                     "nbvote"=>$rtslieu['nbvote'],
                     "lieuvote_id"=>$rtslieu['lieuvote_id'],
                     "candidat_id"=>$rtslieu['candidat_id'],
                     "departement_id"=>intval($departement),
-                   
+
                 ]);*/
                 $rtslieus = new Rtslieu();
 
@@ -1255,20 +1256,20 @@ public function rtsByBureatTemoin()
                 $rtslieus->save();
 
     }
-  
+
       // Si toutes les lignes sont insérées
-    
+
           // 5. On supprime le fichier uploadé
           $reader->close(); // On ferme le $reader
          // unlink($fichier);
-  
+
           // 6. Retour vers le formulaire avec un message $msg
           return back()->withMsg("Importation réussie !");
-  
-    
+
+
   }
-  
-  
+
+
 
 
 }
