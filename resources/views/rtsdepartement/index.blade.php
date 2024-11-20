@@ -58,10 +58,10 @@
 {{--                              <td>{{ $rtsdepartement->nbvv }}</td>
   --}}
                             <td>
-                                <a href="{{ route('rtsdepartement.edit', $rtsdepartement->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                                {{-- <a href="{{ route('rtsdepartement.edit', $rtsdepartement->id) }}" role="button" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                 {!! Form::open(['method' => 'DELETE', 'route'=>['rtsdepartement.destroy', $rtsdepartement->id], 'style'=> 'display:inline', 'onclick'=>"if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]) !!}
                                 <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                {!! Form::close() !!}
+                                {!! Form::close() !!} --}}
 
 
 
