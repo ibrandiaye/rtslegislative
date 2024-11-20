@@ -78,6 +78,7 @@ Route::post('/update/password',[UserController::class,'updatePassword'])->name("
 Route::post('/importer/region',[RegionController::class,'importExcel'])->name("importer.region")->middleware("auth");
 Route::resource('collecteur', CollecteurControlleur::class)->middleware("auth");
 Route::post('/importer/rtslieu',[RtslieuController::class,'importExcel'])->name("importer.rtslieu")->middleware("auth");
+Route::post('/importer/departement',[RtsDepartementontroller::class,'importExcel'])->name("importer.rtsdepartement")->middleware("auth");
 
 
 Auth::routes();

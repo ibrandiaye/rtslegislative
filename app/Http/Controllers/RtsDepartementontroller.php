@@ -10,6 +10,8 @@ use App\Repositories\RegionRepository;
 use App\Repositories\RtsdepartementRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Excel;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class RtsDepartementontroller extends Controller
 {
@@ -83,7 +85,7 @@ class RtsDepartementontroller extends Controller
         if(count($rtsdepartements) > 0){
             $this->rtsdepartementRepository->deleteByDepartement($request["departement_id"]);
         }
-       
+
       for ($i= 0; $i < count($rts); $i++) {
         $rtsdepartement = new Rtsdepartement();
         $rtsdepartement->candidat_id = $candidats[$i];
@@ -96,7 +98,7 @@ class RtsDepartementontroller extends Controller
 
       }
 
-       
+
 
     }
 
@@ -153,10 +155,10 @@ class RtsDepartementontroller extends Controller
     }
      public function resultatByRegionByCandidat()
     {
-      
+
        $rts =  $this->rtsdepartementRepository->rtsGroupByRegionAndCandidat();
 
-      
+
     // Initialiser un tableau pour stocker les résultats
     $results = array();
 
@@ -202,10 +204,10 @@ class RtsDepartementontroller extends Controller
 
     // Retourner les résultats sous forme de tableau d'objets
     //return $result_objects;
-   
+
        return response()->json($result_objects);
     //dd($results);
-     
+
   }
 
   public function rtsByCandidat()
@@ -263,7 +265,7 @@ class RtsDepartementontroller extends Controller
         $resultats[$rt->coalition]["restant"] = $rt->nb%$quotiant;
        // $resultats[$rt->coalition]["photo"] = $rt->photo;
     }
-   
+
    // dd($resultats);
     return view("rtsdepartement.rtsnational",compact("resultats","totalVotants","hs","bulletinnull","inscrit","quotiant","rts"));
 
@@ -317,4 +319,55 @@ class RtsDepartementontroller extends Controller
       // dd($rts,$departement);
   }
 
+  public function importExcel(Request $request)
+  {
+    ini_set('memory_limit', '-1');
+    ini_set('max_execution_time', '3600');
+
+
+      $this->validate($request, [
+          'file' => 'bail|required|file|mimes:xlsx'
+      ]);
+
+      // 2. On déplace le fichier uploadé vers le dossier "public" pour le lire
+      $fichier = $request->file->move(public_path(), $request->file->hashName());
+
+      // 3. $reader : L'instance Spatie\SimpleExcel\SimpleExcelReader
+      $reader = SimpleExcelReader::create($fichier);
+
+      // On récupère le contenu (les lignes) du fichier
+      $rows = $reader->getRows();
+
+      // $rows est une Illuminate\Support\LazyCollection
+
+      // 4. On insère toutes les lignes dans la base de données
+    //  $rows->toArray());
+      //$status = Rtslieu::insert($rows->toArray());
+      foreach ($rows as $key => $rtslieu) {
+      $departement = $rtslieu['departement_id'];
+
+
+                $rtsdepartement = new Rtsdepartement();
+
+                $rtsdepartement->nbvote = $rtslieu['nbvote'];
+                $rtsdepartement->candidat_id  = $rtslieu['candidat_id'];
+                $rtsdepartement->departement_id = $departement;
+                $rtsdepartement->save();
+
     }
+
+      // Si toutes les lignes sont insérées
+
+          // 5. On supprime le fichier uploadé
+          $reader->close(); // On ferme le $reader
+         // unlink($fichier);
+
+          // 6. Retour vers le formulaire avec un message $msg
+          return back()->withMsg("Importation réussie !");
+
+
+  }
+
+
+
+}

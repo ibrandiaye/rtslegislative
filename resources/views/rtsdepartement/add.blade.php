@@ -24,7 +24,7 @@
         <form action="{{ route('rtsdepartement.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div id="electeur">
-                
+
             </div>
             <div class="row">
 
@@ -62,7 +62,7 @@
                                                         @endforeach
                                                 </select>
                                             </div>
-                                           
+
                                                 <div class="col-12">
                                                     <div class="form-group">
                                                         <label>Votant </label>
@@ -112,19 +112,19 @@
                                         </table>
                                     </div>
                                 </div>
-                            
+
                                 <div>
                                     <input type="hidden" id="nb_electeur" name="nb_electeur">
 
                                     <br>
                                     <center>
-                                        <button type="submit" class="btn btn-success btn btn-lg "> ENREGISTRER</button>
+                                        <button type="submit" class="btn btn-success btn btn-lg "  onclick="this.disabled=true; this.form.submit();"> ENREGISTRER</button>
                                     </center>
                                 </div>
                             </div>
 
                             </div>
-                                   
+
                                 </div>
 
                             </div>
@@ -174,13 +174,13 @@
             $.ajax({
                         type:'GET',
                         url:'/somme/electeur/by/departement/'+departement_id,
-        
+
                         vdata:'_token = <?php echo csrf_token() ?>',
                         success:function(data) {
                             $('#electeur').empty()
                            $('#electeur').append("<h4> Nombre Electeurs : "+data+"</h4>") ;
-                           $('#nb_electeur').val(data)             
-                
+                           $('#nb_electeur').val(data)
+
                         }
                     });
         });
