@@ -12,7 +12,7 @@
 
                         <ol class="breadcrumb hide-phone p-0 m-0">
                         <li class="breadcrumb-item"><a href="{{ route('home') }}" role="button" class="btn btn-primary">ACCUEIL</a></li>
-                        <li class="breadcrumb-item active"><a href="{{ route('rtscommune.index') }}" role="button" class="btn btn-primary">RETOUR</a></li>
+                        <li class="breadcrumb-item active"><a href="{{ route('rtsdepartement.index') }}" role="button" class="btn btn-primary">RETOUR</a></li>
 
                         </ol>
 
@@ -22,10 +22,11 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        {!! Form::model($rtscommune, ['method'=>'PATCH','route'=>['rtscommune.update', $rtscommune->id],'enctype'=>'multipart/form-data']) !!}
+        <form action="{{ route('update.perso.rtsdepartement') }}" method="POST" enctype="multipart/form-data">
+            @csrf
             @csrf
              <div class="card ">
-                        <div class="card-header text-center">FORMULAIRE DE MODIFICATION D'une rtscommune</div>
+                        <div class="card-header text-center">FORMULAIRE DE MODIFICATION D'une rtsdepartement</div>
                             <div class="card-body">
                                 @if ($errors->any())
                                     <div class="alert alert-danger">
@@ -37,39 +38,82 @@
                                     </div>
                                 @endif
 
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Nombre de votes</label>
-                                    <input type="text" name="nbvote" class="form-control" value="{{$rtscommune->nbvote}}"   required>
+                                <div class="row">
+                                    <input type="hidden" name="departement_id"  value="{{ $departement->id }}" required>
+                                    <div class="col-4">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label>Région</label>
+                                                <select class="form-control" id="region_id" name="region_id" required="">
+
+
+                                                    <option value="{{$region->id}}">{{$region->nom}}</option>
+
+
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <label>Département</label>
+                                                <select class="form-control" id="departement_id" name="departement_id" required>
+
+                                                    <option value="{{$departement->id}}" >{{$departement->nom}}</option>
+
+                                                </select>
+                                            </div>
+
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Votant </label>
+                                                        <input type="number" name="votant" id="votant"  value="{{ $departement->total }}" class="form-control"  required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Nuls </label>
+                                                        <input type="number" name="bulnull" id="bulnull"  value="{{ $departement->null }}" class="form-control"  required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Hors Bureau </label>
+                                                        <input type="number" name="hs"  value="{{ $departement->hb }}" class="form-control"  >
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Suffrage valablement Exprimé </label>
+                                                        <input type="number" name="suffval" id="suffval"  value="{{  $departement->total - $departement->null }}" class="form-control"  required>
+                                                    </div>
+                                                </div>
+
+                                        </div>
+
                                     </div>
-
-                                </div>
-                                {{--  <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label> Nombre de vote valide</label>
-                                        <input type="number" name="nbvv"  value="{{ $rtscommune->nbvv }}" class="form-control"  required>
+                                    <div class="col-8">
+                                        <table class="table table-bordered table-responsive-md table-striped text-center">
+                                            <thead>
+                                                <th>Liste</th>
+                                                <th>Resultat</th>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($rtsdepartement as $candidat )
+                                                <tr>
+                                                    <td>
+                                                        <label> {{ $candidat->coalition }} <img src="{{ asset('photo/'.$candidat->photo) }}" class="img img-rounded" style="height: 30px;"></label>
+                                                    </td>
+                                                    <td><input type="number" name="nbvote[]" data-parsley-min="0" data-parsley-type="number"  value="{{ $candidat->nbvote }}" class="form-control"  required>
+                                                        <input type="hidden" name="candidat_id[]" value="{{ $candidat->id }}">
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-                                </div>  --}}
-                                <div class="col-lg-6">
-                                    <label>Centre de vote</label>
-                                    <select class="form-control" name="centrevote_id" required="">
-                                        @foreach ($centrevotes as $centrevote)
-                                        <option {{old('centrevote_id', $rtscommune->centrevote_id) == $centrevote->id ? 'selected' : ''}}
-                                            value="{{$centrevote->id}}">{{$centrevote->nom}}</option>
-                                            @endforeach
-
-                                    </select>
                                 </div>
-                                <div class="col-lg-6">
-                                    <label>Candidat</label>
-                                    <select class="form-control" name="candidat_id" required="">
-                                        @foreach ($candidats as $candidat)
-                                        <option {{old('candidat_id', $rtscommune->candidat_id) == $candidat->id ? 'selected' : ''}}
-                                            value="{{$candidat->id}}">{{$candidat->nom}}</option>
-                                            @endforeach
 
-                                    </select>
-                                </div>
+                                <div>
+                                    <input type="hidden" id="nb_electeur" name="nb_electeur" value="{{ $nbVote }}">
+
 
                                 <div>
                                     <center>

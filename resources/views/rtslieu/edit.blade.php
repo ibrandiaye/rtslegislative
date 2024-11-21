@@ -47,7 +47,7 @@
 
                                     <div class="col-4">
                                         <div class="row">
-                                           <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}">
+                                           <input type="hidden" name="departement_id" value="{{Auth::user()->departement_id}}" required>
                                            <div class="col-12">
                                             <label>Arrondissement</label>
                                             <select class="form-control" id="arrondissement_id" name="arrondissement_id" required @readonly(true)>

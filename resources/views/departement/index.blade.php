@@ -61,6 +61,7 @@
                                 {!! Form::close() !!}
 
 
+                                <a href="{{ route('editer.rtsdepartement', $departement->id ) }}" role="button" title="Modifier les résultats" class="btn btn-primary"><i class="fas fa-edit"></i></a>
 
                             </td>
 

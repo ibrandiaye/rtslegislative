@@ -32,9 +32,9 @@ class RtsdepartementRepository extends RessourceRepository{
         ->join('candidats','rtsdepartements.candidat_id','=','candidats.id')
         ->select('candidats.id','candidats.nom','candidats.photo','candidats.coalition' ,DB::raw('sum(rtsdepartements.nbvote) as nb'))
         ->groupBy('candidats.id','candidats.nom','candidats.photo','candidats.coalition')
-        ->orderBy("nb","desc")  
+        ->orderBy("nb","desc")
     ->get();
-   
+
 }
 public function rstByRegieon(){
     $region = array();
@@ -42,26 +42,26 @@ public function rstByRegieon(){
     foreach($data as $d){
          $somme = 0;
          $etat = 0;
-        
+
          foreach($d['departements'] as $c){
-          
+
              foreach($c['communes'] as $ce){
-                
+
                  foreach($ce['centrevotes'] as $li){
-                   
+
                      foreach($li['lieuvotes'] as $rs){
                          $somme = $somme + $rs['nb'];
-                         
-                        
+
+
                      }
-                    
+
                      $etat = $etat + DB::table('rtscentres')->where('centrevote_id','=', $li['id'])->sum('nbvote');
-                    
+
                  }
-                
+
              }
          }
-        
+
          array_push($region,['id'=>$d['id'],'nom'=>$d['nom'],'totalAvoter'=>$somme,'totalVoter'=>$etat,'pourcentages'=>round(($etat/$somme)*100,2)]);
 
     }
@@ -76,7 +76,7 @@ $data =  DB::table('rtsdepartements')
       ->join('candidats','rtsdepartements.candidat_id','=','candidats.id')
      ->join('departements','rtsdepartements.departement_id','=','departements.id')
      ->join('regions','departements.region_id','=','regions.id')
-   
+
      ->select( DB::raw('sum(rtsdepartements.nbvote) as nb'),'candidats.nom as nomcandidat','rtsdepartements.candidat_id','candidats.photo as photo','regions.nom as region','regions.id as regionId','candidats.id as candidatId')
      ->groupBy('rtsdepartements.candidat_id','candidats.nom','candidats.photo','regions.nom','regions.id','candidats.id')
      ->where("regions.id",$id)
@@ -107,7 +107,7 @@ public function  rtsByRegionDepartementByDepartementByCandidat($id){
             ->select('regions.nom as region','departements.nom as departement',DB::raw('sum(rtsdepartements.nbvote) as nb'))
             ->groupBy('departements.nom',"regions.nom")
             ->where("rtsdepartements.candidat_id",$id)
-            
+
             ->get();
 
 }
@@ -169,7 +169,7 @@ public function  rtsGroupByRegionAndCandidat(){
   ->join('regions','departements.region_id','=','regions.id')
   ->select('regions.nom as region', 'candidats.nom as candidat' ,DB::raw('sum(rtsdepartements.nbvote) as nb'))
   ->groupBy('regions.nom','candidats.nom')
-->get(); 
+->get();
 
 }
 public function updateEtat($id){
@@ -184,7 +184,7 @@ public function  rtsGroupByDepartementandCandidat(){
   ->groupBy('departements.nom','candidats.coalition',"candidats.photo")
   ->orderBy("nb","desc")
   ->get();
-  
+
   }
 
   public function  rtsGroupByCandidatByDepartement($departement){
@@ -199,8 +199,12 @@ public function  rtsGroupByDepartementandCandidat(){
 
   }
 
- 
-
+  public function getByDepartementWithCandidat($departement_id){
+    return DB::table("rtsdepartements")
+  ->join('candidats','rtsdepartements.candidat_id','=','candidats.id')
+  ->select("candidats.*" ,'rtsdepartements.nbvote')
+  ->where("rtsdepartements.departement_id",$departement_id)->get();
+}
 
 
 }

@@ -227,3 +227,8 @@ Route::get('/voir/resultat/departement/departement',[RtsDepartementontroller::cl
 
 
 Route::post('/search/resultat/departement/departement',[RtsDepartementontroller::class,'rtsDepartement'])->name('search.rts.departement.departement')->middleware("auth");
+
+
+Route::get('/editer/rtsdepartement/{departement_id}',[RtsDepartementontroller::class,'showEdit'])->name('editer.rtsdepartement')->middleware("auth");
+
+Route::post('/update/Perso/rtsdepartement',[RtsDepartementontroller::class,'updatePerso'])->name('update.perso.rtsdepartement')->middleware("auth");

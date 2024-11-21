@@ -128,6 +128,27 @@ class RtsDepartementontroller extends Controller
         return view('rtsdepartement.edit',compact('rtsdepartement','departements','candidats'));
     }
 
+    public function showEdit($depatement_id)
+    {
+
+        $departement = $this->departementRepository->getByID($depatement_id);
+        $rtsdepartement = $this->rtsdepartementRepository->getByDepartementWithCandidat($depatement_id);
+        $region = $this->regionRepository->getById($departement->region_id);
+        $nbVote = $this->lieuvoteRepository->sumByDepartements($depatement_id);
+
+     //   dd($lieuvote);
+        return view('rtsdepartement.edit',compact("rtsdepartement","region","departement","nbVote"));
+    }
+
+    public function updatePerso(Request $resquest)
+    {
+            $this->rtsdepartementRepository->deleteByDepartement($resquest->departement_id);
+            return $this->store($resquest);
+    }
+
+
+
+
     /**
      * Update the specified resource in storage.
      *
